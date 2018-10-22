@@ -1,0 +1,10 @@
+<launch>
+
+   <node pkg="image_view" type="image_view" args="image:=/ladybug_camera/camera0/image_raw _image_transport:=compressed" name="image_view_camera0" output="screen" />
+   <node pkg="image_view" type="image_view" args="image:=/ladybug_camera/camera1/image_raw _image_transport:=compressed" name="image_view_camera1" output="screen" />
+   <node pkg="image_view" type="image_view" args="image:=/ladybug_camera/camera2/image_raw _image_transport:=compressed" name="image_view_camera2" output="screen" />
+   <node pkg="image_view" type="image_view" args="image:=/ladybug_camera/camera3/image_raw _image_transport:=compressed" name="image_view_camera3" output="screen" />
+   <node pkg="image_view" type="image_view" args="image:=/ladybug_camera/camera4/image_raw _image_transport:=compressed" name="image_view_camera4" output="screen" />
+   <node pkg="image_view" type="image_view" args="image:=/ladybug_camera/camera5/image_raw _image_transport:=compressed" name="image_view_camera5" output="screen" />
+
+</launch>

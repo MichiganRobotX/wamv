@@ -1,0 +1,24 @@
+<launch>
+
+  <node pkg="ladybug3_ros_pkg" type="ladybug_node" name="ladybug_node" output="screen" >
+    <param name="video_mode" value="format7_mode7" />
+    <param name="format7_color_coding" value="mono8" />
+    <param name="iso_speed" value="800"/>
+    <param name="format7_packet_size" value="8160" /> <!-- Modify this to increase/decrease frame rate -->
+    <param name="roi_width" value="808" />
+    <param name="roi_height" value="4000" /> <!-- Modify this to increase/decrease frame rate in compression mode -->
+    <param name="publish_monocolour" value="R" />  <!-- If set to "R","G" or "B" publish only one colour. Other values or none publish full info. -->  
+    <param name="publish_compressed" value="true" />  <!-- If true publish to /image_raw/compressed when camera is in compressed mode. Otherwise normal-->
+  
+
+    <!-- param name="bayer_pattern" value="rggb" -->
+    <!-- <param name="bayer_method" value="" /> -->
+    <param name="camera_info_url_camera0" value="" />
+    <param name="camera_info_url_camera1" value="" />
+    <param name="camera_info_url_camera2" value="" />
+    <param name="camera_info_url_camera3" value="" />
+    <param name="camera_info_url_camera4" value="" />
+    <param name="camera_info_url_camera5" value="" />
+  </node>
+
+</launch>

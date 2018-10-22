@@ -1,0 +1,36 @@
+#!/bin/bash
+# update
+sudo apt-get update && sudo apt-get upgrade && sudo apt-get dist-upgrade
+
+# essentials
+sudo apt-get -y install cmake exfat-fuse exfat-utils autoconf automake autotools-dev libglib2.0-dev manpages-dev manpages-posix-dev libgl1-mesa-dev gtk-doc-tools libgtk2.0-dev python-dev libusb-dev libusb-1.0-0-dev libdc1394-22-dev libdc1394-utils libfuse-dev libi2c-dev libgsl0-dev gsl-doc-info gsl-doc-pdf freeglut3-dev emacs vim cvs subversion git-core git gitk units imagemagick ssh smartmontools nmap netcat curl wireshark traceroute ffmpeg mplayer vlc sysstat valgrind autopoint mesa-utils tcpdump tcpreplay python-pyqtgraph doxygen zlib1g-dev libjson0-dev libusb-1.0-0-dev libluajit-5.1-2 libjsoncpp1 libprotoc9v5 libgoogle-glog0v5 libtinyxml2.6.2v5 libyaml-cpp0.5v5 libace-6.3.3 libqt4-qt3support libqt4-xml libamd2.4.1 libcamd2.4.1 libbtf1.2.1 libcolamd2.9.1 libccolamd2.9.1 libcholmod3.0.6 libcsparse3.1.4 libcxsparse3.1.4 libklu1.3.3 libblas3 liblapack3 libatlas3-base libv4l-0 libv4lconvert0 libv4l2rds0 libgl1-mesa-glx libgmp10 libusb-1.0-0 libtinyxml2.6.2v5 libpcl-common1.7 libboost-program-options1.58.0 libboost-signals1.58.0 libboost-system1.58.0 libboost-chrono1.58.0 libboost-thread1.58.0 libboost-filesystem1.58.0 libalvar2 libdbow21 libopenmvg1 libroyale1 libceres1 rti libmiro0 libsoracore1 libdecomputil0 libjps3d0 build-essential cmake libgoogle-glog-dev libgtest-dev libgflags-dev libace-dev libqt4-dev protobuf-compiler libv4l-dev libeigen3-dev libluajit-5.1-dev libjsoncpp-dev libtinyxml-dev libyaml-cpp-dev libusb-1.0-0-dev libpcl-dev libboost-program-options-dev libboost-signals-dev libboost-system-dev libboost-chrono-dev libboost-thread-dev libboost-filesystem-dev libsuitesparse-dev libatlas-dev libalvar-dev libdbow2-dev libopenmvg-dev libroyale-dev libceres-dev rti-dev libsoracore-dev libmiro-dev libdecomputil-dev libjps3d-dev gnuplot doxygen-latex lyx 
+
+# camera
+sudo apt-get -y install coriander libjpeg8-dev libtiff-dev libjasper-dev libpng12-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libatlas-base-dev gfortran freenect python-freenect
+
+# java
+sudo apt-get -y install ant openjdk-8-jdk
+
+# python
+sudo apt-get -y install python-dev python-cairo python-pygame python-matplotlib python-numpy python-scipy python-pyaudio python-tk ipython pyqt4-dev-tools
+
+# sublime text
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+sudo apt-get update
+sudo apt-get install sublime-text
+
+# Ubuntu Extras
+sudo apt-get -y install gksu tlp tlp-rdw gnome-tweak-tool ubuntu-restricted-extras terminator
+gsettings set org.gnome.desktop.default-applications.terminal exec 'terminator'
+sudo tlp start
+
+# Simple Screen Recorder
+sudo add-apt-repository ppa:maarten-baert/simplescreenrecorder
+sudo apt-get update
+sudo apt-get install simplescreenrecorder
+
+# Configure Networks and Disable Firewall
+sudo apt-get install openssh-server
+sudo ufw allow ssh and sudo ufw reload
+sudo service iptables restart

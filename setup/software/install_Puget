@@ -1,0 +1,17 @@
+#!/bin/bash
+chmod +x *
+
+echo "installing base packages"
+./install_base
+
+echo "installing ROS"
+./install_ROS
+
+echo "installing OpenCV"
+./install_CV
+
+echo "installing LCM"
+./install_LCM
+
+echo "installing Arduino"
+./install_arduino

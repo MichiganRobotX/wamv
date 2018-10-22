@@ -1,0 +1,9 @@
+string msgID
+string date
+string time
+string teamID
+int32 entrGate
+int32 exitGate
+string buoyActive
+string lightPat
+int32 checksum

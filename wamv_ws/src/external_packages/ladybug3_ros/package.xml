@@ -1,0 +1,55 @@
+<package>
+  <name>ladybug3_ros_pkg</name>
+  <version>1.9.4</version>
+
+  <description>
+    ROS driver for devices supporting the IEEE 1394 Digital Camera
+    (IIDC) protocol. Supports the ROS image_pipeline, using libdc1394
+    for device access.
+  </description>
+
+  <author>Josep Bosch</author>
+
+  <maintainer email="jep250@gmail.com">Josep Bosch</maintainer>
+  <license>LGPL</license>
+
+  <url type="website"></url>
+  <url type="bugtracker"></url>
+  <url type="repository"></url>
+
+  <!-- broken under catkin:
+  <review status="Doc Reviewed" notes="2010-01-22"/>
+  <review status="Doc Reviewed" notes="2010-06-19"/>
+  -->
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>boost</build_depend>
+  <build_depend>camera_info_manager</build_depend>
+  <build_depend>diagnostic_updater</build_depend>
+  <build_depend>driver_base</build_depend>
+  <build_depend>dynamic_reconfigure</build_depend>
+  <build_depend>image_transport</build_depend>
+  <build_depend>libdc1394-dev</build_depend>
+  <build_depend>nodelet</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>cv_bridge</build_depend>
+  <build_depend>tf</build_depend>
+
+  <!-- this *should* be a test_depend -->
+  <build_depend>rostest</build_depend>
+
+  <run_depend>boost</run_depend>
+  <run_depend>camera_info_manager</run_depend>
+  <run_depend>diagnostic_updater</run_depend>
+  <run_depend>dynamic_reconfigure</run_depend>
+  <run_depend>image_transport</run_depend>
+  <run_depend>libdc1394-dev</run_depend>
+  <run_depend>nodelet</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>cv_bridge</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>tf</run_depend>
+
+</package>

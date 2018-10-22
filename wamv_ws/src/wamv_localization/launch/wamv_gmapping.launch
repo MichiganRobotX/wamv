@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find wamv_autonomy)/launch/wamv_transform.launch" />
+    <include file="$(find wamv_autonomy)/launch/wamv_ukf.launch" />
+    <include file="$(find wamv_autonomy)/launch/wamv_costmap.launch" />
+    <include file="$(find gmapping)/launch/wamv_gmapping.launch" />
+</launch>

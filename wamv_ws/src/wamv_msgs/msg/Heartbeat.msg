@@ -1,0 +1,11 @@
+string msgID
+string date
+string time
+float32 latitude
+float32 longitude
+string NS
+string EW
+string teamID
+int32 sysMode
+int32 AUVStatus
+int32 checksum

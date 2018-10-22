@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- load localization parameters -->
+    <rosparam command="load" file="$(find wamv_autonomy)/params/localization.yaml"/>
+
+    <!-- launch navsat to odometry converter -->
+    <node name="navsat_transform_node" pkg="robot_localization" type="navsat_transform_node" output="screen" required="true" clear_params="true">
+          <remap from="odometry/gps" to="gps/odom"/>
+          <remap from="imu/data" to="an_device/Imu"/>
+          <remap from="gps/fix" to="an_device/NavSatFix"/>
+	</node>
+    <!-- launch localization node -->
+    <node name="ukf_localization_node" pkg="robot_localization" type="ukf_localization_node" output="screen" required="true" clear_params="true"/>
+
+</launch>

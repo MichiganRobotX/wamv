@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<robot 
+  xmlns:xacro="http://ros.org/wiki/xacro" name="torqeedo">
+  <xacro:include filename="properties.urdf.xacro"/>
+  <link name="torqeedo">
+    <wind>true</wind>
+    <visual>
+      <geometry>
+        <mesh filename="package://wamv_description/mesh/torqeedo.dae"/>
+      </geometry>
+    </visual>
+    <!-- Left engine upper -->
+    <collision name="left_engine_vertical_axis">
+      <origin xyz="-0.2 0 -0.23" rpy="0 0 0" />
+      <geometry>
+        <box size="0.2 0.15 0.83" />
+      </geometry>
+    </collision>
+    <collision name="left_engine_rear_end">
+      <origin xyz="-0.36 0 0.13" rpy="0 0 0" />
+      <geometry>
+        <box size="0.12 0.15 0.12" />
+      </geometry>
+    </collision>
+    <collision name="left_propeller">
+      <origin xyz="-0.38 0 -0.52" rpy="0 1.57 0" />
+      <geometry>
+        <cylinder length="0.18" radius="0.24" />
+      </geometry>
+    </collision>
+  </link>
+</robot>

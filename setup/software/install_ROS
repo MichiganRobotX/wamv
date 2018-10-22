@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# install ROS Kinetic
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+sudo apt-get update
+sudo apt-get install ros-kinetic-desktop-full
+sudo rosdep init
+rosdep update
+echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+sudo apt-get install python-rosinstall python-rosinstall-generator python-wstool build-essential
+
+# install catkin tools
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list'
+wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install python-catkin-tools
+
+# localization nodes 
+sudo apt-get install ros-kinetic-robot-localization
+
+# Install Dependencies for Gazebo and Simulation
+sudo apt-get install ros-kinetic-velodyne*
+sudo apt-get install ros-kinetic-teleop-*
+
+# Install rosserial
+sudo apt-get install ros-kinetic-rosserial-*
+sudo apt-get install ros-kinetic-rosserial-arduino
+
+# update and upgrade
+sudo apt update && sudo apt upgrade
+
+# install other packages for Ros
+sudo apt-get install -y ros-kinetic-pluginlib ros-kinetic-actionlib ros-kinetic-image-transport ros-kinetic-compressed-image-transport ros-kinetic-tf2 ros-kinetic-tf2-eigen ros-kinetic-tf2-geometry-msgs ros-kinetic-tf2-kdl ros-kinetic-tf2-msgs ros-kinetic-tf2-ros ros-kinetic-tf2-sensor-msgs ros-kinetic-message-filters ros-kinetic-roswtf ros-kinetic-xmlrpcpp ros-kinetic-opencv3 ros-kinetic-mavlink ros-kinetic-xacro ros-kinetic-octomap 
+
+# install turtlebot gazebo on Kinetic
+# link - https://answers.ros.org/question/246015/installing-turtlebot-on-ros-kinetic/
+sudo apt-get install -y linux-headers-generic
+sudo sh -c 'echo "deb-src http://us.archive.ubuntu.com/ubuntu/ xenial main restricted
+deb-src http://us.archive.ubuntu.com/ubuntu/ xenial-updates main restricted
+deb-src http://us.archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse
+deb-src http://security.ubuntu.com/ubuntu xenial-security main restricted" > \
+  /etc/apt/sources.list.d/official-source-repositories.list'
+sudo apt-get update
+sudo apt-get install -y ros-kinetic-turtlebot
+sudo apt-get install ros-kinetic-turtlebot-gazebo
+sudo apt-get install ros-kinetic-turtlebot*
+sudo apt-get install ros-kinetic-ros*

@@ -1,0 +1,21 @@
+<launch>
+
+  <node pkg="ladybug3_ros_pkg" type="ladybug_node" name="ladybug_node" output="screen" >
+    <param name="video_mode" value="format7_mode0" />
+    <param name="format7_color_coding" value="raw8" />
+    <param name="iso_speed" value="800"/>
+    <param name="format7_packet_size" value="8160" /> <!-- Modify this to increase/decrease frame rate -->
+    <param name="roi_width" value="1616" />
+    <param name="roi_height" value="7392" />
+	<param name="publish_monocolour" value="BW" />  <!-- If set to "BW" publish grayscale. "C" Colour .Other values or none publish colour. -->  
+    <!-- param name="bayer_pattern" value="grbg" -->
+    <!-- <param name="bayer_method" value="" /> -->
+    <param name="camera_info_url_camera0" value="" />
+    <param name="camera_info_url_camera1" value="" />
+    <param name="camera_info_url_camera2" value="" />
+    <param name="camera_info_url_camera3" value="" />
+    <param name="camera_info_url_camera4" value="" />
+    <param name="camera_info_url_camera5" value="" />
+  </node>
+
+</launch>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<robot name="wamv">
+	<link name="base_link" />
+	<link name="gps" />
+	<link name="imu" />
+	<link name="velodyne" />
+
+	<joint name="base_link_gps" type="fixed">
+		<parent link="base_link" />
+		<child link="gps" />
+		<origin xyz="2 0 1.4" rpy="0 0 3.14"/>
+	</joint>
+
+	<joint name="base_link_velo" type="fixed">
+		<parent link="base_link" />
+		<child link="velodyne" />
+		<origin xyz="2.4 0 1.8" rpy="0 0 -1.57" />
+	</joint>
+
+	<joint name="gps_imu" type="fixed">
+		<parent link="gps" />
+		<child link="imu" />
+		<origin rpy="0 0 0"/>
+	</joint>
+
+</robot>

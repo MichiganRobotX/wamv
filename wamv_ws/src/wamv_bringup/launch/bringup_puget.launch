@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- Set params -->
+	<arg name="rviz" default="false" />
+	<arg name="gazebo" default="false" />
+	<arg name="navsat" default="true" />
+
+	<!-- DRIVER NODES -->
+	<include file="$(find wamv_bringup)/launch/launch_drivers.launch" />
+
+	<!-- Launch RViz -->
+	<group if="$(arg rviz)">
+		<node type="rviz" name="visual" pkg="rviz" args="-d $(find wamv_viz)/rviz/sensors.rviz" />
+	</group>
+
+	<!-- launch package to convert NavSat to odometry -->
+	<group if="$(arg navsat)">
+		<node pkg="wamv_localization" type="wamv_odometry" name="wamv_odometry" clear_params="true" output="screen">
+			<remap from="/navsat" to="/an_device/NavSatFix"/>
+			<remap from="/imu" to="/an_device/Imu"/>
+			<remap from="/gps" to="/gps/odom"/>
+		</node>
+	</group>
+
+	<!-- Launch Gazebo -->
+	<group if="$(arg gazebo)">
+		<include file="$(find robotx_gazebo)/launch/sandisland.launch"> </include>
+	</group>
+
+</launch>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>wamv_bringup</name>
+  <version>0.0.1</version>
+  <description> WAMV Bringup Launcher</description>
+  <maintainer email="dhanjalsahib@gmail.com">Sahib Dhanjal</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>tf</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>advanced_navigation_driver</depend>
+  <depend>velodyne_pointcloud</depend>
+  <depend>nav_msgs</depend>
+
+</package>
