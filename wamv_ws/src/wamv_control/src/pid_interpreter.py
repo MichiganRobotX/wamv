@@ -10,20 +10,41 @@ def sign(x):
 
 class PIDInterpreter:
     def __init__(self):
-        rospy.init_node('pid_interpreter', log_level=rospy.DEBUG)
+        node_name = rospy.get_param('~node_name', 'interpreter_node')
+        rospy.init_node(node_name, log_level=rospy.DEBUG)
 
-        self.maximum = rospy.get_param('~maximum', 127)
-
+        # Set up publishers
+        port_motor_topic = rospy.get_param(
+            '~port_motor_topic', 'port_motor_speed'
+        )
         self.port_motor_publisher = rospy.Publisher(
-            'LmotorSpeed', Int16, queue_size=1000
+            port_motor_topic, Int16, queue_size=1000
+        )
+
+        strbrd_motor_topic = rospy.get_param(
+            '~strbrd_motor_topic', 'strbrd_motor_speed'
         )
         self.strbrd_motor_publisher = rospy.Publisher(
-            'RmotorSpeed', Int16, queue_size=1000
+            strbrd_motor_topic, Int16, queue_size=1000
         )
 
-        rospy.Subscriber('speed_control_effort', Int16, self.speed_callback)
-        rospy.Subscriber('heading_control_effort', Int16, self.heading_callback)
+        # Set up subscribers
+        speed_control_effort_topic = rospy.get_param(
+            '~speed_control_effort_topic', 'speed_control_effort'
+        )
+        rospy.Subscriber(
+            speed_control_effort_topic, Int16, self.speed_callback
+        )
 
+        heading_control_effort_topic = rospy.get_param(
+            '~heading_control_effort_topic', 'heading_control_effort'
+        )
+        rospy.Subscriber(
+            heading_control_effort_topic, Int16, self.heading_callback
+        )
+
+        # Set up others
+        self.maximum = rospy.get_param('~maximum', 127)
         self.heading_control_effort = 0
         self.speed_control_effort = 0
 
@@ -76,9 +97,9 @@ class PIDInterpreter:
 
 
 if __name__ == '__main__':
-    args = rospy.myargv(argv=sys.argv)
     pid_interpreter = PIDInterpreter()
-    rate = rospy.Rate(10)
+    loop_rate = rospy.get_param('~loop_rate', 10)
+    rate = rospy.Rate(loop_rate)
     while not rospy.is_shutdown():
         pid_interpreter.process()
         rate.sleep()

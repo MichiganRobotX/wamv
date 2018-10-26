@@ -1,0 +1,24 @@
+# node_name:
+#     The name of the node. Default 'interpreter_node'
+# node_name:
+
+# port_motor_topic, strbrd_motor_topic:
+#     The topics that are published to for port and starboard motor speeds.
+#     Defaults 'port_motor_speed' and 'strbrd_motor_speed'
+port_motor_topic: '/Lmotorspeed'
+strbrd_motor_topic: '/Rmotorspeed'
+
+# speed_control_effort_topic, heading_control_effort_topic:
+#     The topics that are subscribed to as inputs to the interpreter. Defaults
+#     are 'speed_control_effort' and 'heading_control_effort'
+speed_control_effort_topic: '/speed/control_effort'
+heading_control_effort_topic: '/heading/control_effort'
+
+# maximum:
+#     The maximum (absolute) value that will be sent to the motors.
+#     Default is 127
+# maximum:
+
+# loop_rate:
+#     The maximum rate of the main loop, in Hz. Default is 10 Hz.
+# loop_rate:
