@@ -1,0 +1,8 @@
+# maximum_output
+#     The maximum (absolute) value that will be sent to the motors.
+#     Default is 127.
+# maximum_output:
+
+# loop_rate
+#     The maximum rate of the main loop, in Hz. Default is 10 Hz.
+# loop_rate:

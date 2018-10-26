@@ -1,47 +1,40 @@
 <?xml version="1.0"?>
 <launch>
+    <!-- Specify controllers to include -->
+    <arg name="heading_pid" default="true" />
+    <arg name="speed_pid" default="true" />
 
-    <!-- Launch PID Interpreter -->
-    <node pkg="wamv_control" type="pid_interpreter" name="pid_interpreter_node" />
+    <!-- Specify namespaces -->
+    <arg name="heading_ns" default="heading" />
+    <arg name="speed_ns" default="speed" />
 
-    <!-- Launch heading PID controller -->
-    <node pkg="pid" type="controller" name="heading_controller" >
-        <param name="Kp" value="1.0" />
-        <param name="Ki" value="0.0" />
-        <param name="Kd" value="0.0" />
-        <param name="upper_limit" value="127" />
-        <param name="lower_limit" value="-127" />
-        <param name="topic_from_controller" value="heading_control_effort"/>
-        <!-- NEED TO SET topic_from_plant VALUE TO WAMV CURRENT GPS HEADING topic -->
-        <!--param name="topic_from_plant" value="heading?"/-->
-        <param name="setpoint_topic" value="heading_to_target"/>
-        <param name="pid_enable_topic" value="pid_enable"/>
+    <!-- Put everything in the namespace "pid" -->
+    <group ns='pid'>
+        <!-- Include the PID interpreter launch file -->
+        <include file='$(find wamv_control)/launch/interpreter.launch' >
+            <arg name='topic_to_port_motor'            value='/LmotorSpeed'/>
+            <arg name='topic_to_strbrd_motor'          value='/RmotorSpeed'/>
+            <arg name='topic_from_heading_controller'  value='$(arg heading_ns)/control_effort'/>
+            <arg name='topic_from_speed_controller'    value='$(arg speed_ns)/control_effort'/>
+       </include>
 
-        <!-- <param name="windup_limit" value="10" /> -->
-        <!-- <param name="max_loop_frequency" value="100.0" /> -->
-        <!-- <param name="min_loop_frequency" value="100.0" /> -->
-   </node>
+        <!-- Include the heading PID controller launch file IF specified in args -->
+        <group if="$(arg heading_pid)">
+            <include file="$(find wamv_control)/launch/pid.launch" ns="$(arg heading_ns)">
+                <arg name='param_file'  value='heading_controller_params.yaml' />
+                <arg name='setpoint'    value='setpoint' />
+                <arg name='state'       value='/an_device/Imu/Orientation/Z' />
+            </include>
+        </group>
 
-    <!-- Launch speed PID controller -->
-    <node pkg="pid" type="controller" name="speed_controller" >
-        <param name="Kp" value="1.0" />
-        <param name="Ki" value="0.0" />
-        <param name="Kd" value="0.0" />
-        <param name="upper_limit" value="127" />
-        <param name="lower_limit" value="-127" />
-        <param name="topic_from_controller" value="speed_control_effort"/>
-        <!-- NEED TO SET topic_from_plant VALUE TO WAMV CURRENT SPEED topic AND SET setpoint_topic TO SETPOINT OUTPUT FROM VELOCITY PLANNING -->
-        <!--param name="topic_from_plant" value="speed?"/-->
-        <!--param name="setpoint_topic" value="set_velocity"/-->
-        <param name="pid_enable_topic" value="pid_enable"/>
+        <!-- Include the speed PID controller launch file IF specified in args -->
+        <group if="$(arg speed_pid)">
+            <include file="$(find wamv_control)/launch/pid.launch" ns="$(arg speed_ns)">
+                <arg name='param_file'  value='speed_controller_params.yaml' />
+                <arg name='setpoint'    value='/set_speed' />
+                <arg name='state'       value='/an_device/Twist/Linear/X' />
+            </include>
+        </group>
 
-        <!-- <param name="windup_limit" value="10" /> -->
-        <!-- <param name="max_loop_frequency" value="100.0" /> -->
-        <!-- <param name="min_loop_frequency" value="100.0" /> -->
-   </node>
-        <!-- <remap from="/navsat" to="/an_device/NavSatFix"/> -->
-        <!-- <remap from="/imu" to="/an_device/Imu"/> -->
-        <!-- <remap from="/gps" to="/gps/odom"/> -->
-    <!-- </node> -->
-
+    </group> <!-- pid -->
 </launch>

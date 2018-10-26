@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-import sys
 import rospy
 import math
 from std_msgs.msg import Int16
@@ -60,12 +59,11 @@ class TargetHeading():
 
         # Could add in a 'round' if required.
         theta_wpt = math.degrees(math.atan2(dx,dy))
-        
+
         self.heading_publisher.publish(theta_wpt)
 
 
 if __name__ == '__main__':
-    args = rospy.myargv(argv=sys.argv)
     tgt_heading = TargetHeading()
     rate = rospy.Rate(10)
     while not rospy.is_shutdown():

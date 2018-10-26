@@ -1,29 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-    <!-- Launch Speed Test Node -->
-    <node pkg="wamv_control" type="set_test_speeds.py" name="testing_speed_node" output="screen" >
-        <rosparam command="load" file="$(find wamv_control)/params/speed_params.yaml" />
-    </node>
-
-    <!-- Launch PID Interpreter -->
-    <node pkg="wamv_control" type="pid_interpreter.py" name="pid_interpreter_node" />
-
-    <!-- Launch speed PID controller -->
-    <node pkg="pid" type="controller" name="speed_controller" >
-        <param name="Kp" value="1.0" />
-        <param name="Ki" value="0.0" />
-        <param name="Kd" value="0.0" />
-        <param name="upper_limit" value="127" />
-        <param name="lower_limit" value="-127" />
-        <param name="topic_from_controller" value="speed_control_effort"/>
-        <!-- CHECK THAT topic_from_plant VALUE IS CORRECT!!-->
-        <param name="topic_from_plant" value="an_device/Twist/Linear/X"/>
-        <param name="setpoint_topic" value="set_speed"/>
-        <param name="pid_enable_topic" value="pid_enable"/>
-
-        <!-- <param name="windup_limit" value="10" /> -->
-        <!-- <param name="max_loop_frequency" value="100.0" /> -->
-        <!-- <param name="min_loop_frequency" value="100.0" /> -->
-    </node>
-
+    <include file="$(find wamv_control)/launch/test_pid.launch" >
+        <arg name='heading_pid' value="false"/>
+        <arg name='speed_pid' value="true"/>
+    </include>
 </launch>

@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-    <include file="$(find wamv_control)/launch/test_heading_pid.launch" />
-    <include file="$(find wamv_control)/launch/test_speed_pid.launch" />
-
-</launch>

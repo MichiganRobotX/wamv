@@ -1,0 +1,82 @@
+# Kp, Ki, Kd
+#     The values to be used for proportional, integral, and derivative gains.
+#     These values are used by the node unless overridden by dynamic
+#     reconfiguration. Kp, Ki and Kd should all have the same sign! Use all
+#     positive values for direct-acting loops (where an increase in control
+#     effort produces an increase in state). Use all negative values for
+#     reverse-acting loops (where an increase in control effort produces a
+#     decrease in state). Defaults are 1.0, 0, 0.
+Kp: 1.0
+Ki: 0
+Kd: 0
+
+# upper_limit, lower_limit
+#     The maximum and minimum limits for control_effort.
+#     Defaults are 1000, -1000
+upper_limit: 127
+lower_limit: -127
+
+# windup_limit
+#     The maximum limit for error integral. Default is 1000.
+# windup_limit: 1000
+
+# cutoff_frequency
+#     The cutoff frequency of the low-pass filter on the derivative term (in Hz).
+#     Default is 1/4 of the sampling rate.
+# cutoff_frequency:
+
+# topic_from_controller
+#     The topic name that control_effort will be published to. The plant must
+#     subscribe to this topic. Default is "control_effort".
+#
+# NOTE: Instead of using this parameter, the topic should be remapped in the
+#       launchfile. The syntax is:
+#           <remap from='control_effort' to='/new/topic/name'/>
+
+# topic_from_plant
+#     The topic name that controller subscribes to for updates from the plant.
+#     Default is "state"
+#
+# NOTE: Instead of using this parameter, the topic should be remapped in the
+#       launchfile. The syntax is:
+#           <remap from='state' to='/new/topic/name'/>
+
+# setpoint_topic
+#     The topic name that controller subscribes to for updates to the desired
+#     value of plant state. Default is "setpoint".
+#
+# NOTE: Instead of using this parameter, the topic should be remapped in the
+#       launchfile. The syntax is:
+#           <remap from='setpoint' to='/new/topic/name'/>
+
+# node_name
+#     The name given to the node being launched. Default if not otherwise
+#     specified is "pid_node".
+# node_name:
+
+# max_loop_frequency, min_loop_frequency
+#     The maximum and minimum expected frequency at which the plant issues state
+#     messages and the control loop runs and generates control_effort. The
+#     frequency is controlled by the rate at which the plant publishes state.
+#     This can be useful to detect that a node or sensor has failed. Defaults
+#     are arbitrary: minimum 1 Hz, maximum 1000 Hz.
+# max_loop_frequency:
+# min_loop_frequency:
+
+# pid_enable_topic
+#     The name of the topic where a Boolean is published to turn on/off the PID
+#     controller. This is modifiable in case there are multiple PID controllers.
+#     The default is "pid_enable".
+# pid_enable_topic:
+
+# angle_error
+#     Set this boolean to "true" if the state is a potentially discontinuous
+#     angular error measurement. It will maintain the angular error between
+#     -pi:pi, or -180:180. The default is "false."
+# angle_error:
+
+# angle_wrap
+#     Related to angle_error. Helps to maintain an angular error (in radians)
+#     between -pi:pi. Could be set to 2.0*180.0 for degree measurements.
+#     The default is "2.0*3.14159."
+# angle_wrap:
