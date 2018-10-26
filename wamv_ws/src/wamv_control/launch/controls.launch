@@ -1,19 +1,33 @@
 <?xml version="1.0"?>
 <launch>
-<group ns='pid'>
-    <!-- Launch PID Interpreter -->
-    <node pkg="wamv_control" type="pid_interpreter.py" name="interpreter" >
-        <rosparam command="load" file="$(find wamv_control)/params/interpreter_params.yaml" />
-   </node>
+    <!-- Specify different launchfile parameters if wanted -->
+    <arg name="pid_ns" default="pid" />
+    <arg name="heading_ns" default="heading" />
+    <arg name="speed_ns" default="speed" />
 
-    <!-- Launch heading PID controller -->
-    <node pkg="pid" type="controller" name="controller" ns="heading">
-        <rosparam command="load" file="$(find wamv_control)/params/heading_controller_params.yaml" />
-   </node>
+    <!-- Put everything in the relative namespace defined by "pid_ns" above -->
+    <group ns="$(arg pid_ns)">
+        <!-- Launch PID Interpreter -->
+        <node pkg="wamv_control" type="pid_interpreter.py" name="interpreter" >
+            <rosparam command="load" file="$(find wamv_control)/params/interpreter_params.yaml" />
+            <remap from='topic_to_port_motor'            to='/LmotorSpeed'/>
+            <remap from='topic_to_strbrd_motor'          to='/RmotorSpeed'/>
+            <remap from='topic_from_heading_controller'  to='$(arg heading_ns)/control_effort'/>
+            <remap from='topic_from_speed_controller'    to='$(arg speed_ns)/control_effort'/>
+       </node>
 
-    <!-- Launch speed PID controller -->
-    <node pkg="pid" type="controller" name="controller" ns="speed">
-        <rosparam command="load" file="$(find wamv_control)/params/speed_controller_params.yaml" />
-    </node>
-</group>
+        <!-- Launch heading PID controller in its namespace -->
+        <node pkg="pid" type="controller" name="controller" ns="$(arg heading_ns)">
+            <rosparam command="load" file="$(find wamv_control)/params/heading_controller_params.yaml" />
+            <remap from='setpoint'  to='/heading_to_target'/>
+            <remap from='state'     to='/an_device/Imu/Orientation/Z'/>
+       </node>
+
+        <!-- Launch speed PID controller in its namespace -->
+        <node pkg="pid" type="controller" name="controller" ns="$(arg speed_ns)">
+            <rosparam command="load" file="$(find wamv_control)/params/speed_controller_params.yaml" />
+            <remap from='setpoint'  to='/set_speed'/>
+            <remap from='state'     to='/an_device/Twist/Linear/X'/>
+        </node>
+    </group>
 </launch>
