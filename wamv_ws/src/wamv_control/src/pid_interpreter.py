@@ -37,11 +37,11 @@ class PIDInterpreter:
         self.maximum_output = rospy.get_param('~maximum_output', 127)
 
         # Set up subscribers
-        self.heading_control_effort = 0
+        self.heading_control_effort = Float64(0.0)
         rospy.Subscriber(
             'topic_from_heading_controller', Float64, self.heading_callback
         )
-        self.speed_control_effort = 0
+        self.speed_control_effort = Float64(0.0)
         rospy.Subscriber(
             'topic_from_speed_controller', Float64, self.speed_callback
         )
@@ -58,13 +58,13 @@ class PIDInterpreter:
         """ Velocities fall in the range [-127,127] with -127 representing full
             reverse and 127 representing full forward
         """
-        self.speed_control_effort = msg.data
+        self.speed_control_effort.data = msg.data
 
     def heading_callback(self, msg):
         """ Headings fall in the range [-127,127] with -127 representing maximum
             counter-clockwise force and 127 representing maximum clockwise force
         """
-        self.heading_control_effort = msg.data
+        self.heading_control_effort.data = msg.data
 
     def process(self):
         """ Calculates and publishes the main motor input values.
@@ -80,8 +80,11 @@ class PIDInterpreter:
                     incr = 142
                 4) PMS, SMS = 242, 42
         """
-        port_motor_speed = self.heading_control_effort
-        strbrd_motor_speed = -self.heading_control_effort
+        heading_control_effort = self.heading_control_effort.data
+        speed_control_effort = self.speed_control_effort.data
+
+        port_motor_speed = heading_control_effort
+        strbrd_motor_speed = -heading_control_effort
 
         max_ = max(port_motor_speed, strbrd_motor_speed)
         if max_ > self.maximum_output:
@@ -90,14 +93,15 @@ class PIDInterpreter:
             strbrd_motor_speed = max_ * sign(strbrd_motor_speed)
 
         incr = 127
-        if self.speed_control_effort > 0:
-            incr += min(self.speed_control_effort, self.maximum_output - max_)
+
+        if speed_control_effort > 0:
+            incr += min(speed_control_effort, self.maximum_output - max_)
         else:
-            incr += max(self.speed_control_effort, max_ - self.maximum_output)
+            incr += max(speed_control_effort, max_ - self.maximum_output)
 
         # Convert from Float64 to Int16
-        port_motor_speed = int(port_motor_speed + incr)
-        strbrd_motor_speed = int(strbrd_motor_speed + incr)
+        port_motor_speed = Int16(int(port_motor_speed + incr))
+        strbrd_motor_speed = Int16(int(strbrd_motor_speed + incr))
 
         self.port_motor_publisher.publish(port_motor_speed)
         self.strbrd_motor_publisher.publish(strbrd_motor_speed)
