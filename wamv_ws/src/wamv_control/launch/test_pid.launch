@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name='heading_pid' default='true'/>
+    <arg name='speed_pid' default='true'/>
+
+    <!-- Launch Heading Test Node -->
+    <group if="$(arg heading_pid)" >
+        <node pkg="wamv_control" type="pid_tester.py" name="heading_pid_tester" output="screen" >
+            <rosparam command="load" file="$(find wamv_control)/params/heading_test_params.yaml" />
+            <remap from="setpoint" to="pid/heading/setpoint" />
+        </node>
+    </group>
+
+    <!-- Launch Speed Test Node -->
+    <group if="$(arg speed_pid)" >
+        <node pkg="wamv_control" type="pid_tester.py" name="speed_pid_tester" output="screen" >
+            <rosparam command="load" file="$(find wamv_control)/params/speed_test_params.yaml" />
+            <remap from="setpoint" to="pid/speed/setpoint" />
+        </node>
+    </group>
+
+    <!-- Launch the main controls -->
+    <include file="$(find wamv_control)/launch/controls.launch" >
+        <arg name='heading_pid' value="$(arg heading_pid)"/>
+        <arg name='speed_pid' value="$(arg speed_pid)"/>
+    </include>
+</launch>

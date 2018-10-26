@@ -1,22 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-    <!-- Launch Heading Test Node -->
-    <node pkg="wamv_control" type="set_test_headings.py" name="testing_heading_node" output="screen" >
-        <rosparam command="load" file="$(find wamv_control)/params/heading_params.yaml" />
-    </node>
-
-    <!-- Launch PID Interpreter -->
-    <node pkg="wamv_control" type="pid_interpreter.py" name="pid_interpreter_node" />
-        <rosparam command="load" file="$(find wamv_control)/params/pid_interpreter_params.yaml" />
-    </node>
-
-    <!-- Launch heading PID controller -->
-    <node pkg="pid" type="controller" name="controller" >
-        <rosparam command="load" file="$(find wamv_control)/params/heading_controller_params.yaml" ns="heading_pid" />
-
-        <!-- CHECK THAT topic_from_plant VALUE IS CORRECT!!-->
-        <param name="topic_from_plant" value="an_device/Imu/Orientation/Z"/>
-        <param name="setpoint_topic" value="heading_to_target"/>
-   </node>
-
+    <include file="$(find wamv_control)/launch/test_pid.launch" >
+        <arg name='heading_pid' value="true"/>
+        <arg name='speed_pid' value="false"/>
+    </include>
 </launch>

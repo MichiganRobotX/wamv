@@ -15,7 +15,7 @@ catkin_package()
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 # add node to publish signal for heartbeat
-add_executable(heartbeat nodes/heartbeat.cpp)
+add_executable(heartbeat src/heartbeat.cpp)
 
 # build node to publish signal for heartbeat
 target_link_libraries(heartbeat ${catkin_LIBRARIES})
