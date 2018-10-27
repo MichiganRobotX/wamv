@@ -2,8 +2,8 @@
 
 # WAM-V Teleoperation Controller
 
-# Written by: James Coller
-# Last Update: September 13, 2018
+# Written by: Conner Goodrum
+# Last Update: October 15, 2018
 
 # Import Libraries
 import rospy
@@ -23,20 +23,29 @@ def sendCommands(data):
     global activate
 
     # Read in the joystick data
+    posL_lat = data.axes[0]
+    posR_lat = data.axes[3]
     posL = data.axes[1]
     posR = data.axes[4]
 
     # Remap the joystick
+    powerL_lat = 1500 + 390 * posL_lat
+    powerR_lat = 1500 - 390 * posR_lat
     powerL = 127 + 127 * posL
     powerR = 127 + 127 * posR
+
 
     # convert float to int
     speedL = int(powerL)
     speedR = int(powerR)
+    speedL_lat = int(powerL_lat)
+    speedR_lat = int(powerR_lat)
 
     # Publish the result
     pub1.publish(speedL)
     pub2.publish(speedR)
+    pub3.publish(speedL_lat)
+    pub4.publish(speedR_lat)
 
 
 # Function that gets called by the Joystick Subscriber
@@ -50,7 +59,7 @@ def callback(data):
     if (data.buttons[7]==True) and (autonomy==False): # start button
         activate = True # set global boolean control var
         rospy.loginfo("Joystick Control Activated")
-        pub3.publish(activate)
+        pub5.publish(activate)
 
     if (data.buttons[7]==True) and (autonomy==True): # start button
         rospy.logerr("Error: Boat is running autonomously")
@@ -63,9 +72,13 @@ def callback(data):
         # Reset motors to be off
         speedL = 127
         speedR = 127
+        speedL_lat = 1500
+        speedR_lat = 1500
         pub1.publish(speedL)
         pub2.publish(speedR)
-        pub3.publish(activate)
+        pub3.publish(speedL_lat)
+        pub4.publish(speedR_lat)
+        pub5.publish(activate)
         rospy.loginfo("Joystick Control Deactivated")
 
     # If teleop is activated, call the function to process the commands
@@ -87,7 +100,7 @@ def check(bool_status):
 if __name__ == '__main__':
 
     # Setup ROS Nodes
-    rospy.init_node('teleop_controller', log_level=rospy.DEBUG)
+    rospy.init_node('Teleop_Controller', anonymous=True, log_level=rospy.DEBUG)
 
     # Setup Publishers
     global pub1
@@ -95,7 +108,11 @@ if __name__ == '__main__':
     global pub2
     pub2 = rospy.Publisher('RmotorSpeed',Int16, queue_size=1000)
     global pub3
-    pub3 = rospy.Publisher('RemoteControlStatus',Bool, queue_size=1000)
+    pub3 = rospy.Publisher('LmotorSpeed_lateral',Int16, queue_size=1000)
+    global pub4
+    pub4 = rospy.Publisher('RmotorSpeed_lateral',Int16, queue_size=1000)
+    global pub5
+    pub5 = rospy.Publisher('RemoteControlStatus',Bool, queue_size=1000)
 
     # Setup Subscriber
     rospy.Subscriber("joy", Joy, callback)
