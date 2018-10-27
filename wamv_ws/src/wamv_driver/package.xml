@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
+
   <name>wamv_driver</name>
   <version>0.0.1</version>
   <description>The wamv driver package</description>
@@ -8,12 +9,12 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>std_msgs</depend>
-  <depend>nav_msgs</depend>
-  <depend>sensor_msgs</depend>
-  <depend>gps_common</depend>
-  <depend>geometry_msgs</depend>
+  <depend>advanced_navigation_driver</depend>
+  <!-- <depend>ladybug3_ros_pkg</depend> -->
+  <depend>rosserial_python</depend>
   <depend>velodyne_driver</depend>
   <depend>velodyne_pointcloud</depend>
+  <depend>wamv_localization</depend>
+  <depend>wamv_tasks</depend>
 
 </package>

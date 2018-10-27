@@ -1,16 +1,13 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(wamv_navigation)
+project(wamv_viz)
 
 find_package(catkin REQUIRED COMPONENTS
-	rospy
-	std_msgs
+	rviz
+	wamv_localization
 )
 
-catkin_python_setup()
+# add catkin packages
+catkin_package()
 
-catkin_package(CATKIN_DEPENDS
-	rospy
-	std_msgs
-)
-
+# specify location of header files
 include_directories(include ${catkin_INCLUDE_DIRS})

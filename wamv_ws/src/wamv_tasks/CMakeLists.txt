@@ -3,9 +3,9 @@ project(wamv_tasks)
 
 find_package(catkin REQUIRED COMPONENTS
 	roscpp
-	wamv_msgs
 	sensor_msgs
 	std_msgs
+	wamv_msgs
 )
 
 # add catkin packages

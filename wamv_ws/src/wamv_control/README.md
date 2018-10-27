@@ -17,8 +17,8 @@
 - `pid.launch`: Launches a PID controller. Arguments:
 
     `param_file`: The name of the parameter file in the `params/` folder: Default is `controller_params.yaml`
-    `setpoint`
-    `state`
+    `setpoint`: The topic name of the controller's setpoint.
+    `state`: The topic name of the plant's current state.
 
 - `test_heading_pid.launch`: **TESTING ONLY**. To be used for tuning the heading PID controller on its own. Launches the 'testing_heading_node', heading PID controller, and PID interpreter. Testing parameters are set in `heading_params.yaml`.
 

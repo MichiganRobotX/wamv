@@ -16,12 +16,12 @@ local_costmap:
   # static_map:
   #   map_topic: "map"
   obstacles:
-    observation_sources: "vel1"
+    observation_sources: "lidar_bow"
     origin_z: 0
     z_voxels: 30
     publish_voxel_grid: true
     vel1:
-      topic: "vel1/velodyne_points"
+      topic: "lidar_bow/velodyne_points"
       expected_update_rate: 0.2
       data_type: "PointCloud2"
       clearing: true

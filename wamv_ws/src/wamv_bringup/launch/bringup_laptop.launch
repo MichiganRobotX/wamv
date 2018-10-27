@@ -2,16 +2,10 @@
 <launch>
 	<!-- Set params -->
 	<arg name="rviz" default="true" />
-	<arg name="gazebo" default="false" />
 
 	<!-- Launch RViz -->
 	<group if="$(arg rviz)">
 		<node type="rviz" name="visual" pkg="rviz" args="-d $(find wamv_viz)/rviz/sensors.rviz" />
-	</group>
-
-	<!-- Launch Gazebo -->
-	<group if="$(arg gazebo)">
-		<include file="$(find robotx_gazebo)/launch/sandisland.launch"> </include>
 	</group>
 
 </launch>

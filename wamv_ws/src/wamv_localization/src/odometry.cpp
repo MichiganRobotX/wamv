@@ -10,7 +10,6 @@
 #include <sensor_msgs/Imu.h>
 #include <gps_common/conversions.h>
 #include <nav_msgs/Odometry.h>
-// #include <gazebo_msgs/ModelState.h>
 #include <cmath>
 
 #define PI 3.14159265
@@ -18,7 +17,6 @@
 using namespace gps_common;
 
 static ros::Publisher odom_pub;
-// static ros::Publisher gazebo_pub;
 
 std::string frame_id, child_frame_id;
 double rot_cov;
@@ -112,15 +110,6 @@ void gpscallback(const sensor_msgs::NavSatFixConstPtr& fix) {
       prev_x = easting - ox;
       prev_y = northing - oy;
 
-      /*
-      // use the GPS Data
-      ROS_WARN("Using GPS Data");
-      odom.pose.pose.orientation.x = quat[0];
-      odom.pose.pose.orientation.y = quat[1];
-      odom.pose.pose.orientation.z = quat[2];
-      odom.pose.pose.orientation.w = quat[3];
-      */
-
       // use INS Data
       ROS_WARN("Using INS Data");
       odom.pose.pose.orientation.x = qx;
@@ -149,21 +138,6 @@ void gpscallback(const sensor_msgs::NavSatFixConstPtr& fix) {
 
       odom.pose.covariance = covariance;
       odom_pub.publish(odom);
-
-      // if (sim_) {
-        // publish to gazebo topic
-      //   gazebo_msgs::ModelState modelstate;
-      //   modelstate.model_name = "kingfisher";
-      //   modelstate.pose.position.x = easting - ox;
-      //   modelstate.pose.position.y = northing - oy;
-      //   modelstate.pose.position.z = 0;
-      //
-      //   modelstate.pose.orientation.x = 0;
-      //   modelstate.pose.orientation.y = 0;
-      //   modelstate.pose.orientation.z = qz;
-      //   modelstate.pose.orientation.w = qw;
-      //   gazebo_pub.publish(modelstate);
-      // }
     }
   }
 }
@@ -178,11 +152,7 @@ int main (int argc, char **argv) {
   priv_node.param<double>("rot_covariance", rot_cov, 99.0);
   priv_node.param<bool>("sim", sim_, false);
 
-
   odom_pub = node.advertise<nav_msgs::Odometry>("/gps", 1000000);
-
-  // if(sim_)
-  //   gazebo_pub = node.advertise<gazebo_msgs::ModelState>("/gazebo/set_model_state", 10000);
 
   ros::Subscriber fix_sub = node.subscribe("/navsat", 1000000, gpscallback);
   ros::Subscriber imu_sub = node.subscribe("/imu", 1000000, &imucallback);

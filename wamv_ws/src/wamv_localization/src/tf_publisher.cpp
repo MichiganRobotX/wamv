@@ -33,9 +33,7 @@ int main(int argc, char** argv){
     tf::Transform tf_gps_base;
     tf::Transform tf_base_gps;
 
-
     ros::Rate rate(10);
-
     while(nh.ok()){
     	ROS_INFO("Publishing Transform Frames...");
         tf_map_base.setOrigin(tf::Vector3(qx, qy, 0.5));
@@ -54,24 +52,8 @@ int main(int argc, char** argv){
         tf_gps_base.setRotation(tf::Quaternion(0, 0, 0, 1));
         br.sendTransform(tf::StampedTransform(tf_gps_base, ros::Time::now(), "gps", "base_link"));
 
-        // tf_map_base.setOrigin(tf::Vector3(qx, qy, 0.5));
-        // tf_map_base.setRotation(tf::Quaternion(0, 0, 0, 1));
-        // br.sendTransform(tf::StampedTransform(tf_map_base, ros::Time::now(), "base_link", "map"));
-
-        // tf_velo_base.setOrigin(tf::Vector3(2.4, 0.0, 1.8));
-        // tf_velo_base.setRotation(tf::Quaternion(0, 0, 0, 1));
-        // br.sendTransform(tf::StampedTransform(tf_velo_base, ros::Time::now(), "base_link", "velodyne" ));
-
-        // tf_base_gps.setOrigin(tf::Vector3(0.0, 0.0, 0.0));
-        // tf_base_gps.setRotation(tf::Quaternion(0, 0, 0, 1));
-        // br.sendTransform(tf::StampedTransform(tf_base_gps, ros::Time::now(), "base_link", "gps"));
-
-        // tf_gps_base.setOrigin(tf::Vector3(0.0, 0.0, 0.0));
-        // tf_gps_base.setRotation(tf::Quaternion(0, 0, 0, 1));
-        // br.sendTransform(tf::StampedTransform(tf_gps_base, ros::Time::now(), "gps", "base_link"));
-
         rate.sleep();
-
     }
+
     return 0;
 }

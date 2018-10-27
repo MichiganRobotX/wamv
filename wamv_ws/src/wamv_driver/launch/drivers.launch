@@ -3,9 +3,8 @@
 	<!-- Set params -->
 	<arg name="port" default="/dev/ttyACM0" />
 	<arg name="drivers" default="true" />
-	<arg name="motors" default="true" />
 
-	<!-- DRIVER NODES -->
+	<!-- Launch drivers -->
 	<group if="$(arg drivers)">
 		<include file="$(find wamv_driver)/launch/velodyne.launch"> </include>
 		<include file="$(find wamv_driver)/launch/ladybug.launch"> </include>
@@ -18,7 +17,7 @@
 	</group>
 
 	<!-- launch package to convert NavSat to self fused odometry -->
-	<node pkg="wamv_driver" type="wamv_odometry" name="wamv_odometry_node" clear_params="true" output="screen">
+	<node pkg="wamv_localization" type="odometry" name="odometry_node" clear_params="true" output="screen">
 		<remap from="/navsat" to="/an_device/NavSatFix"/>
 		<remap from="/imu" to="/an_device/Imu"/>
 		<remap from="/gps" to="/gps/odom"/>
