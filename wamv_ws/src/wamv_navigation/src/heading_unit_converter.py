@@ -17,7 +17,7 @@ class HeadingConverter():
         rospy.Subscriber('an_device/Imu/orientation/z', Float64, self.z_callback)
 
         # Set up publisher
-        self.pub = rospy.Publisher('heading', Float64, queue_size = 1000)
+        self.pub = rospy.Publisher('current_heading', Float64, queue_size = 1000)
 
         # Initialize subscribed topic values
         self.w = Float64(0.0)
@@ -50,5 +50,3 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         heading_converter.calculate()
         rate.sleep()
-
-

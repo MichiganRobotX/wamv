@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="wamv_navigation" type="heading_unit_converter.py" name="heading_unit_converter_node" output="screen" >
+    </node>
+
+</launch>

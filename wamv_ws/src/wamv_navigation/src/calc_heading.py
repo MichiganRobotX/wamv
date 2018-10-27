@@ -2,23 +2,25 @@
 
 import rospy
 import math
-from std_msgs.msg import Int16
+from std_msgs.msg import Float64
 
 class TargetHeading():
     def __init__(self):
         # Initialize node
         rospy.init_node('calc_target_heading_node', log_level = rospy.DEBUG)
+
         # Set up subscribers
         ### CHECK THAT THESE SUBSCRIBERS ARE CORRECT!!!! SHOULD BE LINKED TO /odom?
-        rospy.Subscriber('waypoint_loc', Int16, self.waypoint_callback)
-        rospy.Subscriber('heading', Int16, self.heading_callback)
-        rospy.Subscriber('loc', Int16, self.location_callback)
+        rospy.Subscriber('waypoint_loc', Float64, self.waypoint_callback)
+        rospy.Subscriber('heading', Float64, self.heading_callback)
+        rospy.Subscriber('loc', Float64, self.location_callback)
         # Set up publisher
-        self.heading_publisher = rospy.Publisher('heading_to_target', Int16, queue_size=1000)
+        self.heading_publisher = rospy.Publisher('heading_to_target', Float64, queue_size=1000)
+
         # Initialize subscribed topic values
         ### CHECK THAT THESE ARE THE CORRECT FORMAT AND VALUES!!!!!
         self.waypoint_loc = (0.0,0.0)
-        self.heading = 0.0
+        self.heading = Float64(0.0)
         self.location = (0.0,0.0)
 
     def waypoint_callback(self,msg):
@@ -41,6 +43,7 @@ class TargetHeading():
         Should be in the same data format as waypoint_callback.
         """
         self.location = msg.data
+
 
     def calculate(self):
         """ Calculates the current target heading from the WAMV to a given waypoint, with the same sign convention as heading_callback.
