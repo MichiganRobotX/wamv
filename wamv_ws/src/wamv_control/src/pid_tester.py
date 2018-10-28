@@ -12,7 +12,7 @@ if __name__ == '__main__':
     setpoint = Float64(point_a)
     pub = rospy.Publisher('setpoint', Float64, queue_size=1000)
 
-    period_duration = rospy.duration(rospy.get_param('~period', 10))
+    period_duration = rospy.rostime.Duration(rospy.get_param('~period', 10))
     while not rospy.is_shutdown():
         pub.publish(setpoint)
 
@@ -25,4 +25,4 @@ if __name__ == '__main__':
         else:
             rospy.error("The setpoint does not evaluate to point_a or point_b")
 
-        period_duration.sleep()
+        rospy.sleep(period_duration)

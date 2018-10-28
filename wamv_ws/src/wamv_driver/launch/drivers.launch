@@ -17,13 +17,15 @@
 	</group>
 
 	<!-- launch package to convert NavSat to self fused odometry -->
-	<node pkg="wamv_localization" type="odometry" name="odometry_node" clear_params="true" output="screen">
+
+	<!-- <node pkg="wamv_localization" type="odometry" name="odometry_node" clear_params="true" output="screen">
 		<remap from="/navsat" to="/an_device/NavSatFix"/>
 		<remap from="/imu" to="/an_device/Imu"/>
 		<remap from="/gps" to="/gps/odom"/>
-	</node>
+	</node> -->
 
 	<!-- launch the heartbeat -->
-	<node pkg="wamv_tasks" type="heartbeat" name="heartbeat_node" respawn="true" output="screen" />
+
+	<!-- <node pkg="wamv_tasks" type="heartbeat" name="heartbeat_node" respawn="true" output="screen" /> -->
 
 </launch>

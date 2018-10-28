@@ -9,8 +9,7 @@
     <arg name="speed_ns" default="speed" />
 
     <!-- Include the heading converter launch file -->
-    <include file='S(find wamv_navigation)/launch/heading_unit_converter.launch'>
-    </include>
+    <include file='$(find wamv_navigation)/launch/heading_unit_converter.launch' />
 
     <!-- Put everything in the namespace "pid" -->
     <group ns='pid'>
@@ -26,7 +25,7 @@
         <group if="$(arg heading_pid)">
             <include file="$(find wamv_control)/launch/pid.launch" ns="$(arg heading_ns)">
                 <arg name='param_file'  value='heading_controller_params.yaml' />
-                <arg name='setpoint'    value='/setpoint' />
+                <arg name='setpoint'    value='setpoint' />
                 <arg name='state'       value='/current_heading' />
             </include>
         </group>
@@ -35,7 +34,7 @@
         <group if="$(arg speed_pid)">
             <include file="$(find wamv_control)/launch/pid.launch" ns="$(arg speed_ns)">
                 <arg name='param_file'  value='speed_controller_params.yaml' />
-                <arg name='setpoint'    value='/setpoint' />
+                <arg name='setpoint'    value='setpoint' />
                 <arg name='state'       value='/an_device/Twist/linear/x' />
             </include>
         </group>
