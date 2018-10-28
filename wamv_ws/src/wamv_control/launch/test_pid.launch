@@ -24,4 +24,18 @@
         <arg name='heading_pid' value="$(arg heading_pid)"/>
         <arg name='speed_pid' value="$(arg speed_pid)"/>
     </include>
+
+
+    <!-- <group if="$(arg heading_pid)" >
+      <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot" args="/current_heading /pid/heading/setpoint /pid/heading/control_effort" />
+    </group> -->
+
+    <group if="$(arg speed_pid)" >
+      <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot" args="/current_speed /pid/speed/setpoint /pid/speed/control_effort" />
+    </group>
+
+    <!-- <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot" args="/RmotorSpeed /LmotorSpeed" /> -->
+
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" />
+
 </launch>

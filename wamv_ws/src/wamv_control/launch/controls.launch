@@ -35,7 +35,7 @@
             <include file="$(find wamv_control)/launch/pid.launch" ns="$(arg speed_ns)">
                 <arg name='param_file'  value='speed_controller_params.yaml' />
                 <arg name='setpoint'    value='setpoint' />
-                <arg name='state'       value='/an_device/Twist/linear/x' />
+                <arg name='state'       value='/current_speed' />
             </include>
         </group>
 

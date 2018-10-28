@@ -7,6 +7,8 @@ find_package(catkin REQUIRED COMPONENTS
 	sensor_msgs
 	std_msgs
 	wamv_navigation
+	rqt_plot
+	rqt_reconfigure
 )
 
 catkin_python_setup()
