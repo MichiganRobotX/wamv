@@ -12,6 +12,7 @@
 - `wamv_navigation` : Path planning and waypoint following.
 - `wamv_ros` : Metapackage.
 - `wamv_tasks` : RobotX task definitions and implementations, including the heartbeat signal.
+- `wamv_transform` : Broadcasts the wamv transforms.
 - `wamv_viz` : Visualization configuration for rviz.
 
 ## Installing Dependencies

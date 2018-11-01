@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
   <node pkg="ladybug3_ros_pkg" type="ladybug_node" name="ladybug_node" output="screen" respawn="true" >
     <param name="video_mode" value="format7_mode7" />

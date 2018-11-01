@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="name" default="" />
+    <arg name="frame_id" default="" />
+    <arg name="child_frame_id" default="" />
+    <arg name="x" default="0.0" />
+    <arg name="y" default="0.0" />
+    <arg name="z" default="0.0" />
+    <arg name="roll" default="0.0" />
+    <arg name="pitch" default="0.0" />
+    <arg name="yaw" default="0.0" />
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="$(arg name)" args="$(arg x) $(arg y) $(arg z) $(arg roll) $(arg pitch) $(arg yaw) $(arg frame_id) $(arg child_frame_id)" />
+</launch>

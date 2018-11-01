@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- The advanced navigation device transform -->
+    <include file='$(find wamv_transform)/launch/transform_.launch' >
+        <arg name='name'            value='an_device_broadcaster'/>
+        <arg name='frame_id'        value='base_link'/>
+        <arg name='child_frame_id'  value='an_device'/>
+        <arg name='x'               value='0.0'/>
+        <arg name='y'               value='0.0'/>
+        <arg name='z'               value='0.0'/>
+        <arg name='roll'            value='0.0'/>
+        <arg name='pitch'           value='0.0'/>
+        <arg name='yaw'             value='0.0'/>
+    </include>
+
+    <!-- The ladybug camera transform -->
+    <include file='$(find wamv_transform)/launch/transform_.launch' >
+        <arg name='name'            value='ladybug_broadcaster'/>
+        <arg name='frame_id'        value='base_link'/>
+        <arg name='child_frame_id'  value='ladybug'/>
+        <arg name='x'               value='0.6731'/> <!-- 26.5 inches toward bow from an_device -->
+        <arg name='y'               value='0.0'/>
+        <arg name='z'               value='0.508'/> <!-- 20 inches up from an_device -->
+        <arg name='roll'            value='0.0'/>
+        <arg name='pitch'           value='0.0'/>
+        <arg name='yaw'             value='0.0'/>
+    </include>
+
+    <!-- The bow lidar transform -->
+    <include file='$(find wamv_transform)/launch/transform_.launch' >
+        <arg name='name'            value='lidar_bow_broadcaster'/>
+        <arg name='frame_id'        value='lidar_joint'/>
+        <arg name='child_frame_id'  value='lidar_bow'/>
+        <arg name='x'               value='1.0668'/> <!-- 42 inches toward bow from an_device -->
+        <arg name='y'               value='0.0'/>
+        <arg name='z'               value='0.1016'/> <!-- 4 inches up from an_device -->
+        <arg name='roll'            value='0.0'/>
+        <arg name='pitch'           value='0.0'/>
+        <arg name='yaw'             value='0.0'/>
+    </include>
+
+    <!-- The joint lidar transform -->
+    <include file='$(find wamv_transform)/launch/transform_.launch' >
+        <arg name='name'            value='lidar_joint_broadcaster'/>
+        <arg name='frame_id'        value='base_link'/>
+        <arg name='child_frame_id'  value='lidar_joint'/>
+        <arg name='x'               value='0.0'/>
+        <arg name='y'               value='0.0'/>
+        <arg name='z'               value='0.0'/>
+        <arg name='roll'            value='0.0'/>
+        <arg name='pitch'           value='0.0'/>
+        <arg name='yaw'             value='0.0'/>
+    </include>
+
+    <!-- The stern lidar transform -->
+    <include file='$(find wamv_transform)/launch/transform_.launch' >
+        <arg name='name'            value='lidar_stern_broadcaster'/>
+        <arg name='frame_id'        value='lidar_joint'/>
+        <arg name='child_frame_id'  value='lidar_stern'/>
+        <arg name='x'               value='-0.9144'/> <!-- 36 inches toward stern from an_device -->
+        <arg name='y'               value='0.0'/>
+        <arg name='z'               value='0.1016'/> <!-- 4 inches up from an_device -->
+        <arg name='roll'            value='0.0'/>
+        <arg name='pitch'           value='0.0'/>
+        <arg name='yaw'             value='0.0'/>
+    </include>
+
+    <!-- The odometry transform -->
+    <include file='$(find wamv_transform)/launch/transform_.launch' >
+        <arg name='name'            value='odom_broadcaster'/>
+        <arg name='frame_id'        value='odom'/>
+        <arg name='child_frame_id'  value='base_link'/>
+        <arg name='x'               value='0.0'/>
+        <arg name='y'               value='0.0'/>
+        <arg name='z'               value='0.0'/>
+        <arg name='roll'            value='0.0'/>
+        <arg name='pitch'           value='0.0'/>
+        <arg name='yaw'             value='0.0'/>
+    </include>
+</launch>
