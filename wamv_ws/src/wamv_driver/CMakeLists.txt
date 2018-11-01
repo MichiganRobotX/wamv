@@ -9,6 +9,8 @@ find_package(catkin REQUIRED COMPONENTS
 	velodyne_pointcloud
 	wamv_localization
 	wamv_tasks
+	gps_common
+	tf
 )
 
 catkin_package()
