@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name='linear'  default='false'/>
+    <arg name='angular' default='false'/>
+
+    <group if='$(arg linear)'>
+        <node pkg="wamv_navigation" type="velocity_publisher.py" name="linear_velocity_publisher">
+            <param name='velocity'      value='linear' />
+            <remap from='input_topic'   to='/sensors/an_device/Twist' />
+            <remap from='output_topic'  to='/current_linear_velocity' />
+        </node>
+    </group>
+
+    <group if='$(arg angular)'>
+        <node pkg="wamv_navigation" type="velocity_publisher.py" name="angular_velocity_publisher">
+            <param name='velocity'      value='angular' />
+            <remap from='input_topic'   to='/sensors/an_device/Twist' />
+            <remap from='output_topic'  to='/current_angular_velocityar' />
+        </node>
+    </group>
+
+</launch>
