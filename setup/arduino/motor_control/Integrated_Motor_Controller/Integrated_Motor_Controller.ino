@@ -1,16 +1,17 @@
 // WAM-V Motor Controller
-// version 3.3
-// Last Updated: October 15, 2018
+// version 3.4
+// Last Updated: Nov 1, 2018
 // Owner: Conner Goodrum
+//------------------------------------------------------------------------------
+// This motor controller controls both the WAMV motors and lateral thrusters.
+//------------------------------------------------------------------------------
 
 // Libraries
-#include <ros.h>
-#include <sensor_msgs/Joy.h>
-#include <std_msgs/String.h>
-#include <std_msgs/Int16.h>
-#include <stdio.h>
-#include <Servo.h>
 #include <Arduino.h>
+#include <ros.h>
+#include <Servo.h>
+#include <stdio.h>
+#include <std_msgs/Int16.h>
 
 // Initialize Arduino Pins
 int pinL = 9; // PWM Output port for the left side
@@ -26,40 +27,24 @@ Servo servoLatR2;
 Servo servoLatL1;
 Servo servoLatL2;
 
-
-std_msgs::Int16 Lspeed;
-
-// Set Publisher
-ros::Publisher chatter("chatter", &Lspeed);
-
 // Setup Subscribers
-void leftmotor ( const std_msgs::Int16& leftSpeed) {
+void LeftMotor ( const std_msgs::Int16& leftSpeed) {
 
   // Set the joystick values
   std_msgs::Int16 speedL = leftSpeed;
 
-  analogWrite(pinL, speedL.data); // tell left motor how fast
+  // tell left motor how fast
+  analogWrite(pinL, speedL.data);
 
-  // say what you got:
-  Lspeed = speedL;
-  chatter.publish( &Lspeed );
 }
 
-void rightmotor ( const std_msgs::Int16& rightSpeed) {
+void RightMotor ( const std_msgs::Int16& rightSpeed) {
 
   // Set the joystick values
   std_msgs::Int16 speedR = rightSpeed;
 
-  analogWrite(pinR, speedR.data); // tell left motor how fast
-}
-
-void RightLatThrusters(const std_msgs::Int16& rightLatSpeed) {
-
-  // Set the joystick values
-  std_msgs::Int16 speedR_lat = rightLatSpeed;
-
-  servoLatR1.writeMicroseconds(speedR_lat.data);
-  servoLatR2.writeMicroseconds(speedR_lat.data);
+  // tell right motor how fast
+  analogWrite(pinR, speedR.data);
 
 }
 
@@ -68,8 +53,20 @@ void LeftLatThrusters(const std_msgs::Int16& leftLatSpeed) {
   // Set the joystick values
   std_msgs::Int16 speedL_lat = leftLatSpeed;
 
+  // Tell left thrusters how fast
   servoLatL1.writeMicroseconds(speedL_lat.data);
   servoLatL2.writeMicroseconds(speedL_lat.data);
+
+}
+
+void RightLatThrusters(const std_msgs::Int16& rightLatSpeed) {
+
+  // Set the joystick values
+  std_msgs::Int16 speedR_lat = rightLatSpeed;
+
+  // Tell right hrusters how fast
+  servoLatR1.writeMicroseconds(speedR_lat.data);
+  servoLatR2.writeMicroseconds(speedR_lat.data);
 
 }
 
@@ -77,9 +74,10 @@ void InitThrusters(Servo servo, byte servoPin) {
 
   servo.attach(servoPin);
   servo.writeMicroseconds(1500);
-  delay(1000);
+
 }
 
+// Currently not used, but is included for troubleshooting purposes
 void setPwmFrequency(int pin, int divisor) {
   byte mode;
   if (pin == 5 || pin == 6 || pin == 9 || pin == 10) {
@@ -114,8 +112,8 @@ void setPwmFrequency(int pin, int divisor) {
 
 // Setup ROS
 ros::NodeHandle nh;
-ros::Subscriber<std_msgs::Int16> sub1("LmotorSpeed", &leftmotor);
-ros::Subscriber<std_msgs::Int16> sub2("RmotorSpeed", &rightmotor);
+ros::Subscriber<std_msgs::Int16> sub1("LmotorSpeed", &LeftMotor);
+ros::Subscriber<std_msgs::Int16> sub2("RmotorSpeed", &RightMotor);
 ros::Subscriber<std_msgs::Int16> sub3("RmotorSpeed_lateral", &RightLatThrusters);
 ros::Subscriber<std_msgs::Int16> sub4("LmotorSpeed_lateral", &LeftLatThrusters);
 
@@ -123,9 +121,9 @@ ros::Subscriber<std_msgs::Int16> sub4("LmotorSpeed_lateral", &LeftLatThrusters);
 // Setup Sequence
 void setup() {
 
-
   Serial.begin(9600);
   delay(1000);
+
   // Initialize Thrusters
   InitThrusters(servoLatR1, pinLatR1);
   InitThrusters(servoLatR2, pinLatR2);
@@ -138,7 +136,6 @@ void setup() {
   nh.subscribe(sub2);
   nh.subscribe(sub3);
   nh.subscribe(sub4);
-  nh.advertise(chatter);
 
 
   // Change the Arduino Output Frequency for pins 9 & 10
@@ -153,6 +150,5 @@ void setup() {
 void loop() {
 
   nh.spinOnce();
-  delay(1);
 
 }
