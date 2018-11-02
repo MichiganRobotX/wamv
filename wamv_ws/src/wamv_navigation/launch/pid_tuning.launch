@@ -16,7 +16,7 @@
         <node pkg="wamv_navigation" type="velocity_publisher.py" name="angular_velocity_publisher">
             <param name='velocity'      value='angular' />
             <remap from='input_topic'   to='/sensors/an_device/Twist' />
-            <remap from='output_topic'  to='/current_angular_velocityar' />
+            <remap from='output_topic'  to='/current_angular_velocity' />
         </node>
     </group>
 

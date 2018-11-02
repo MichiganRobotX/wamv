@@ -12,7 +12,7 @@ class HeadingConverter():
         rospy.init_node('heading_unit_converter_node', log_level = rospy.DEBUG)
 
         # Set up subscribers
-        rospy.Subscriber('/an_device/Imu', Imu, self.test_callback)
+        rospy.Subscriber('/an_device/Imu', Imu, self.imu_callback)
 
         # Set up publisher
         self.pub = rospy.Publisher('current_heading', Float64, queue_size = 1000)
@@ -23,7 +23,7 @@ class HeadingConverter():
         self.y = Float64(0.0)
         self.z = Float64(0.0)
 
-    def test_callback(self, msg):
+    def imu_callback(self, msg):
         self.w.data = msg.orientation.w
         self.x.data = msg.orientation.x
         self.y.data = msg.orientation.y
