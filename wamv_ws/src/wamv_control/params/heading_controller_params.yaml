@@ -73,10 +73,10 @@ lower_limit: -127
 #     Set this boolean to "true" if the state is a potentially discontinuous
 #     angular error measurement. It will maintain the angular error between
 #     -pi:pi, or -180:180. The default is "false."
-angle_error: true
+# angle_error: true
 
 # angle_wrap
 #     Related to angle_error. Helps to maintain an angular error (in radians)
 #     between -pi:pi. Could be set to 2.0*180.0 for degree measurements.
 #     The default is "2.0*3.14159."
-angle_wrap: 2.0*180.0
+# angle_wrap: 2.0*180.0

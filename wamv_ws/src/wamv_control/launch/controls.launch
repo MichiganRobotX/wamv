@@ -1,24 +1,22 @@
 <?xml version="1.0"?>
 <launch>
+
     <!-- Specify controllers to include -->
     <arg name="heading_pid" default="true" />
-    <arg name="speed_pid" default="true" />
+    <arg name="speed_pid"   default="true" />
 
     <!-- Specify namespaces -->
-    <arg name="heading_ns" default="heading" />
-    <arg name="speed_ns" default="speed" />
-
-    <!-- Include the heading converter launch file -->
-    <include file='$(find wamv_navigation)/launch/heading_unit_converter.launch' />
+    <arg name="heading_ns"  default="heading" />
+    <arg name="speed_ns"    default="speed" />
 
     <!-- Put everything in the namespace "pid" -->
     <group ns='pid'>
         <!-- Include the PID interpreter launch file -->
-        <include file='$(find wamv_control)/launch/interpreter.launch' >
-            <arg name='topic_to_port_motor'            value='/LmotorSpeed'/>
-            <arg name='topic_to_strbrd_motor'          value='/RmotorSpeed'/>
-            <arg name='topic_from_heading_controller'  value='$(arg heading_ns)/control_effort'/>
-            <arg name='topic_from_speed_controller'    value='$(arg speed_ns)/control_effort'/>
+        <include file='$(find wamv_control)/launch/interpreter.launch'>
+            <arg name='topic_to_port_motor'            value='/LmotorSpeed' />
+            <arg name='topic_to_strbrd_motor'          value='/RmotorSpeed' />
+            <arg name='topic_from_heading_controller'  value='$(arg heading_ns)/control_effort' />
+            <arg name='topic_from_speed_controller'    value='$(arg speed_ns)/control_effort' />
        </include>
 
         <!-- Include the heading PID controller launch file IF specified in args -->
@@ -26,7 +24,7 @@
             <include file="$(find wamv_control)/launch/pid.launch" ns="$(arg heading_ns)">
                 <arg name='param_file'  value='heading_controller_params.yaml' />
                 <arg name='setpoint'    value='setpoint' />
-                <arg name='state'       value='/current_heading' />
+                <arg name='state'       value='/current_angular_velocity' />
             </include>
         </group>
 
@@ -35,9 +33,9 @@
             <include file="$(find wamv_control)/launch/pid.launch" ns="$(arg speed_ns)">
                 <arg name='param_file'  value='speed_controller_params.yaml' />
                 <arg name='setpoint'    value='setpoint' />
-                <arg name='state'       value='/current_speed' />
+                <arg name='state'       value='/current_linear_velocity' />
             </include>
         </group>
-
     </group> <!-- pid -->
+
 </launch>

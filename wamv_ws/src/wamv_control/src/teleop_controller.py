@@ -1,122 +1,141 @@
 #!/usr/bin/env python
 
-# WAM-V Teleoperation Controller
-
-# Written by: Conner Goodrum
-# Last Update: October 15, 2018
-
-# Import Libraries
 import rospy
 from std_msgs.msg import Int16
-from std_msgs.msg import Float32
 from std_msgs.msg import Bool
 from sensor_msgs.msg import Joy
 
-# Set Global "Activation" Boolean which will control if statements
-activate = False
-autonomy = False
+###############################################################################
+class TeleoperationsController:
+    """ Handles joystick commands for running in teleoperations mode.
 
-# Function to actually read joystick and send commands
-def sendCommands(data):
+        # Published Topics
+        - port_motor_speed (Int16): The port-side main motor input.
+        - strbrd_motor_speed (Int16): The starboard-side main motor input.
+        - port_bow_thruster_speed (Int16): The port-side bow thruster input.
+        - strbrd_bow_thruster_speed (Int16): The starboard-side bow thruster
+            input.
+        - remote_control_status (Bool): True if successful activation of
+            teleoperation controller, False otherwise.
 
-	# tell it we're using the global variable vs a local one
-    global activate
+        # Subscribed Topics
+        - autonomy_status (Bool): True when the boat is running autonomously.
+            Individual tasks publish here. Those tasks must be shutdown before
+            teleoperations mode can be activated.
+        - joy (Joy): Published to by the joystick.
+    """
 
-    # Read in the joystick data
-    posL_lat = data.axes[0]
-    posR_lat = data.axes[3]
-    posL = data.axes[1]
-    posR = data.axes[4]
+    ###########################################################################
+    def __init__(self):
+        self.is_teleoperations_activated = False
+        self.is_running_autonomously = False
 
-    # Remap the joystick
-    powerL_lat = 1500 + 390 * posL_lat
-    powerR_lat = 1500 - 390 * posR_lat
-    powerL = 127 + 127 * posL
-    powerR = 127 + 127 * posR
+        rospy.init_node('teleop_controller_node', log_level=rospy.DEBUG)
+
+        self.port_motor_pub = rospy.Publisher(
+            'port_motor_speed', Int16, queue_size=1000
+        )
+        self.strbrd_motor_pub = rospy.Publisher(
+            'strbrd_motor_speed', Int16, queue_size=1000
+        )
+        self.port_bow_thruster_pub = rospy.Publisher(
+            'port_bow_thruster_speed', Int16, queue_size=1000
+        )
+        self.strbrd_bow_thruster_pub = rospy.Publisher(
+            'strbrd_bow_thruster_speed', Int16, queue_size=1000
+        )
+        self.remote_control_status_pub = rospy.Publisher(
+            'remote_control_status', Bool, queue_size=1000
+        )
+
+        rospy.Subscriber('autonomy_status', Bool, self.autonomy_status_callback)
+        rospy.Subscriber('joy', Joy, self.joy_callback)
+
+    ###########################################################################
+    def autonomy_status_callback(self, msg):
+        """ Sets the value of self.is_running_autonomously based on the value
+            published to the 'autonomy_status' topic.
+        """
+        if msg.data is True:
+            self.is_running_autonomously = True
+            rospy.loginfo('Autonomous mode is active.')
+
+        elif msg.data is False:
+            self.is_running_autonomously = False
+            rospy.loginfo('Autonomous mode is NOT active.')
+
+        else:
+            rospy.logwarn('Autonomous mode is neither True nor False.')
+
+    ###########################################################################
+    def joy_callback(self, data):
+        """ Handles joystick inputs.
+
+            The `back` button on the controller deactivates teleop mode and
+            sends zero speeds to all the motors.
+
+            The `start` button on the controller activates teleop mode if the
+            platform is not currently running autonomously, as indicated by the
+            `autonomy_status` topic.
+        """
+        back_button_pressed = data.buttons[6] # back button
+        start_button_pressed = data.buttons[7] # start button
+
+        if back_button_pressed:
+            self.is_teleoperations_activated = False
+
+            zero_motor_speed = 127
+            self.port_motor_pub.publish(zero_motor_speed)
+            self.strbrd_motor_pub.publish(zero_motor_speed)
+
+            zero_bow_thruster_speed = 1500
+            self.port_bow_thruster_pub.publish(zero_bow_thruster_speed)
+            self.strbrd_bow_thruster_pub.publish(zero_bow_thruster_speed)
+
+            self.remote_control_status_pub.publish(False)
+            rospy.loginfo("Joystick control deactivated")
+
+        elif start_button_pressed:
+            if not self.is_running_autonomously:
+                self.is_teleoperations_activated = True
+                self.remote_control_status_pub.publish(True)
+                rospy.loginfo("Joystick control activated.")
+
+            else: # if the platform is running autonomously
+                rospy.logerr(
+                    "Joystick control cannot be activated while boat is "
+                    "running autonomously.")
+                self.is_teleoperations_activated = False
+
+        if self.is_teleoperations_activated:
+            self.publish_motor_commands(data)
+
+    ###########################################################################
+    def publish_motor_commands(self, data):
+        """ Interprets joystick commands and publishes them to the motor topics.
+        """
+        left_stick_UD = data.axes[1]
+        right_stick_UD = data.axes[4]
+        left_stick_LR = data.axes[0]
+        right_stick_LR = data.axes[3]
+
+        port_motor_speed = int( 127 * (1 + left_stick_UD) )
+        strbrd_motor_speed = int( 127 * (1 + right_stick_UD) )
+        port_bow_thruster_speed = int( 1110 + 390 * (1 + left_stick_LR) )
+        strbrd_bow_thruster_speed = int( 1110 + 390 * (1 - right_stick_LR) )
+
+        self.port_motor_pub.publish(port_motor_speed)
+        self.strbrd_motor_pub.publish(strbrd_motor_speed)
+        self.port_bow_thruster_pub.publish(port_bow_thruster_speed)
+        self.strbrd_bow_thruster_pub.publish(strbrd_bow_thruster_speed)
 
 
-    # convert float to int
-    speedL = int(powerL)
-    speedR = int(powerR)
-    speedL_lat = int(powerL_lat)
-    speedR_lat = int(powerR_lat)
-
-    # Publish the result
-    pub1.publish(speedL)
-    pub2.publish(speedR)
-    pub3.publish(speedL_lat)
-    pub4.publish(speedR_lat)
-
-
-# Function that gets called by the Joystick Subscriber
-def callback(data):
-
-	# tell it we're using the global variable vs a local one
-    global activate
-    global autonomy
-
-    # Check if Telelop has been activated
-    if (data.buttons[7]==True) and (autonomy==False): # start button
-        activate = True # set global boolean control var
-        rospy.loginfo("Joystick Control Activated")
-        pub5.publish(activate)
-
-    if (data.buttons[7]==True) and (autonomy==True): # start button
-        rospy.logerr("Error: Boat is running autonomously")
-        activate = False
-
-    # Check to see if Teleop is deactivated
-    if data.buttons[6]==True: # back button
-        activate = False # set global bool
-
-        # Reset motors to be off
-        speedL = 127
-        speedR = 127
-        speedL_lat = 1500
-        speedR_lat = 1500
-        pub1.publish(speedL)
-        pub2.publish(speedR)
-        pub3.publish(speedL_lat)
-        pub4.publish(speedR_lat)
-        pub5.publish(activate)
-        rospy.loginfo("Joystick Control Deactivated")
-
-    # If teleop is activated, call the function to process the commands
-    if activate:
-        sendCommands(data)
-
-
-# Function to check Autonomoy Status
-def check(bool_status):
-    global autonomy
-    if bool_status.data==True:
-        autonomy = True
-        print('Autonomous Active')
-    if bool_status.data==False:
-        autonomy = False
-        print('Autonomous Not Active')
-
-# Main Function
+###############################################################################
+###############################################################################
 if __name__ == '__main__':
-
-    # Setup ROS Nodes
-    rospy.init_node('Teleop_Controller', anonymous=True, log_level=rospy.DEBUG)
-
-    # Setup Publishers
-    global pub1
-    pub1 = rospy.Publisher('LmotorSpeed',Int16, queue_size=1000)
-    global pub2
-    pub2 = rospy.Publisher('RmotorSpeed',Int16, queue_size=1000)
-    global pub3
-    pub3 = rospy.Publisher('LmotorSpeed_lateral',Int16, queue_size=1000)
-    global pub4
-    pub4 = rospy.Publisher('RmotorSpeed_lateral',Int16, queue_size=1000)
-    global pub5
-    pub5 = rospy.Publisher('RemoteControlStatus',Bool, queue_size=1000)
-
-    # Setup Subscriber
-    rospy.Subscriber("joy", Joy, callback)
-    rospy.Subscriber("AutonomyStatus", Bool, check)
-
-    # Starts the Node
-    rospy.spin()
+    try:
+        teleop_controller = TeleoperationsController()
+        rospy.loginfo('Initialized the teleoperations controller node')
+        rospy.spin()
+    except rospy.ROSInterruptException:
+        pass
