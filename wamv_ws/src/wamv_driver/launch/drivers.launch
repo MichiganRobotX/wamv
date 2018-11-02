@@ -1,20 +1,15 @@
 <?xml version="1.0"?>
 <launch>
+
 	<!-- Launch sensors drivers -->
-	<include file="$(find wamv_driver)/launch/velodyne.launch" ns="/sensors"/>
-	<include file="$(find wamv_driver)/launch/ladybug.launch" ns="/sensors"/>
-	<include file="$(find wamv_driver)/launch/an_device.launch" ns="/sensors"/>
+	<include file="$(find wamv_driver)/launch/an_device.launch" ns="/sensors" />
+	<include file="$(find wamv_driver)/launch/velodyne.launch" ns="/sensors" />
+	<include file="$(find wamv_driver)/launch/ladybug.launch" ns="/sensors" />
 
 	<!-- Launch rosserial to communicate to arduino motor controller -->
-	<include file="$(find wamv_driver)/launch/motor_controller_driver.launch"/>
+	<include file="$(find wamv_driver)/launch/motor_controller_driver.launch" />
 
 	<!-- launch package to convert NavSat to self-fused odometry -->
-	<node pkg="wamv_localization" type="odometry" name="odometry_node" clear_params="true" output="screen">
-		<remap from="/navsat" to="/an_device/NavSatFix"/>
-		<remap from="/imu" to="/an_device/Imu"/>
-		<remap from="/gps" to="/gps/odom"/>
-	</node>
-
-	<!-- <node pkg="wamv_tasks" type="heartbeat" name="heartbeat_node" respawn="true" output="screen" /> -->
+	<include file="$(find wamv_driver)/launch/odometry_publisher.launch" />
 
 </launch>

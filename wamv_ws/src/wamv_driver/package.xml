@@ -11,10 +11,12 @@
 
   <depend>advanced_navigation_driver</depend>
   <!-- <depend>ladybug3_ros_pkg</depend> -->
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>rospy</depend>
   <depend>rosserial_python</depend>
+  <depend>sensor_msgs</depend>
   <depend>velodyne_driver</depend>
   <depend>velodyne_pointcloud</depend>
-  <depend>wamv_localization</depend>
-  <depend>wamv_tasks</depend>
 
 </package>
