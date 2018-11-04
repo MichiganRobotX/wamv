@@ -5,10 +5,10 @@
     <arg name='speed_pid'   default='true'/>
 
     <!-- Launch Heading Test Node -->
-    <include file="$(find wamv_navigation)/launch/pid_tuning.launch">
+    <!-- <include file="$(find wamv_navigation)/launch/pid_tuning.launch">
         <arg name='linear'  value='$(arg speed_pid)' />
         <arg name='angular' value='$(arg heading_pid)' />
-    </include>
+    </include> -->
 
     <!-- Launch Heading Test Node -->
     <group if="$(arg heading_pid)">
@@ -32,8 +32,8 @@
         <arg name='speed_pid'   value="$(arg speed_pid)" />
     </include>
 
-    <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot" args="/current_linear_velocity /pid/speed/setpoint /pid/speed/control_effort" />
+    <!-- <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot" args="/current_linear_velocity /pid/speed/setpoint /pid/speed/control_effort" /> -->
 
-    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" />
+    <!-- <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" /> -->
 
 </launch>

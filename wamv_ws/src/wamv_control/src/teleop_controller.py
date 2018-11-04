@@ -121,8 +121,8 @@ class TeleoperationsController:
 
         port_motor_speed = int( 127 * (1 + left_stick_UD) )
         strbrd_motor_speed = int( 127 * (1 + right_stick_UD) )
-        port_bow_thruster_speed = int( 1110 + 390 * (1 + left_stick_LR) )
-        strbrd_bow_thruster_speed = int( 1110 + 390 * (1 - right_stick_LR) )
+        port_bow_thruster_speed = int( 1110 + 390 * (1 - left_stick_LR) )
+        strbrd_bow_thruster_speed = int( 1110 + 390 * (1 + right_stick_LR) )
 
         self.port_motor_pub.publish(port_motor_speed)
         self.strbrd_motor_pub.publish(strbrd_motor_speed)

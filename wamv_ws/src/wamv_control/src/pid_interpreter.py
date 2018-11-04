@@ -83,7 +83,7 @@ class PIDInterpreter:
             and motor_speed otherwise
         """
         if abs(motor_speed) > self.output_maximum:
-            return motor_speed = self.output_maximum * sign(motor_speed)
+            return self.output_maximum * sign(motor_speed)
         else:
             return motor_speed
 
@@ -116,8 +116,8 @@ class PIDInterpreter:
                 4) PMS, SMS = 242, 42
         """
         # Get the control efforts
-        heading_control_effort = self.heading_control_effort.data
-        speed_control_effort = self.speed_control_effort.data
+        heading_control_effort = self.heading_control_effort
+        speed_control_effort = self.speed_control_effort
         rospy.logdebug(
             'Received control efforts: {} (heading) {} (speed)'
             .format(heading_control_effort, speed_control_effort))
@@ -133,7 +133,7 @@ class PIDInterpreter:
 
         # Calculate the shift due to speed control effort
         max_abs = max(abs(port_motor_speed), abs(strbrd_motor_speed))
-        max_shift = min(abs(speed_control_effort), self.maximum_output - max_abs)
+        max_shift = min(abs(speed_control_effort), self.output_maximum - max_abs)
         shift = 127
         if speed_control_effort > 0:
             shift += max_shift
@@ -161,7 +161,7 @@ class PIDInterpreter:
 ###############################################################################
 def main():
     pid_interpreter = PIDInterpreter()
-    rospy.loginfo_once('Initialized the PID interpreter node')
+    # rospy.loginfo_once('Initialized the PID interpreter node')
 
     rate = rospy.Rate(
         rospy.get_param('~loop_rate', 10)

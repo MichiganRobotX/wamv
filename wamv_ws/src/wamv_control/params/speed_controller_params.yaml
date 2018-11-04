@@ -6,9 +6,9 @@
 #     effort produces an increase in state). Use all negative values for
 #     reverse-acting loops (where an increase in control effort produces a
 #     decrease in state). Defaults are 1.0, 0, 0.
-Kp: 1.0
-Ki: 0
-Kd: 0
+Kp: 450.0
+Ki: 30.0
+Kd: 15.0
 
 # upper_limit, lower_limit
 #     The maximum and minimum limits for control_effort.

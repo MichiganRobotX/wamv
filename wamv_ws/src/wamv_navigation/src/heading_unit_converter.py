@@ -12,7 +12,7 @@ class HeadingConverter():
         rospy.init_node('heading_unit_converter_node', log_level = rospy.DEBUG)
 
         # Set up subscribers
-        rospy.Subscriber('/an_device/Imu', Imu, self.imu_callback)
+        rospy.Subscriber('/sensors/an_device/Imu', Imu, self.imu_callback)
 
         # Set up publisher
         self.pub = rospy.Publisher('current_heading', Float64, queue_size = 1000)

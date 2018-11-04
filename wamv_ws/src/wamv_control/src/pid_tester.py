@@ -11,23 +11,25 @@ def main():
     point_a = rospy.get_param('~point_a')
     point_b = rospy.get_param('~point_b')
 
-    setpoint = Float64(point_a)
+    setpoint = point_a
     pub = rospy.Publisher('setpoint', Float64, queue_size=1000)
 
     period_duration = rospy.rostime.Duration(rospy.get_param('~period', 10))
+
+    rospy.sleep(1.0)
     while not rospy.is_shutdown():
+
+        rospy.loginfo("Publishing setpoint of {}".format(setpoint))
         pub.publish(setpoint)
 
-        rospy.loginfo("Publishing setpoint of {}".format(setpoint.data))
-
-        if setpoint.data == point_a:
-            setpoint.data = point_b
-        elif setpoint.data == point_b:
-            setpoint.data = point_a
+        if setpoint == point_a:
+            setpoint = point_b
+        elif setpoint == point_b:
+            setpoint = point_a
         else:
             rospy.error(
                 "The setpoint {} does not evaluate to point_a or point_b"
-                .format(setpoint.data))
+                .format(setpoint))
 
         rospy.sleep(period_duration)
 
