@@ -1,18 +1,9 @@
 <?xml version="1.0"?>
 <launch>
-	<!-- Set params -->
-	<arg name="navsat" default="true" />
-
 	<!-- Launch drivers -->
 	<include file="$(find wamv_driver)/launch/drivers.launch" />
 
-	<!-- launch package to convert NavSat to odometry -->
-	<group if="$(arg navsat)">
-		<node pkg="wamv_localization" type="odometry" name="odometry" clear_params="true" output="screen">
-			<remap from="/navsat" to="/an_device/NavSatFix"/>
-			<remap from="/imu" to="/an_device/Imu"/>
-			<remap from="/gps" to="/gps/odom"/>
-		</node>
-	</group>
+	<!-- Launch transforms -->
+	<include file="$(find wamv_transform)/launch/transforms.launch" />
 
 </launch>

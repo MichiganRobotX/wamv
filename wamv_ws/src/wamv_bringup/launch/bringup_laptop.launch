@@ -1,11 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-	<!-- Set params -->
-	<arg name="rviz" default="true" />
 
-	<!-- Launch RViz -->
-	<group if="$(arg rviz)">
-		<node type="rviz" name="visual" pkg="rviz" args="-d $(find wamv_viz)/rviz/sensors.rviz" />
-	</group>
+	
+	<node type="rviz" name="visual" pkg="rviz" args="-d $(find wamv_viz)/rviz/sensors.rviz" />
 
 </launch>

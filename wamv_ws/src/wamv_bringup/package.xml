@@ -11,6 +11,6 @@
 
   <depend>rviz</depend>
   <depend>wamv_driver</depend>
-  <depend>wamv_localization</depend>
+  <depend>wamv_transform</depend>
 
 </package>

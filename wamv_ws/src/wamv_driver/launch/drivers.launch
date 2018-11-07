@@ -7,7 +7,7 @@
 	<include file="$(find wamv_driver)/launch/ladybug.launch" ns="/sensors" />
 
 	<!-- Launch rosserial to communicate to arduino motor controller -->
-	<include file="$(find wamv_driver)/launch/motor_controller_driver.launch" />
+	<include file="$(find wamv_driver)/launch/motor_controller.launch" />
 
 	<!-- launch package to convert NavSat to self-fused odometry -->
 	<include file="$(find wamv_driver)/launch/odometry_publisher.launch" />

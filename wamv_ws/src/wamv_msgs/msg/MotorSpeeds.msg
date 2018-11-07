@@ -1,2 +1,4 @@
-int16 PortMotorSpeed
-int16 StrbrdMotorSpeed
+int16 port_motor
+int16 strbrd_motor
+int16 port_bow_thruster
+int16 strbrd_bow_thruster

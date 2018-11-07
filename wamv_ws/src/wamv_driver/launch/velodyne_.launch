@@ -47,8 +47,8 @@
 
     <include file="$(find velodyne_pointcloud)/launch/laserscan_nodelet.launch">
         <arg name="manager"     value="$(arg manager)" />
-        <arg name="ring"        value="$(arg laserscan_ring)" />
-        <arg name="resolution"  value="$(arg laserscan_resolution)" />
+        <arg name="ring"        value="$(arg ring)" />
+        <arg name="resolution"  value="$(arg resolution)" />
     </include>
 
 </launch>

@@ -3,17 +3,17 @@
 
     <group ns="lidar_bow">
         <include file="$(find wamv_driver)/launch/velodyne_.launch">
-            <arg name="device_ip"   default="192.168.1.202" />
-            <arg name="frame_id"    default="lidar_bow" />
-            <arg name="port"        default="2360" />
+            <arg name="device_ip"   value="192.168.1.202" />
+            <arg name="frame_id"    value="lidar_bow" />
+            <arg name="port"        value="2360" />
         </include>
     </group>
 
     <group ns="lidar_stern">
         <include file="$(find wamv_driver)/launch/velodyne_.launch">
-            <arg name="device_ip"   default="192.168.1.201" />
-            <arg name="frame_id"    default="lidar_stern" />
-            <arg name="port"        default="2368" />
+            <arg name="device_ip"   value="192.168.1.201" />
+            <arg name="frame_id"    value="lidar_stern" />
+            <arg name="port"        value="2368" />
         </include>
     </group>
 

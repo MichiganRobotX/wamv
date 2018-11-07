@@ -1,10 +1,5 @@
 ## General items for test:
-- transforms
-
-        the data published into the /tf topic is nothing more than where each frame is in reference to its parent frame in space.
-
 - joint lidar
-- PID controller (check inputs)
 - status light
 - implement network solution
 - possible calibration
@@ -47,7 +42,7 @@
                 camera_1/...
                 ...
 
-2. build lidar_joint (/sensors/lidar_joint/.../raw) URDF?
+2. build lidar_joint (/sensors/lidar_joint/.../raw)
 
     - check if there's an upper limit on point_cloud size. e.g., moving from 1000 points to 2000 points
     - build node for joining the two point clouds

@@ -4,7 +4,7 @@ project(wamv_bringup)
 find_package(catkin REQUIRED COMPONENTS
     rviz
     wamv_driver
-    wamv_localization
+    wamv_transform
 )
 
 catkin_package()

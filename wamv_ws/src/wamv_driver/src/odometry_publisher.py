@@ -183,7 +183,7 @@ class OdometryPublisher():
 if __name__ == '__main__':
     try:
         odometry = OdometryPublisher()
-        rospy.loginfo_once('Initialized odometry publisher node')
+        # rospy.loginfo_once('Initialized odometry publisher node')
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
