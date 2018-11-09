@@ -92,6 +92,12 @@ class OdometryPublisher():
         # Initialize node
         rospy.init_node('odometry_publisher_node', log_level = rospy.INFO)
 
+        # Get parameters
+        self.frame_id = rospy.get_param("~frame_id", "odom")
+        self.child_frame_id = rospy.get_param("~child_frame_id", "base_link")
+        self.rot_cov = rospy.get_param("~rot_covariance", 99999.0)
+        self.sim = rospy.get_param("~sim", False)
+
         # Set up subscribers
         rospy.Subscriber('twist', Twist, self.twist_callback)
         rospy.Subscriber('imu', Imu, self.imu_callback)
@@ -100,21 +106,21 @@ class OdometryPublisher():
         # Set up publisher
         self.odom_pub = rospy.Publisher('/odom', Odometry, queue_size=1000)
 
-        # Get parameters
-        self.frame_id = rospy.get_param("~frame_id", "an_device")
-        self.child_frame_id = rospy.get_param("~child_frame_id", "an_device")
-        self.rot_cov = rospy.get_param("~rot_covariance", 99999.0)
-        self.sim = rospy.get_param("~sim", False)
-
         # Initialize class variables
         self.odom = Odometry()
-        self.imu = Imu()
-        self.nsf = NavSatFix()
+        self.odom.header.frame_id = self.frame_id
+        self.odom.child_frame_id = self.child_frame_id
+        # self.imu = Imu()
+        # self.nsf = NavSatFix()
 
 
     ###########################################################################
     def imu_callback(self, msg):
         """ Collects quaternion coordinates from an_device/Imu
+
+            Pose in this message corresponds to the estimated position of the
+            robot in the odometric frame along with an optional covariance for
+            the certainty of that pose estimate.
         """
         self.odom.pose.pose.orientation.w = msg.orientation.w
         self.odom.pose.pose.orientation.x = msg.orientation.x
@@ -124,6 +130,11 @@ class OdometryPublisher():
     ###########################################################################
     def twist_callback(self, msg):
         """ Collects linear and angular velocity data from an_device/Twist
+
+            Twist in this message corresponds to the robot's velocity in the
+            child frame, normally the coordinate frame of the mobile base,
+            along with an optional covariance for the certainty of that
+            velocity estimate.
         """
         self.odom.twist.twist.linear.x = msg.linear.x
         self.odom.twist.twist.linear.y = msg.linear.y
@@ -135,7 +146,6 @@ class OdometryPublisher():
 
     ###########################################################################
     def nav_sat_fix_callback(self, msg):
-        pos_covariance = []
         if (msg.status.status == -1):
             rospy.loginfo("NO FIX.")
             return
@@ -144,8 +154,6 @@ class OdometryPublisher():
             return
 
         self.odom.header.stamp = msg.header.stamp
-        self.odom.header.frame_id = self.frame_id
-        self.odom.child_frame_id = self.child_frame_id
 
         (northing, easting) = LLtoUTM(msg.latitude, msg.longitude)
         self.odom.pose.pose.position.x = easting #- ox

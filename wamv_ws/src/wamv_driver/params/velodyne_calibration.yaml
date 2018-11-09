@@ -1,4 +1,4 @@
-# standard Velodyne HDL-32E calibration parameters
+distance_resolution: 0.002
 lasers:
 - {dist_correction: 0.0, dist_correction_x: 0.0, dist_correction_y: 0.0, focal_distance: 0.0,
   focal_slope: 0.0, horiz_offset_correction: 0.0, laser_id: 0, rot_correction: 0.0,

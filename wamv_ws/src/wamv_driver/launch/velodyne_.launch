@@ -5,7 +5,7 @@
     <arg name="calibration"     default="$(find wamv_driver)/params/velodyne_calibration.yaml" />
     <arg name="device_ip"       default="" />
     <arg name="frame_id"        default="" />
-    <arg name="manager"         default="$(arg frame_id)_nodelet_manager" />
+    <arg name="manager"         default="manager" />
     <arg name="pcap"            default="" />
     <arg name="port"            default="" />
     <arg name="read_fast"       default="false" />
