@@ -4,13 +4,20 @@
     <rosparam command="load" file="$(find wamv_localization)/params/localization_params.yaml"/>
 
     <!-- launch navsat to odometry converter -->
-    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" output="screen" required="true" clear_params="true">
+    <node pkg="robot_localization" type="ukf_localization_node" name="ukf_localization_node" output="screen" required="true" >
+          <remap from="odometry/gps" to="gps/odom"/>
+          <remap from="imu/data" to="an_device/Imu"/>
+          <remap from="gps/fix" to="an_device/NavSatFix"/>
+	</node>
+
+    <!-- launch navsat to odometry converter -->
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" output="screen" required="true" >
           <remap from="odometry/gps" to="gps/odom"/>
           <remap from="imu/data" to="an_device/Imu"/>
           <remap from="gps/fix" to="an_device/NavSatFix"/>
 	</node>
 
     <!-- launch localization node -->
-    <node pkg="robot_localization" type="ukf_localization_node" name="ukf_localization_node" output="screen" required="true" clear_params="true"/>
+    <!-- <node pkg="robot_localization" type="ukf_localization_node" name="ukf_localization_node" output="screen" required="true" /> -->
 
 </launch>

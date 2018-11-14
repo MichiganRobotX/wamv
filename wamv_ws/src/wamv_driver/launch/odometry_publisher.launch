@@ -3,8 +3,8 @@
 
     <node pkg="wamv_driver" type="odometry_publisher.py" name="odometry_publisher_node" output="screen">
         <remap from='imu'       to='/sensors/an_device/Imu' />
-        <remap from='navsatfix' to='/sensors/an_device/NavSatFix' />
         <remap from='twist'     to='/sensors/an_device/Twist' />
+        <remap from='odom'      to='/odometry/imu_estimated' />
     </node>
-    
+
 </launch>

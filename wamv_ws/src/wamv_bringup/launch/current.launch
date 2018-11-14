@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+
+	<param name='use_sim_time' value='true' />
+
+	<!-- rosbag -->
+	<node pkg='rosbag' type='play' name='bag_file_node'
+		args="-l /home/mjsyp/bag_files/great_data/all_sensors_0.bag --clock"/>
+
+	<!-- static transforms -->
+	<include file='$(find wamv_transform)/launch/transforms.launch' />
+
+	<!-- imu transform -->
+	<node pkg="wamv_driver" type="imu_tf_publisher.py" name="imu_broadcaster" >
+        <remap from='imu' to='/sensors/an_device/Imu' />
+    </node>
+
+	<!-- imu based odometry -->
+	<include file='$(find wamv_driver)/launch/odometry_publisher.launch' />
+
+	<!-- rviz -->
+	<node pkg='rviz' type='rviz' name='rviz_node'
+		args="-d $(find wamv_viz)/rviz/odom.rviz" />
+
+</launch>

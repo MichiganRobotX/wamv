@@ -1,6 +1,15 @@
 <?xml version="1.0"?>
 <launch>
-    
-    <node pkg="advanced_navigation_driver" type="advanced_navigation_driver" name="advanced_navigation_node" respawn="true" />
+
+    <node pkg="advanced_navigation_driver" type="advanced_navigation_driver" name="an_device" respawn="true">
+        <!-- <param name='port' value='' /> -->
+        <!-- <param name='baud_rate' value='' /> -->
+        <param name='imu_frame_id' value='an_device' />
+        <!-- <param name='nav_sat_frame_id' value='' /> -->
+        <!-- <param name='topic_prefix' value='' /> -->
+    </node>
+
+
+
 
 </launch>

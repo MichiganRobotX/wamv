@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain"
+      name="laser_filter">
+    <rosparam command="load" file="$(find wamv_driver)/params/laser_filter.yaml" />
+    <param name='tf_message_filter_target_frame' value='lidar_joint' />
+    <remap from="scan" to="/sensors/lidar_bow/scan" />
+  </node>
+</launch>
