@@ -2,9 +2,9 @@
 <launch>
 
     <node pkg="wamv_driver" type="odometry_publisher.py" name="odometry_publisher_node" output="screen">
-        <remap from='imu'       to='/sensors/an_device/Imu' />
-        <remap from='twist'     to='/sensors/an_device/Twist' />
-        <remap from='odom'      to='/odometry/imu_estimated' />
+        <remap from='imu'           to='/data/imu/stamped' />
+        <remap from='twist_stamped' to='/data/twist/stamped' />
+        <remap from='odom'          to='/odom/imu' />
     </node>
 
 </launch>

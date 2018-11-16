@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="wamv_past" type="stamper.py" name="twist_stamper_node" >
+    <param name='in_type' value='Twist'/>
+    <param name='out_type' value='TwistStamped'/>
+    <param name='new_frame_id' value='twist_raw'/>
+    <remap from='in'  to='/data/twist/raw' />
+    <remap from='out' to='/data/twist/stamped' />
+  </node>
+
+  <node pkg="wamv_past" type="stamper.py" name="imu_stamper_node" >
+    <param name='in_type' value='Imu'/>
+    <param name='out_type' value='Imu'/>
+    <param name='new_frame_id' value='imu_raw'/>
+    <remap from='in'  to='/data/imu/raw' />
+    <remap from='out' to='/data/imu/stamped' />
+  </node>
+
+  <node pkg="wamv_past" type="stamper.py" name="gps_stamper_node" >
+    <param name='in_type' value='NavSatFix'/>
+    <param name='out_type' value='NavSatFix'/>
+    <param name='new_frame_id' value='gps_raw'/>
+    <remap from='in'  to='/data/gps/raw' />
+    <remap from='out' to='/data/gps/stamped' />
+  </node>
+
+</launch>

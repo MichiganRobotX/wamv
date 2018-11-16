@@ -1,4 +1,13 @@
+## Future
+
+- advanced_navigation_driver:
+  - change to output TwistStamped msgs
+  - change from NED to ENU coordinate frame
+
 ## Notes
+
+calibrate:
+- advanced navigation device 
 
 laser_pipeline:
     laser_filter:

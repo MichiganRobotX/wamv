@@ -21,3 +21,9 @@ catkin_package(CATKIN_DEPENDS
 	rospy
 	sensor_msgs
 )
+
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+
+  add_rostest(tests/tests.py)
+endif()

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+
+  <name>wamv_past</name>
+  <version>0.0.1</version>
+  <description>The wamv past package</description>
+  <maintainer email="mjsyp@umich.edu">Michael Sypniewski</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>geometry_msgs</depend>
+
+</package>

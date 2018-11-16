@@ -6,9 +6,10 @@
     <arg name="x" default="0.0" />
     <arg name="y" default="0.0" />
     <arg name="z" default="0.0" />
-    <arg name="roll" default="0.0" />
-    <arg name="pitch" default="0.0" />
     <arg name="yaw" default="0.0" />
+    <arg name="pitch" default="0.0" />
+    <arg name="roll" default="0.0" />
 
-    <node pkg="tf2_ros" type="static_transform_publisher" name="$(arg name)" args="$(arg x) $(arg y) $(arg z) $(arg yaw) $(arg pitch) $(arg roll) $(arg frame_id) $(arg child_frame_id)" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="$(arg name)"
+        args="$(arg x) $(arg y) $(arg z) $(arg yaw) $(arg pitch) $(arg roll) $(arg frame_id) $(arg child_frame_id)" />
 </launch>
