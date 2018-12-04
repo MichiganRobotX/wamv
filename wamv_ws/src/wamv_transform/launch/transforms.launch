@@ -1,18 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-    <!-- from base_footprint to base_stabilized -->
-    <!-- <include file='$(find wamv_transform)/launch/__transform.launch' >
-        <arg name='name'            value='base_footprint_to_base_stabilized'/>
-        <arg name='frame_id'        value='base_footprint'/>
-        <arg name='child_frame_id'  value='base_stabilized'/>
-        <arg name='x'               value='0.0'/>
-        <arg name='y'               value='0.0'/>
-        <arg name='z'               value='1.25'/>
-        <arg name='roll'            value='0.0'/>
-        <arg name='pitch'           value='0.0'/>
-        <arg name='yaw'             value='0.0'/>
-    </include> -->
-
     <!-- from base_link to advanced navigation device -->
     <include file='$(find wamv_transform)/launch/__transform.launch' >
         <arg name='name'            value='base_link_to_an_device'/>
@@ -26,7 +13,7 @@
         <arg name='roll'            value='0.0'/>
     </include>
 
-    <!-- from base_link to advanced navigation device: imu -->
+    <!-- from advanced navigation device to imu -->
     <include file='$(find wamv_transform)/launch/__transform.launch' >
         <arg name='name'            value='an_device_to_imu'/>
         <arg name='frame_id'        value='an_device'/>
@@ -39,7 +26,7 @@
         <arg name='roll'            value='0.0'/>
     </include>
 
-    <!-- from base_link to advanced navigation device: gps -->
+    <!-- from advanced navigation device to gps -->
     <include file='$(find wamv_transform)/launch/__transform.launch' >
         <arg name='name'            value='an_device_to_gps'/>
         <arg name='frame_id'        value='an_device'/>
@@ -52,20 +39,7 @@
         <arg name='roll'            value='0.0'/>
     </include>
 
-    <!-- from base_link to advanced navigation device -->
-    <!-- <include file='$(find wamv_transform)/launch/__transform.launch' >
-        <arg name='name'            value='twist_to_twist_raw'/>
-        <arg name='frame_id'        value='twist'/>
-        <arg name='child_frame_id'  value='twist_raw'/>
-        <arg name='x'               value='0.0'/>
-        <arg name='y'               value='0.0'/>
-        <arg name='z'               value='0.0'/>
-        <arg name='yaw'             value='-1.57079632679'/>
-        <arg name='pitch'           value='3.14159265359'/>
-        <arg name='roll'            value='0.0'/>
-    </include> -->
-
-    <!-- from base_link to advanced navigation device -->
+    <!-- from imu to twist_raw -->
     <include file='$(find wamv_transform)/launch/__transform.launch' >
         <arg name='name'            value='imu_to_twist_raw'/>
         <arg name='frame_id'        value='imu'/>
@@ -78,7 +52,7 @@
         <arg name='roll'            value='0.0'/>
     </include>
 
-    <!-- from base_link to advanced navigation device -->
+    <!-- from imu to imu_raw -->
     <include file='$(find wamv_transform)/launch/__transform.launch' >
         <arg name='name'            value='imu_to_imu_raw'/>
         <arg name='frame_id'        value='imu'/>

@@ -22,7 +22,7 @@ class Stamper():
             'Imu': Imu,
             'NavSatFix': NavSatFix
         }[rospy.get_param("~out_type")]
-        self.publisher = rospy.Publisher('out', out_type, queue_size=10)
+        self.publisher = rospy.Publisher('out', out_type, queue_size=100)
 
         self.msg = out_type()
         self.frame_id = rospy.get_param("~new_frame_id", None)
