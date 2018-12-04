@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node pkg="wamv_fixer" type="fixer.py" name="imu_fixer_node" >
+      <param name='in_type' value='Imu'/>
+      <param name='out_type' value='Imu'/>
+      <param name='new_frame_id' value='an_device'/>
+      <remap from='in'  to='/data/gps/stamped' />
+      <remap from='out' to='/data/gps/fixed' />
+    </node>
+
+</launch>
