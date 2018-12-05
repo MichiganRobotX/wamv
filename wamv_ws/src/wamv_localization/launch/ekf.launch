@@ -14,7 +14,7 @@
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" >
         <rosparam command="load" file="$(find wamv_localization)/params/ekf_se_odom.yaml" />
     </node>
-<!-- 
+
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_map" >
         <rosparam command="load" file="$(find wamv_localization)/params/ekf_se_map.yaml" />
         <remap from="odometry/filtered" to="odometry/filtered_map"/>
@@ -23,6 +23,6 @@
     <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" >
         <rosparam command="load" file="$(find wamv_localization)/params/navsat_transform.yaml" />
         <remap from="odometry/filtered" to="odometry/filtered_map"/>
-    </node> -->
+    </node>
 
 </launch>

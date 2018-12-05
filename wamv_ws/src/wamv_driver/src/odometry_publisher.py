@@ -28,8 +28,16 @@ def transform_to_kdl(t):
 def do_transform_twist(twist, transform):
     transform = copy.deepcopy(transform)
     kdl_tf = transform_to_kdl(transform)
-    linear = kdl_tf * PyKDL.Vector(twist.twist.linear.x, twist.twist.linear.y, twist.twist.linear.z)
-    angular = kdl_tf * PyKDL.Vector(twist.twist.angular.x, twist.twist.angular.y, twist.twist.angular.z)
+    linear = kdl_tf * PyKDL.Vector(
+        twist.twist.linear.x,
+        twist.twist.linear.y,
+        twist.twist.linear.z
+    )
+    angular = kdl_tf * PyKDL.Vector(
+        twist.twist.angular.x,
+        twist.twist.angular.y,
+        twist.twist.angular.z
+    )
     res = TwistStamped()
     res.header = transform.header
     res.twist.linear.x = linear[0]
@@ -49,7 +57,8 @@ def do_transform_quaternion(quat_in, transform):
         quat_in.quaternion.x,
         quat_in.quaternion.y,
         quat_in.quaternion.z,
-        quat_in.quaternion.w)).GetQuaternion()
+        quat_in.quaternion.w
+    )).GetQuaternion()
     quat_out = QuaternionStamped()
     quat_out.header = transform.header
     quat_out.quaternion.x = quaternion[0]
@@ -63,23 +72,19 @@ tf2_ros.TransformRegistration().add(QuaternionStamped, do_transform_quaternion)
 def do_transform_imu(imu_in, transform):
     transform = copy.deepcopy(transform)
     kdl_tf = transform_to_kdl(transform)
-
     quaternion = (kdl_tf.M * PyKDL.Rotation.Quaternion(
         imu_in.orientation.x,
         imu_in.orientation.y,
         imu_in.orientation.z,
         imu_in.orientation.w)).GetQuaternion()
-
     angular_velocity = kdl_tf * PyKDL.Vector(
         imu_in.angular_velocity.x,
         imu_in.angular_velocity.y,
         imu_in.angular_velocity.z)
-
     linear_acceleration = kdl_tf * PyKDL.Vector(
         imu_in.linear_acceleration.x,
         imu_in.linear_acceleration.y,
         imu_in.linear_acceleration.z)
-
     imu_out = Imu()
     imu_out.header = transform.header
     imu_out.orientation.x = quaternion[0]
@@ -94,6 +99,19 @@ def do_transform_imu(imu_in, transform):
     imu_out.linear_acceleration.z = linear_acceleration[2]
     return imu_out
 tf2_ros.TransformRegistration().add(Imu, do_transform_imu)
+
+def vector3(x, y, z):
+    return Vector3(x, y, z)
+
+def rpy_to_quat(r, p, y):
+    rot = PyKDL.Rotation.RPY(r,p,y)
+    x, y, z, w = rot.GetQuaternion()
+    return Quaternion(x,y,z,w)
+
+def quat_to_rpy(x, y, z, w):
+    rot = PyKDL.Rotation.Quaternion(x, y, z, w)
+    return rot.GetRPY()
+
 
 ###############################################################################
 class OdometryPublisher():
@@ -115,13 +133,13 @@ class OdometryPublisher():
         self.buffer = tf2_ros.Buffer()
         tf2_ros.TransformListener(self.buffer)
         self.odom_publisher = rospy.Publisher(
-            'odom', Odometry, queue_size=10
+            'odom', Odometry, queue_size=1000
         )
 
         message_filters.TimeSynchronizer((
-            message_filters.Subscriber('twist_stamped', TwistStamped),
+            message_filters.Subscriber('twist', TwistStamped),
             message_filters.Subscriber('imu', Imu)),
-            100
+            1000
         ).registerCallback(self.callback)
 
         self.broadcaster = tf2_ros.TransformBroadcaster()
@@ -145,43 +163,39 @@ class OdometryPublisher():
             return
 
         try:
-            twist = self.buffer.transform(twist_msg, 'imu')
-            imu = self.buffer.transform(imu_msg, 'imu')
+            twist = self.buffer.transform(twist_msg, 'base_link')
+            imu = self.buffer.transform(imu_msg, 'base_link')
         except:
             rospy.loginfo('Unable to receive transform at time {}'.format(current_time))
             return
 
         # unpack
-        linear_velocity = (twist.twist.linear.x, twist.twist.linear.y, twist.twist.linear.z)
-        ve, vn, vz = linear_velocity
-        angular_velocity = (twist.twist.angular.x, twist.twist.angular.y, twist.twist.angular.z)
-        wx, wy, wz = angular_velocity
+        ve, vn, vz = (twist.twist.linear.x, twist.twist.linear.y, twist.twist.linear.z)
+        wx, wy, wz = (twist.twist.angular.x, twist.twist.angular.y, twist.twist.angular.z)
         orientation = (imu.orientation.x, imu.orientation.y, imu.orientation.z, imu.orientation.w)
         qx, qy, qz, qw = orientation
 
         # reorganize
-        rotation = tf.transformations.euler_from_quaternion(orientation)
+        rotation = quat_to_rpy(*orientation)
         tx, ty, tz = rotation
 
-        # phi is the angle between heading and (ve i, vn j)
-        phi = atan2(vn, ve) - tz
-        vb = sqrt(ve**2 + vn**2)
-        vx = vb * cos(phi)
-        vy = vb * sin(phi)
+        vx = ve*cos(tz) + vn*sin(tz)
+        vy = ve*sin(tz) + vn*cos(tz)
 
         # calculate change in position
         dt = (current_time - self.previous_time).to_sec()
-        self.position.x += dt * ve
-        self.position.y += dt * vn
-        self.position.z += dt * vz
+        self.position.x = self.position.x + (dt * ve)
+        self.position.y = self.position.y + (dt * vn)
+        self.position.z = self.position.z + (dt * vz)
+        # self.position.y += dt * vn
+        # self.position.z += dt * vz
 
         ###############################
         ### odom --> base_footprint ###
         ###############################
-        position = Vector3(self.position.x, self.position.y, 0.0)
-        orientation = Quaternion(*tf.transformations.quaternion_from_euler(
-            0.0, 0.0, tz
-        ))
+        position = vector3(copy.deepcopy(self.position.x), copy.deepcopy(self.position.y), 0.0)
+        orientation = rpy_to_quat(0.0, 0.0, tz)
+
         odom = Odometry()
         odom.header.stamp = current_time
         odom.header.frame_id = 'odom'
@@ -202,10 +216,10 @@ class OdometryPublisher():
         ##########################################
         ### base_footprint --> base_stabilized ###
         ##########################################
-        position = Vector3(0.0, 0.0, self.position.z)
-        orientation = Quaternion(*tf.transformations.quaternion_from_euler(
-            0.0, 0.0, 0.0
-        ))
+        set_dist = 1.0
+        position = vector3(0.0, 0.0, set_dist + self.position.z)
+        orientation = rpy_to_quat(0.0, 0.0, 0.0)
+
         header = odom.header
         header.frame_id = 'base_footprint'
 
@@ -218,10 +232,9 @@ class OdometryPublisher():
         #####################################
         ### base_stabilized --> base_link ###
         #####################################
-        position = Vector3(0.0, 0.0, 0.0)
-        orientation = Quaternion(*tf.transformations.quaternion_from_euler(
-            tx, ty, 0.0
-        ))
+        position = vector3(0.0, 0.0, 0.0)
+        orientation = rpy_to_quat(tx - 3.141529, ty, 0.0)
+
         header = odom.header
         header.frame_id = 'base_stabilized'
 
