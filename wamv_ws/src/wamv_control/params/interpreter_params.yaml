@@ -1,3 +1,9 @@
+# loop_rate
+#     The maximum rate of the main loop, in Hz. Default is 10 Hz.
+loop_rate: 20
+
+
+############################## MAIN MOTORS ###################################
 # output_maximum
 #     The maximum (absolute) value that will be sent to the motors.
 #     Default is 127. Scale 0 to 127
@@ -11,10 +17,6 @@ output_lower_bound: 0
 #     The upper bound that can be sent to the motors. Default is 254.
 output_upper_bound: 255
 
-# loop_rate
-#     The maximum rate of the main loop, in Hz. Default is 10 Hz.
-loop_rate: 20
-
 # port_motor_output_percentage
 #     The percentage of motor speed sent to the port motor. Changed directly
 #     before sending the motor speed command.
@@ -24,3 +26,28 @@ port_motor_output_percentage: 1.0
 #     The percentage of motor speed sent to the starboard  motor. Changed
 #     directly before sending the motor speed command.
 strbrd_motor_output_percentage: 1.0
+
+
+############################## THRUSTERS ###################################
+# output_maximum
+#     The maximum (absolute) value that will be sent to the thrusters.
+#     Default is 390. Scale 0 to 390
+output_maximum_lateral: 390
+
+# output_lower_bound
+#     The lower bound that can be sent to the thrusters. Default is 1110.
+output_lower_bound_lateral: 1110
+
+# output_upper_bound
+#     The upper bound that can be sent to the thrusters. Default is 1890.
+output_upper_bound_lateral: 1890
+
+# port_thruster_output_percentage
+#     The percentage of thruster speed sent to the port thruster. Changed directly
+#     before sending the motor speed command.
+port_thruster_output_percentage: 1.0
+
+# strbrd_thruster_output_percentage
+#     The percentage of thruster speed sent to the starboard thruster. Changed
+#     directly before sending the motor speed command.
+strbrd_thruster_output_percentage: 1.0

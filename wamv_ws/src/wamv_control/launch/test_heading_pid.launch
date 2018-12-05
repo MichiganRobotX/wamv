@@ -4,6 +4,7 @@
     <include file="$(find wamv_control)/launch/test_pid.launch">
         <arg name='heading_pid' value="true" />
         <arg name='speed_pid'   value="false" />
+        <arg name='lateral_pid'   value="false"/>
     </include>
-    
+
 </launch>

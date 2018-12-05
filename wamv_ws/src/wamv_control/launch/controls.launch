@@ -4,19 +4,25 @@
     <!-- Specify controllers to include -->
     <arg name="heading_pid" default="true" />
     <arg name="speed_pid"   default="true" />
+    <arg name="lateral_pid"   default="true" />
 
     <!-- Specify namespaces -->
     <arg name="heading_ns"  default="heading" />
     <arg name="speed_ns"    default="speed" />
+    <arg name="lateral_ns"    default="lateral" />
 
     <!-- Put everything in the namespace "pid" -->
     <group ns='pid'>
+
         <!-- Include the PID interpreter launch file -->
         <include file='$(find wamv_control)/launch/interpreter.launch'>
             <arg name='topic_to_port_motor'            value='/LmotorSpeed' />
             <arg name='topic_to_strbrd_motor'          value='/RmotorSpeed' />
+            <arg name='topic_to_port_bow_thruster'     value='/LmotorSpeed_lateral' />
+            <arg name='topic_to_strbrd_bow_thruster'   value='/RmotorSpeed_lateral' />
             <arg name='topic_from_heading_controller'  value='$(arg heading_ns)/control_effort' />
             <arg name='topic_from_speed_controller'    value='$(arg speed_ns)/control_effort' />
+            <arg name='topic_from_lateral_controller'  value='$(arg lateral_ns)/control_effort' />
        </include>
 
         <!-- Include the heading PID controller launch file IF specified in args -->
@@ -36,6 +42,16 @@
                 <arg name='state'       value='/current_linear_velocity' />
             </include>
         </group>
+
+        <!-- Include the lateral speed PID controller launch file IF specified in args -->
+        <group if="$(arg lateral_pid)">
+            <include file="$(find wamv_control)/launch/pid.launch" ns="$(arg lateral_ns)">
+                <arg name='param_file'  value='lateral_controller_params.yaml' />
+                <arg name='setpoint'    value='setpoint' />
+                <arg name='state'       value='/current_lateral_velocity' />
+            </include>
+        </group>
+
     </group> <!-- pid -->
 
 </launch>
