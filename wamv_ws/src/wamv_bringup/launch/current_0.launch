@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+
+	<param name='use_sim_time' value='true' />
+
+	<!-- rosbag -->
+	<node pkg='rosbag' type='play' name='bag_file_node'
+		args="
+			--loop --clock
+			/home/mjsyp/.ros/bags/all_sensors_0.bag
+			/sensors/an_device/Imu:=/data/imu/raw
+			/sensors/an_device/Twist:=/data/twist/raw
+			/sensors/an_device/NavSatFix:=/data/gps/raw
+			/sensors/lidar_bow/velodyne_points:=/data/pcl/bow/raw
+			/sensors/lidar_bow/scan:=/data/scan/bow
+			/sensors/lidar_stern/scan:=/data/scan/stern
+		"/>
+
+	<!-- static transforms -->
+	<include file='$(find wamv_transform)/launch/transforms.launch' />
+
+	<!-- <include file='$(find wamv_past)/launch/past.launch' /> -->
+	<include file='$(find wamv_fixer)/launch/fixer.launch' />
+
+		<!-- imu based odometry -->
+	<include file='$(find wamv_driver)/launch/imu_odometry.launch' />
+
+	<node pkg='rviz' type='rviz' name='rviz_node'
+		args="-d $(find wamv_viz)/rviz/current.rviz" />
+
+</launch>

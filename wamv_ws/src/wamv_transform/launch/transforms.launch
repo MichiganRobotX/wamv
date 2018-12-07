@@ -39,7 +39,7 @@
         <arg name='roll'            value='0.0'/>
     </include>
 
-    <!-- from imu to twist_raw -->
+    <!-- verified: from imu to twist_raw -->
     <include file='$(find wamv_transform)/launch/__transform.launch' >
         <arg name='name'            value='imu_to_twist_raw'/>
         <arg name='frame_id'        value='imu'/>
@@ -52,7 +52,7 @@
         <arg name='roll'            value='0.0'/>
     </include>
 
-    <!-- from imu to imu_raw -->
+    <!-- verified: from imu to imu_raw -->
     <include file='$(find wamv_transform)/launch/__transform.launch' >
         <arg name='name'            value='imu_to_imu_raw'/>
         <arg name='frame_id'        value='imu'/>

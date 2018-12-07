@@ -114,12 +114,15 @@ def quat_to_rpy(x, y, z, w):
 
 
 ###############################################################################
-class OdometryPublisher():
+class ImuOdometry():
 
     ###########################################################################
     def __init__(self):
         # Initialize node
-        rospy.init_node('imu_odometry_estimation', log_level=rospy.INFO)
+        rospy.init_node('imu_odometry_node', log_level=rospy.INFO)
+
+        self.footprint_to_an_device = rospy.get_param("~footprint_to_an_device", 1.0)
+        self.broadcast_transform = rospy.get_param("~broadcast_transform", False)
 
         # Initialize class variables
         self.previous_time = None
@@ -128,13 +131,11 @@ class OdometryPublisher():
         self.odom = Odometry()
         self.odom.header.frame_id = rospy.get_param("~frame_id", "odom")
         self.odom.child_frame_id = rospy.get_param("~child_frame_id", "base_footprint")
+        self.odom_publisher = rospy.Publisher('odom', Odometry, queue_size=1000)
 
         # Set up publisher
         self.buffer = tf2_ros.Buffer()
         tf2_ros.TransformListener(self.buffer)
-        self.odom_publisher = rospy.Publisher(
-            'odom', Odometry, queue_size=1000
-        )
 
         message_filters.TimeSynchronizer((
             message_filters.Subscriber('twist', TwistStamped),
@@ -167,6 +168,7 @@ class OdometryPublisher():
             imu = self.buffer.transform(imu_msg, 'base_link')
         except:
             rospy.loginfo('Unable to receive transform at time {}'.format(current_time))
+            rospy.sleep(1)
             return
 
         # unpack
@@ -193,7 +195,7 @@ class OdometryPublisher():
         ###############################
         ### odom --> base_footprint ###
         ###############################
-        position = vector3(copy.deepcopy(self.position.x), copy.deepcopy(self.position.y), 0.0)
+        position = vector3(self.position.x, self.position.y, 0.0)
         orientation = rpy_to_quat(0.0, 0.0, tz)
 
         odom = Odometry()
@@ -207,17 +209,17 @@ class OdometryPublisher():
         odom.twist.twist.angular.z = wz
         self.odom_publisher.publish(odom)
 
-        self.broadcaster.sendTransform(TransformStamped(
-            odom.header,
-            odom.child_frame_id,
-            Transform(position, orientation)
-        ))
+        if self.broadcast_transform:
+            self.broadcaster.sendTransform(TransformStamped(
+                odom.header,
+                odom.child_frame_id,
+                Transform(position, orientation)
+            ))
 
         ##########################################
         ### base_footprint --> base_stabilized ###
         ##########################################
-        set_dist = 1.0
-        position = vector3(0.0, 0.0, set_dist + self.position.z)
+        position = vector3(0.0, 0.0, self.footprint_to_an_device - self.position.z)
         orientation = rpy_to_quat(0.0, 0.0, 0.0)
 
         header = odom.header
@@ -233,7 +235,10 @@ class OdometryPublisher():
         ### base_stabilized --> base_link ###
         #####################################
         position = vector3(0.0, 0.0, 0.0)
+        # TODO: figure out what is up with this.
         orientation = rpy_to_quat(tx - 3.141529, ty, 0.0)
+        # orientation = rpy_to_quat(tx, ty, 0.0)
+        # orientation = rpy_to_quat(tx, ty, 0.0)
 
         header = odom.header
         header.frame_id = 'base_stabilized'
@@ -250,7 +255,7 @@ class OdometryPublisher():
 ###############################################################################
 if __name__ == '__main__':
     try:
-        odometry = OdometryPublisher()
+        odometry = ImuOdometry()
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
