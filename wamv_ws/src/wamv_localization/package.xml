@@ -15,7 +15,7 @@
   <depend>nav_msgs</depend>
   <depend>robot_localization</depend>
   <depend>robot_state_publisher</depend>
-  <depend>roscpp</depend>
+  <depend>rospy</depend>
   <depend>sensor_msgs</depend>
   <depend>tf</depend>
 

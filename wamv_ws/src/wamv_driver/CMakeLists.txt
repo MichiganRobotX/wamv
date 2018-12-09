@@ -6,7 +6,6 @@ find_package(catkin REQUIRED COMPONENTS
 #	ladybug3_ros_pkg
 	geometry_msgs
 	nav_msgs
-	rospy
 	rosserial_python
 	sensor_msgs
 	velodyne_driver
@@ -18,7 +17,6 @@ catkin_python_setup()
 catkin_package(CATKIN_DEPENDS
 	geometry_msgs
 	nav_msgs
-	rospy
 	sensor_msgs
 )
 

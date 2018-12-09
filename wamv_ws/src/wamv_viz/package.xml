@@ -10,6 +10,5 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>rviz</depend>
-  <depend>wamv_localization</depend>
 
 </package>

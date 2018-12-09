@@ -3,7 +3,6 @@ project(wamv_viz)
 
 find_package(catkin REQUIRED COMPONENTS
 	rviz
-	wamv_localization
 )
 
 # add catkin packages
