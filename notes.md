@@ -1,8 +1,53 @@
-## General items for test:
+## Future
+
+- advanced_navigation_driver:
+  - change to output TwistStamped msgs
+  - change from NED to ENU coordinate frame
+
+## Notes
+
+calibrate:
+- advanced navigation device 
+
+laser_pipeline:
+    laser_filter:
+    laser_assembler:
+laser_scan_matcher: takes pcl and imu to give pose estimate
+
+tf::MessageFilter
+
+- For navigation, it is important that the center of the robot is placed at the rotational center of the robot.
+    - imu is rocking back and forth. Should the base_link be paced at the center of floatation?
+
+- For the slam_gmapping node to work properly, you will need to provide 2 transforms:
+
+    - laser -> base_link: Usually a fixed value, broadcast periodically by a robot_state_publisher, or a tf static_transform_publisher.
+    - base_link -> odom: Usually provided by the Odometry system.
+
+- Check robot_localization package
+    - odom for local planning, mapping, and localization
+    - ekf for fuzing gps data
+    - "gps data should not be used for local info"
+
+## General items for before shipping:
+- setup ladybug3
+
 - joint lidar
+    - set min/max degree bounds for each of the lidars
+    - laser_assembler for point cloud aggregation
+    - laser_geometry transformLaserScanToPointCloud()
+    - check optical coordinate frame vs inertial
+
+- lidar camera calibration
+    - really just in terms of overlay
+
+- what filters need to be applied? laser scan filters, point cloud filters, image filters?
+    - LaserScanBoxFilter
+
+- map server
+
 - status light
 - implement network solution
-- possible calibration
 
 ## Status light
 

@@ -1,6 +1,6 @@
-string msgID
+string id
 string date
 string time
-string teamID
-string lightPat
+string team_id
+string color_sequence
 int32 checksum
