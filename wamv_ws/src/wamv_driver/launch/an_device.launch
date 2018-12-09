@@ -7,6 +7,7 @@
         <param name='imu_frame_id' value='imu_raw' />
         <param name='nav_sat_frame_id' value='gps_raw' />
         <!-- <param name='topic_prefix' value='' /> -->
+        <!-- <remap from='StopStatus' to='' /> -->
     </node>
 
 </launch>

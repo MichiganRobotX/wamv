@@ -1,8 +1,3 @@
-// WAM-V Light controller
-// Version 2.0
-// Last Updated: September 14, 2018
-// Owner: James Controller
-
 // Libraries
 #include <ros.h>
 #include <stdio.h>
@@ -11,64 +6,89 @@
 // Set the Arduino Parameters
 #define RELAY_ON 0
 #define RELAY_OFF 1
-#define Relay_Red  2
+#define Relay_Red  5 // swapped blue and red
 #define Relay_Orange  3
-#define Relay_Green  4
-#define Relay_Blue  5
+#define Relay_Green  4 // Not right pin as autonomy does not light up
+#define Relay_Blue  2
 
-// Define Global Variable for Red 
-bool all_stop = 1; 
+// Define Global Variable for Red
+bool all_stop = 1;
+
+// Define global for connection loss
+// If light has not received any messages in the last *MAX_TIME* seconds, signal red light
+#define MAX_TIME 3 // max time limit
+int done = 0;
+
 
 // Setup Subscribers
 void teleop (const std_msgs::Bool& isTeleop){
 
   std_msgs::Bool yellow_light = isTeleop;
 
-  // Tell Yellow Light if it should be on 
-  if yellow_light
+  done = 0;
+
+  // Tell Yellow Light if it should be on
+  if (yellow_light.data){
     all_stop = 0;
     digitalWrite(Relay_Orange, RELAY_ON);// set the Relay ON
-  else
+  } else {
     digitalWrite(Relay_Orange, RELAY_OFF);// set the Relay OFF
+  }
 }
 
 void connection (const std_msgs::Bool& isConnected){
 
   std_msgs::Bool blue_light = isConnected;
 
-  // Tell Blue Light if it should be on 
-  if blue_light
+  done = 0;
+
+  // Tell Blue Light if it should be on
+  if (blue_light.data) {
     digitalWrite(Relay_Blue, RELAY_ON);// set the Relay ON
-  else
+  } else {
     digitalWrite(Relay_Blue, RELAY_OFF);// set the Relay OFF
     all_stop = 1;
+  }
 }
 
 void autonomous (const std_msgs::Bool& isAuto){
 
   std_msgs::Bool green_light = isAuto;
 
+  done = 0;
+
   // Tell Green Light if it should be on
-  if green_light
+  if (green_light.data){
     digitalWrite(Relay_Green, RELAY_ON);// set the Relay ON
     all_stop = 0;
-  else
+  }else{
     digitalWrite(Relay_Green, RELAY_OFF);// set the Relay OFF
+  }
 }
 
-void stop (const std_msgs::Bool& Stopped){
+void stop_signal (const std_msgs::Bool& stopped){
 
   std_msgs::Bool red_light = stopped;
-  if all_stop
-    red_light = 1;
+  if (all_stop) {
+    red_light.data = 1;
+  }
 
-  // Tell Blue Light if it should be on 
-  if red_light
+  done = 0;
+
+  // Tell Blue Light if it should be on
+  if (red_light.data) {
     digitalWrite(Relay_Red, RELAY_ON);// set the Relay ON
-  else
+  } else {
     digitalWrite(Relay_Red, RELAY_OFF);// set the Relay OFF
+  }
 }
 
+// ROS Input
+ros::NodeHandle nh;
+ros::Subscriber<std_msgs::Bool> sub1("RemoteControlStatus", &teleop);
+ros::Subscriber<std_msgs::Bool> sub2("ConnectionStatus", &connection);
+ros::Subscriber<std_msgs::Bool> sub3("AutonomyStatus", &autonomous);
+ros::Subscriber<std_msgs::Bool> sub4("StopStatus", &stop_signal);
 
 // Setup Sequence
 void setup() {
@@ -84,22 +104,34 @@ void setup() {
   pinMode(Relay_Green, OUTPUT);
   pinMode(Relay_Blue, OUTPUT);
   delay(5000);
+  nh.initNode();
+  nh.subscribe(sub1);
+  nh.subscribe(sub2);
+  nh.subscribe(sub3);
+  nh.subscribe(sub4);
 
-  // ROS Input
-  ros::Nodehandle nh;
-  ros::Subscriber<std_msgs::Bool> sub1("RemoteControlStatus", &teleop);
-  ros::Subscriber<std_msgs::Bool> sub1("ConnectionStatus", &connection);
-  ros::Subscriber<std_msgs::Bool> sub1("AutonomyStatus", &autonomous);
-  ros::Subscriber<std_msgs::Bool> sub1("StopStatus", &stop);
 }
 
 // Run Loop
 void loop(){
   double random = 125;
-  if all_stop
+
+  // If more time than *MAX_TIME* has passed since last message received, set all stop to true
+  // to signal that robot is no longer connected and disable any other lights
+  if(done >= MAX_TIME){
+    all_stop = 1;
+    digitalWrite(Relay_Orange, RELAY_OFF);
+    digitalWrite(Relay_Green, RELAY_OFF);
+    digitalWrite(Relay_Blue, RELAY_OFF);
+  } else {
+    done++;
+  }
+
+  if (all_stop) {
     digitalWrite(Relay_Red, RELAY_ON);// set the Relay ON
-  else
+  } else {
     digitalWrite(Relay_Red, RELAY_OFF);// set the Relay OFF
+  }
   nh.spinOnce();
   delay(1000);
 }

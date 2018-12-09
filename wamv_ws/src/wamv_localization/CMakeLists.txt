@@ -13,6 +13,8 @@ find_package(catkin REQUIRED
 	tf
 )
 
+catkin_python_setup()
+
 catkin_package()
 
 include_directories(include ${catkin_INCLUDE_DIRS})

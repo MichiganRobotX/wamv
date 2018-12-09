@@ -6,7 +6,8 @@
 	<include file="$(find wamv_driver)/launch/velodyne.launch" ns="/sensors" />
 	<include file="$(find wamv_driver)/launch/ladybug.launch" ns="/sensors" />
 
-	<!-- Launch rosserial to communicate to arduino motor controller -->
+	<!-- Launch rosserial to communicate to arduinos -->
 	<include file="$(find wamv_driver)/launch/motor_controller.launch" />
+	<include file="$(find wamv_driver)/launch/status_light_controller.launch" />
 
 </launch>
