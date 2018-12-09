@@ -1,11 +1,11 @@
-string msgID
+string id
 string date
 string time
 float32 latitude
 float32 longitude
 string NS
 string EW
-string teamID
-int32 sysMode
-int32 AUVStatus
+string team_id
+int32 system_mode
+int32 auv_status
 int32 checksum

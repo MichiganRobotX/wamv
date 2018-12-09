@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-
 	
-	<node type="rviz" name="visual" pkg="rviz" args="-d $(find wamv_viz)/rviz/sensors.rviz" />
+	<node type="rviz" name="visual" pkg="rviz" args="-d $(find wamv_viz)/rviz/default_config.rviz" />
 
 </launch>

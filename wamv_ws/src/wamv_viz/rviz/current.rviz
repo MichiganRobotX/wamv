@@ -146,8 +146,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 9.448452
-        Min Value: -0.79688412
+        Max Value: 14.1914158
+        Min Value: -2.31189823
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -155,7 +155,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: AxisColor
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 172
@@ -172,12 +172,12 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 10.4247866
-        Min Value: -1.01523745
+        Max Value: 10.9554405
+        Min Value: -5.40768719
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -282,31 +282,25 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        an_device:
-          Value: false
         base_footprint:
           Value: true
         base_link:
           Value: false
         base_stabilized:
           Value: false
-        gps:
-          Value: false
         imu:
           Value: false
         imu_raw:
           Value: false
-        laser_scan_matcher:
-          Value: true
         lidar_bow:
           Value: false
         lidar_joint:
           Value: false
         lidar_stern:
           Value: false
-        map:
-          Value: true
         odom:
+          Value: true
+        twist:
           Value: true
         twist_raw:
           Value: false
@@ -316,26 +310,15 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          laser_scan_matcher:
-            {}
-          odom:
-            base_footprint:
-              base_stabilized:
-                base_link:
-                  an_device:
-                    gps:
-                      {}
-                    imu:
-                      imu_raw:
-                        {}
-                      twist_raw:
-                        {}
-                  lidar_joint:
-                    lidar_bow:
-                      {}
-                    lidar_stern:
-                      {}
+        odom:
+          base_footprint:
+            base_stabilized:
+              base_link:
+                lidar_joint:
+                  lidar_bow:
+                    {}
+                  lidar_stern:
+                    {}
       Update Interval: 0
       Value: true
     - Class: jsk_rviz_plugin/TwistStamped
@@ -382,7 +365,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: laser_scan_matcher
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -403,25 +386,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.23520279
+      Distance: 18.8719959
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 1.02311826
-        Y: -0.546180248
-        Z: 1.51835084
+        X: 0.960859954
+        Y: -0.651439428
+        Z: 1.51823628
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.419796526
+      Pitch: 0.5547961
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.03996277
+      Yaw: 4.42182159
     Saved: ~
 Window Geometry:
   Displays:

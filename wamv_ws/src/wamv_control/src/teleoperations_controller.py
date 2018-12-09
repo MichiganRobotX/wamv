@@ -30,22 +30,25 @@ class TeleoperationsController:
         self.is_teleoperations_activated = False
         self.is_running_autonomously = False
 
-        rospy.init_node('teleop_controller_node', log_level=rospy.DEBUG)
+        rospy.init_node('teleop_controller_node', log_level=rospy.INFO)
 
         self.port_motor_pub = rospy.Publisher(
-            'port_motor_speed', Int16, queue_size=1000
+            'port_motor_speed', Int16, queue_size=100
         )
         self.strbrd_motor_pub = rospy.Publisher(
-            'strbrd_motor_speed', Int16, queue_size=1000
+            'strbrd_motor_speed', Int16, queue_size=100
         )
         self.port_bow_thruster_pub = rospy.Publisher(
-            'port_bow_thruster_speed', Int16, queue_size=1000
+            'port_bow_thruster_speed', Int16, queue_size=100
         )
         self.strbrd_bow_thruster_pub = rospy.Publisher(
-            'strbrd_bow_thruster_speed', Int16, queue_size=1000
+            'strbrd_bow_thruster_speed', Int16, queue_size=100
         )
         self.remote_control_status_pub = rospy.Publisher(
-            'remote_control_status', Bool, queue_size=1000
+            'remote_control_status', Bool, queue_size=100
+        )
+        self.system_mode_pub = rospy.Publisher(
+            'system_mode', Int16, queue_size=100
         )
 
         rospy.Subscriber('autonomy_status', Bool, self.autonomy_status_callback)
@@ -98,6 +101,7 @@ class TeleoperationsController:
         elif start_button_pressed:
             if not self.is_running_autonomously:
                 self.is_teleoperations_activated = True
+                self.system_mode_pub.publish(1)
                 self.remote_control_status_pub.publish(True)
                 rospy.loginfo("Joystick control activated.")
 

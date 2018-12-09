@@ -13,7 +13,7 @@
     <arg name='topic_from_autonomy_status'  default='autonomy_status' />
 
     <!-- Launch teleoperations controller -->
-    <node pkg="wamv_control" type="teleop_controller.py" name="teleop_controller_node">
+    <node pkg="wamv_control" type="teleoperations_controller.py" name="teleoperations_controller_node">
         <remap from='port_motor_speed'          to='$(arg topic_to_port_motor)' />
         <remap from='strbrd_motor_speed'        to='$(arg topic_to_strbrd_motor)' />
         <remap from='port_bow_thruster_speed'   to='$(arg topic_to_port_bow_thruster)' />

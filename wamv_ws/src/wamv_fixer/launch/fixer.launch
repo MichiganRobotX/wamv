@@ -26,7 +26,7 @@
     <param name='in_type' value='Twist'/>
     <param name='out_type' value='TwistStamped'/>
     <param name='old_frame' value='twist_raw'/>
-    <param name='new_frame' value='imu'/>
+    <param name='new_frame' value='twist'/>
     <remap from='in'  to='/data/twist/raw' />
     <remap from='out' to='/data/twist/fixed' />
   </node>

@@ -5,7 +5,7 @@
         <param name="video_mode"                value="format7_mode7" />
         <param name="format7_color_coding"      value="mono8" />
         <param name="iso_speed"                 value="800"/>
-        <param name="format7_packet_size"       value="8160" /> <!-- Modify this to increase/decrease frame rate -->
+        <param name="format7_packet_size"       value="8160" />
         <param name="roi_width"                 value="808" />
         <param name="roi_height"                value="4000" /> <!-- Modify this to increase/decrease frame rate in compression mode -->
         <param name="publish_monocolour"        value="C" /> <!-- If set to "R","G" or "B" publish only one colour."C" Colour. Other values or none publish full info. -->

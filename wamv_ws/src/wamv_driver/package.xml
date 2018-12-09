@@ -9,7 +9,6 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>rospy</depend>
   <depend>rostest</depend>
 
   <depend>advanced_navigation_driver</depend>
@@ -22,5 +21,5 @@
   <depend>velodyne_pointcloud</depend>
 
   <test_depend>rostest</test_depend>
-  
+
 </package>
