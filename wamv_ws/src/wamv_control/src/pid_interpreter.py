@@ -44,15 +44,16 @@ class PIDInterpreter:
         self.strbrd_motor_output_percentage = rospy.get_param(
             '~strbrd_motor_output_percentage', 1.0
         )
+        self.rate = rospy.Rate(rospy.get_param('~loop_rate', 10))
 
         # Set up subscribers
         self.heading_control_effort = 0.0
         rospy.Subscriber(
-            'topic_from_heading_controller', Float64, self.heading_callback
+            'heading_control_effort', Float64, self.heading_callback
         )
         self.speed_control_effort = 0.0
         rospy.Subscriber(
-            'topic_from_speed_controller', Float64, self.speed_callback
+            'speed_control_effort', Float64, self.speed_callback
         )
 
         # Set up publishers
@@ -152,17 +153,17 @@ class PIDInterpreter:
         msg.strbrd_motor = strbrd_motor_speed
         self.publisher.publish(msg)
 
+    def loop(self):
+        while not rospy.is_shutdown():
+            self.process()
+            self.rate.sleep()
+
 
 ###############################################################################
 ###############################################################################
 if __name__ == '__main__':
     try:
         interpreter = PIDInterpreter()
-        rate = rospy.Rate(
-            rospy.get_param('~loop_rate', 10)
-        )
-        while not rospy.is_shutdown():
-            interpreter.process()
-            rate.sleep()
+        interpreter.loop()
     except rospy.ROSInterruptException:
         pass

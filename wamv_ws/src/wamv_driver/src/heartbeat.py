@@ -33,7 +33,7 @@ class HeartbeatManager():
 		msg.id = '$RXHRB'
 		msg.NS = 'N'
 		msg.EW = 'E'
-		msg.team_id = 'TBD'
+		msg.team_id = 'MICH'
 		msg.auv_status = 1 # stowed
 		self.msg = msg
 
