@@ -19,45 +19,35 @@ void heartbeat_callback (const std_msgs::String& msg) {
 }
 
 bool activate_yellow = 0;
-void remote_control_status_callback (const std_msgs::Bool& yellow_light) {
+void yellow_light_callback (const std_msgs::Bool& yellow_light) {
     if (yellow_light.data) { activate_yellow = 1; }
     else { activate_yellow = 0; }
 }
 
 bool activate_blue = 0;
-void network_connection_callback (const std_msgs::Bool& blue_light) {
+void blue_light_callback (const std_msgs::Bool& blue_light) {
     if (blue_light.data) { activate_blue = 1; }
     else { activate_blue = 0; }
 }
 
 bool activate_green = 0;
-void autonomy_status_callback (const std_msgs::Bool& green_light) {
+void green_light_callback (const std_msgs::Bool& green_light) {
     if (green_light.data) { activate_green = 1; }
     else { activate_green = 0; }
 }
 
 bool activate_red = 0;
-
-// void remote_control_status_callback (const std_msgs::Bool& yellow_light) {
-//   if (yellow_light.data) { digitalWrite(Relay_Yellow, RELAY_ON); }
-//   else { digitalWrite(Relay_Yellow, RELAY_OFF); }
-// }
-//
-// void network_connection_callback (const std_msgs::Bool& blue_light) {
-//   if (blue_light.data) { digitalWrite(Relay_Blue, RELAY_ON); }
-//   else { digitalWrite(Relay_Blue, RELAY_OFF); }
-// }
-//
-// void autonomy_status_callback (const std_msgs::Bool& green_light) {
-//   if (green_light.data) { digitalWrite(Relay_Green, RELAY_ON); }
-//   else { digitalWrite(Relay_Green, RELAY_OFF); }
-// }
+void red_light_callback (const std_msgs::Bool& red_light) {
+    if (red_light.data) { activate_red = 1; }
+    else { activate_red = 0; }
+}
 
 // ROS Input
 ros::NodeHandle nh;
-ros::Subscriber<std_msgs::Bool> rc_sub("remote_control_active", &remote_control_status_callback);
-ros::Subscriber<std_msgs::Bool> network_sub("network_connection_active", &network_connection_callback);
-ros::Subscriber<std_msgs::Bool> autonomy_sub("autonomous_active", &autonomy_status_callback);
+ros::Subscriber<std_msgs::Bool> yellow_sub("yellow_light_active", &yellow_light_callback);
+ros::Subscriber<std_msgs::Bool> blue_sub("blue_light_active", &blue_light_callback);
+ros::Subscriber<std_msgs::Bool> green_sub("green_light_active", &green_light_callback);
+ros::Subscriber<std_msgs::Bool> red_sub("red_light_active", &red_light_callback);
 ros::Subscriber<std_msgs::String> heartbeat_sub("heartbeat_string", &heartbeat_callback);
 
 // Setup Sequence
@@ -75,9 +65,10 @@ void setup() {
   delay(5000);
 
   nh.initNode();
-  nh.subscribe(rc_sub);
-  nh.subscribe(network_sub);
-  nh.subscribe(autonomy_sub);
+  nh.subscribe(yellow_sub);
+  nh.subscribe(blue_sub);
+  nh.subscribe(green_sub);
+  nh.subscribe(red_sub);
   nh.subscribe(heartbeat_sub);
 }
 
@@ -89,25 +80,17 @@ void loop(){
   if (time_since_heartbeat < MAX_TIME) {
       ++time_since_heartbeat;
 
-      digitalWrite(Relay_Red, RELAY_OFF);
+      if (activate_red == 1) { digitalWrite(Relay_Red, RELAY_ON); }
+      else { digitalWrite(Relay_Red, RELAY_OFF);}
 
-      if (activate_yellow == 1) {
-          digitalWrite(Relay_Yellow, RELAY_ON);
-      } else {
-          digitalWrite(Relay_Yellow, RELAY_OFF);
-      }
+      if (activate_yellow == 1) { digitalWrite(Relay_Yellow, RELAY_ON); }
+      else { digitalWrite(Relay_Yellow, RELAY_OFF); }
 
-      if (activate_green == 1) {
-          digitalWrite(Relay_Green, RELAY_ON);
-      } else {
-          digitalWrite(Relay_Green, RELAY_OFF);
-      }
+      if (activate_green == 1) { digitalWrite(Relay_Green, RELAY_ON); }
+      else { digitalWrite(Relay_Green, RELAY_OFF); }
 
-      if (activate_blue == 1) {
-          digitalWrite(Relay_Blue, RELAY_ON);
-      } else {
-          digitalWrite(Relay_Blue, RELAY_OFF);
-      }
+      if (activate_blue == 1) { digitalWrite(Relay_Blue, RELAY_ON); }
+      else { digitalWrite(Relay_Blue, RELAY_OFF); }
   }
   else {
       digitalWrite(Relay_Red, RELAY_ON);

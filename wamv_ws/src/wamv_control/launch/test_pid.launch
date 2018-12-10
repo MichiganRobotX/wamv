@@ -1,14 +1,9 @@
 <?xml version="1.0"?>
 <launch>
 
-    <arg name='heading_pid' default='true'/>
-    <arg name='speed_pid'   default='true'/>
-
-    <!-- Launch Heading Test Node -->
-    <!-- <include file="$(find wamv_navigation)/launch/pid_tuning.launch">
-        <arg name='linear'  value='$(arg speed_pid)' />
-        <arg name='angular' value='$(arg heading_pid)' />
-    </include> -->
+    <arg name='heading_pid'   default='true'/>
+    <arg name='speed_pid'     default='true'/>
+    <arg name='lateral_pid'   default='true'/>
 
     <!-- Launch Heading Test Node -->
     <group if="$(arg heading_pid)">
@@ -26,12 +21,18 @@
         </node>
     </group>
 
+    <!-- Launch Lateral Test Node -->
+    <group if="$(arg lateral_pid)">
+        <node pkg="wamv_control" type="pid_tester.py" name="lateral_pid_tester" output="screen">
+            <rosparam command="load" file="$(find wamv_control)/params/lateral_test_params.yaml" />
+            <remap from="setpoint" to="pid/lateral/setpoint" />
+        </node>
+    </group>
+
     <!-- Launch the main controls -->
     <include file="$(find wamv_control)/launch/controls.launch">
-        <arg name='heading_pid' value="$(arg heading_pid)" />
-        <arg name='speed_pid'   value="$(arg speed_pid)" />
+        <!-- <arg name='heading_pid' value="$(arg heading_pid)" /> -->
+        <!-- <arg name='speed_pid'   value="$(arg speed_pid)" /> -->
     </include>
-
-    <!-- <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" /> -->
 
 </launch>

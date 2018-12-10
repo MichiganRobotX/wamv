@@ -17,7 +17,7 @@ class StatusLightInterpretter():
     def __init__(self):
         rospy.init_node('status_light_interpretter_node', log_level=rospy.INFO)
 
-        # self.red_pub = rospy.Publisher('red_light', Bool, queue_size=100)
+        self.red_pub = rospy.Publisher('red_light', Bool, queue_size=100)
         self.green_pub = rospy.Publisher('green_light', Bool, queue_size=100)
         self.blue_pub = rospy.Publisher('blue_light', Bool, queue_size=100)
         self.yellow_pub = rospy.Publisher('yellow_light', Bool, queue_size=100)
@@ -28,17 +28,29 @@ class StatusLightInterpretter():
     def mode_callback(self, msg):
         system_mode = SYSTEM_MODE[msg.data]
 
-        if system_mode == 'remote_control':
+        if system_mode == 'killed':
+            self.red_pub.publish(True)
+            self.yellow_pub.publish(False)
+            self.green_pub.publish(False)
+            # self.blue_pub.publish(False)
+
+        elif system_mode == 'remote_control':
+            self.red_pub.publish(False)
             self.yellow_pub.publish(True)
             self.green_pub.publish(False)
+            # self.blue_pub.publish(False)
 
-        if system_mode == 'autonomous':
+        elif system_mode == 'autonomous':
+            self.red_pub.publish(False)
+            self.yellow_pub.publish(False)
             self.green_pub.publish(True)
-            self.yellow_pub.publish(False)
+            # self.blue_pub.publish(False)
 
-        if system_mode == 'limbo':
-            self.green_pub.publish(False)
+        elif system_mode == 'limbo':
+            self.red_pub.publish(False)
             self.yellow_pub.publish(False)
+            self.green_pub.publish(False)
+            # self.blue_pub.publish(False)
 
 ###############################################################################
 ###############################################################################

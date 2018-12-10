@@ -5,6 +5,13 @@ from std_msgs.msg import Int16
 from sensor_msgs.msg import Joy
 from wamv_msgs.msg import MotorCommand
 
+SYSTEM_MODE = {
+    0: 'limbo',
+    1: 'remote_control',
+    2: 'autonomous',
+    3: 'killed'
+}
+
 ###############################################################################
 class TeleoperationsController:
     """ Handles joystick commands for running in teleoperations mode.
@@ -30,11 +37,9 @@ class TeleoperationsController:
         rospy.init_node('teleoperations_controller_node', log_level=rospy.INFO)
 
         self.publisher = rospy.Publisher(
-            'motor_command', MotorCommand, queue_size=100
-        )
+            'motor_command', MotorCommand, queue_size=100)
         self.system_mode_pub = rospy.Publisher(
-            'system_mode', Int16, queue_size=100
-        )
+            'system_mode', Int16, queue_size=100)
 
         self.zero_speed_msg = MotorCommand()
         self.zero_speed_msg.port_motor = 127
@@ -69,7 +74,6 @@ class TeleoperationsController:
             rospy.loginfo("Joystick control deactivated")
 
         elif start_button_pressed:
-            self.is_teleoperations_activated = True
             self.system_mode_pub.publish(1)
             rospy.loginfo("Joystick control activated.")
 

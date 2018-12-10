@@ -1,32 +1,35 @@
 <?xml version="1.0"?>
 <launch>
-    <!-- Put everything in the namespace "pid" -->
-    <group ns='pid'>
-       <!-- Launch PID interpreter -->
-       <node pkg="wamv_control" type="pid_interpreter.py" name="interpreter">
-           <rosparam command="load" file="$(find wamv_control)/params/interpreter.yaml" />
-           <remap from='heading_control_effort'  to='heading/control_effort' />
-           <remap from='speed_control_effort'    to='speed/control_effort' />
-           <!-- <remap from='motor_command' to='' /> -->
-      </node>
+  <!-- Put everything in the namespace "pid" -->
+  <group ns='pid'>
+     <!-- Launch PID interpreter -->
+     <node pkg="wamv_control" type="pid_interpreter.py" name="interpreter">
+         <rosparam command="load" file="$(find wamv_control)/params/interpreter.yaml" />
+         <remap from='heading_control_effort'  to='heading/control_effort' />
+         <remap from='speed_control_effort'    to='speed/control_effort' />
+         <remap from='lateral_control_effort'  to='lateral/control_effort' />
+         <!-- <remap from='motor_command' to='' /> -->
+    </node>
 
-        <!-- Include the heading PID controller launch file IF specified in args -->
-        <group if="$(arg heading_pid)">
-            <include file="$(find wamv_control)/launch/pid.launch" ns="$(arg heading_ns)">
-                <arg name='param_file'  value='heading_controller_params.yaml' />
-                <arg name='setpoint'    value='setpoint' />
-                <arg name='state'       value='/current_angular_velocity' />
-            </include>
-        </group>
+    <!-- Launch the heading PID controller  -->
+    <include file="$(find wamv_control)/launch/pid.launch" ns="heading">
+        <arg name='param_file'  value='heading_controller_params.yaml' />
+        <arg name='setpoint'    value='setpoint' />
+        <arg name='state'       value='/current_angular_velocity' />
+    </include>
 
-        <!-- Include the speed PID controller launch file IF specified in args -->
-        <group if="$(arg speed_pid)">
-            <include file="$(find wamv_control)/launch/pid.launch" ns="$(arg speed_ns)">
-                <arg name='param_file'  value='speed_controller_params.yaml' />
-                <arg name='setpoint'    value='setpoint' />
-                <arg name='state'       value='/current_linear_velocity' />
-            </include>
-        </group>
-    </group> <!-- pid -->
+    <!-- Launch the speed PID controller -->
+    <include file="$(find wamv_control)/launch/pid.launch" ns="speed">
+        <arg name='param_file'  value='speed_controller_params.yaml' />
+        <arg name='setpoint'    value='setpoint' />
+        <arg name='state'       value='/current_linear_velocity' />
+    </include>
 
+    <!-- Launch the lateral PID controller  -->
+    <include file="$(find wamv_control)/launch/pid.launch" ns="lateral">
+        <arg name='param_file'  value='lateral_controller_params.yaml' />
+        <arg name='setpoint'    value='setpoint' />
+        <arg name='state'       value='/current_lateral_velocity' />
+    </include>
+  </group> <!-- pid -->
 </launch>

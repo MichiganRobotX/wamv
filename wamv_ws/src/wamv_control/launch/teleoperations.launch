@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
-<!-- sudo jstest /dev/input/js1
-sudo chmod a+rw /dev/input/js1 -->
+  <!-- sudo jstest /dev/input/js1 -->
+  <!-- sudo chmod a+rw /dev/input/js1 -->
 
   <node pkg="joy" type="joy_node" name="joystick_node">
     <param name='dev' value='/dev/input/js1' />

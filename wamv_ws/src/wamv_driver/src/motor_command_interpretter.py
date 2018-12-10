@@ -44,6 +44,9 @@ class MotorCommandInterpretter():
         if self.system_mode == 'killed':
             self.publish_zero_speed()
 
+        elif self.system_mode == 'limbo':
+            self.publish_zero_speed()
+
         else:
             self.port_motor_pub.publish(msg.port_motor)
             self.strbrd_motor_pub.publish(msg.strbrd_motor)

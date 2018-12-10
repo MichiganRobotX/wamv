@@ -4,6 +4,13 @@ import rospy
 from std_msgs.msg import Int16, Float64
 from wamv_msgs.msg import MotorCommand
 
+SYSTEM_MODE = {
+    0: 'limbo',
+    1: 'remote_control',
+    2: 'autonomous',
+    3: 'killed'
+}
+
 def sign(x):
     """ Returns the sign of 'x'. Pretty cool, huh?
     """
@@ -34,32 +41,54 @@ class PIDInterpreter:
     """
     ###########################################################################
     def __init__(self):
-        rospy.init_node('pid_interpreter_node', log_level=rospy.DEBUG)
+        rospy.init_node('pid_interpreter_node', log_level=rospy.INFO)
         self.output_lower_bound = rospy.get_param('~output_lower_bound', 0)
         self.output_upper_bound = rospy.get_param('~output_upper_bound', 254)
         self.output_maximum = rospy.get_param('~output_maximum', 127)
         self.port_motor_output_percentage = rospy.get_param(
-            '~port_motor_output_percentage', 1.0
-        )
+            '~port_motor_output_percentage', 1.0)
         self.strbrd_motor_output_percentage = rospy.get_param(
-            '~strbrd_motor_output_percentage', 1.0
-        )
-        self.rate = rospy.Rate(rospy.get_param('~loop_rate', 10))
+            '~strbrd_motor_output_percentage', 1.0)
+
+        # Thruster parameters
+        self.output_lower_bound_lateral = rospy.get_param(
+            '~output_lower_bound_lateral', 1110)
+        self.output_upper_bound_lateral = rospy.get_param(
+            '~output_upper_bound_lateral', 1890)
+        self.output_maximum_lateral = rospy.get_param(
+            '~output_maximum_lateral', 390)
+        self.port_thruster_output_percentage = rospy.get_param(
+            '~port_thruster_output_percentage', 1.0)
+        self.strbrd_thruster_output_percentage = rospy.get_param(
+            '~strbrd_thruster_output_percentage', 1.0)
 
         # Set up subscribers
+        self.system_mode = 0
+        rospy.Subscriber(
+            'system_mode', Int16, self.mode_callback)
+
         self.heading_control_effort = 0.0
         rospy.Subscriber(
-            'heading_control_effort', Float64, self.heading_callback
-        )
+            'heading_control_effort', Float64, self.heading_callback)
         self.speed_control_effort = 0.0
         rospy.Subscriber(
-            'speed_control_effort', Float64, self.speed_callback
-        )
+            'speed_control_effort', Float64, self.speed_callback)
+        self.lateral_control_effort = 0.0
+        rospy.Subscriber(
+            'lateral_control_effort', Float64, self.lateral_callback)
 
         # Set up publishers
         self.publisher = rospy.Publisher(
-            'motor_command', MotorCommand, queue_size=100
-        )
+            'motor_command', MotorCommand, queue_size=100)
+
+        self.rate = rospy.Rate(rospy.get_param('~loop_rate', 10))
+
+    ###########################################################################
+    def mode_callback(self, msg):
+        """ Headings fall in the range [-127,127] with -127 representing maximum
+            counter-clockwise force and 127 representing maximum clockwise force
+        """
+        self.system_mode = SYSTEM_MODE[msg.data]
 
     ###########################################################################
     def speed_callback(self, msg):
@@ -76,12 +105,29 @@ class PIDInterpreter:
         self.heading_control_effort = msg.data
 
     ###########################################################################
+    def lateral_callback(self, msg):
+        """ Velocities fall in the range [-390,390] with -390 representing full
+            reverse and 390 representing full forward
+        """
+        self.lateral_control_effort = msg.data
+
+    ###########################################################################
     def apply_output_maximum(self, motor_speed):
         """ Returns +/- self.output_maximum if motor_speed is greater than it,
             and motor_speed otherwise
         """
         if abs(motor_speed) > self.output_maximum:
             return self.output_maximum * sign(motor_speed)
+        else:
+            return motor_speed
+
+    ###########################################################################
+    def apply_output_maximum_lateral(self, motor_speed):
+        """ Returns +/- self.output_maximum if motor_speed is greater than it,
+            and motor_speed otherwise
+        """
+        if abs(motor_speed) > self.output_maximum_lateral:
+            return self.output_maximum_lateral * sign(motor_speed)
         else:
             return motor_speed
 
@@ -94,6 +140,19 @@ class PIDInterpreter:
             val = self.output_upper_bound
         elif motor_speed < self.output_lower_bound:
             val = self.output_lower_bound
+        else:
+            val = motor_speed
+        return int(val)
+
+    ###########################################################################
+    def prepare_for_publishing_lateral(self, motor_speed):
+        """ Checks upper and lower bounds of motor_speed, and casts it to
+            an integer
+        """
+        if motor_speed > self.output_upper_bound_lateral:
+            val = self.output_upper_bound_lateral
+        elif motor_speed < self.output_lower_bound_lateral:
+            val = self.output_lower_bound_lateral
         else:
             val = motor_speed
         return int(val)
@@ -116,18 +175,12 @@ class PIDInterpreter:
         # Get the control efforts
         heading_control_effort = self.heading_control_effort
         speed_control_effort = self.speed_control_effort
-        rospy.logdebug(
-            'Received control efforts: {} (heading) {} (speed)'
-            .format(heading_control_effort, speed_control_effort))
+        lateral_control_effort = self.lateral_control_effort
 
         # Allocate power based on angular velocity requirement first, and cap
         # at maximum if over.
-        port_motor_speed = self.apply_output_maximum(
-            heading_control_effort
-        )
-        strbrd_motor_speed = self.apply_output_maximum(
-            -heading_control_effort
-        )
+        port_motor_speed = self.apply_output_maximum(heading_control_effort)
+        strbrd_motor_speed = self.apply_output_maximum(-heading_control_effort)
 
         # Calculate the shift due to speed control effort
         max_abs = max(abs(port_motor_speed), abs(strbrd_motor_speed))
@@ -139,25 +192,40 @@ class PIDInterpreter:
             shift -= max_shift
 
         # Apply shift
-        port_motor_speed += shift
         port_motor_speed *= self.port_motor_output_percentage
+        port_motor_speed += shift
         port_motor_speed = self.prepare_for_publishing(port_motor_speed)
 
-        strbrd_motor_speed += shift
         strbrd_motor_speed *= self.strbrd_motor_output_percentage
+        strbrd_motor_speed += shift
         strbrd_motor_speed = self.prepare_for_publishing(strbrd_motor_speed)
+
+        port_thruster_speed = lateral_control_effort
+        strbrd_thruster_speed = -lateral_control_effort
+
+        lateral_shift = 1500
+
+        port_thruster_speed *= self.port_thruster_output_percentage
+        port_thruster_speed += lateral_shift
+        port_thruster_speed = self.prepare_for_publishing_lateral(port_thruster_speed)
+
+        strbrd_thruster_speed *= self.strbrd_thruster_output_percentage
+        strbrd_thruster_speed += lateral_shift
+        strbrd_thruster_speed = self.prepare_for_publishing_lateral(strbrd_thruster_speed)
 
         # Publish
         msg = MotorCommand()
         msg.port_motor = port_motor_speed
         msg.strbrd_motor = strbrd_motor_speed
+        msg.port_bow_thruster = port_thruster_speed
+        msg.strbrd_bow_thruster = strbrd_thruster_speed
         self.publisher.publish(msg)
 
     def loop(self):
         while not rospy.is_shutdown():
-            self.process()
+            if self.system_mode == 'autonomous':
+                self.process()
             self.rate.sleep()
-
 
 ###############################################################################
 ###############################################################################

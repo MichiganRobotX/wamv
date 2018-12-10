@@ -2,9 +2,10 @@
 <launch>
 
     <node pkg="wamv_driver" type="status_light_interpretter.py" name="status_light_interpretter_node" >
-      <remap from='yellow_light' to='/autonomous_active' />
-      <remap from='green_light' to='/remote_control_active' />
-      <!-- <remap from='blue_light' to='' /> -->
+      <remap from='yellow_light' to='/yellow_light_active' />
+      <remap from='green_light' to='/green_light_active' />
+      <remap from='blue_light' to='/blue_light_active' />
+      <remap from='red_light' to='/red_light_active' />
       <!-- <remap from='system_mode' to='' /> -->
     </node>
 
