@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-
-	<!-- Stamp twist messages -->
-	<include file="$(find wamv_past)/launch/stamper.launch" />
-
-</launch>

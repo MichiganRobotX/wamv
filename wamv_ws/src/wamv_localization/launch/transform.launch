@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-    <param name="robot_description" textfile="$(find wamv_description)/urdf/wamv.urdf"/>
-
-    <!-- launch robot transform publisher -->
-    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" clear_params="true"/>
-</launch>

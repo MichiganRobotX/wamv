@@ -42,8 +42,6 @@
         <arg name='lateral_pid'   value="$(arg lateral_pid)" />
     </include>
 
-    <!-- <node pkg="rqt_plot" type="rqt_plot" name="rqt_plot" args="/current_linear_velocity /pid/speed/setpoint /pid/speed/control_effort" /> -->
-
     <!-- <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" /> -->
 
 </launch>
