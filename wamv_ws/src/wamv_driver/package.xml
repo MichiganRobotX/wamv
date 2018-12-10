@@ -10,6 +10,7 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>rostest</depend>
+  <depend>rospy</depend>
 
   <depend>advanced_navigation_driver</depend>
   <!-- <depend>ladybug3_ros_pkg</depend> -->

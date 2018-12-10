@@ -1,13 +1,15 @@
 <?xml version="1.0"?>
 <launch>
 
-	<!-- Launch sensors drivers -->
-	<include file="$(find wamv_driver)/launch/an_device.launch" ns="/sensors" />
-	<include file="$(find wamv_driver)/launch/velodyne.launch" ns="/sensors" />
-	<include file="$(find wamv_driver)/launch/ladybug.launch" ns="/sensors" />
-
 	<!-- Launch rosserial to communicate to arduinos -->
 	<include file="$(find wamv_driver)/launch/motor_controller.launch" />
-	<include file="$(find wamv_driver)/launch/status_light_controller.launch" />
+	<include file="$(find wamv_driver)/launch/status_light_interpretter.launch" />
+	<include file="$(find wamv_driver)/launch/motor_command_interpretter.launch" />
+	<include file="$(find wamv_driver)/launch/heartbeat.launch" />
+
+	<!-- Launch sensors drivers -->
+	<!-- <include file="$(find wamv_driver)/launch/an_device.launch" ns="/sensors" /> -->
+	<!-- <include file="$(find wamv_driver)/launch/velodyne.launch" ns="/sensors" /> -->
+	<!-- <include file="$(find wamv_driver)/launch/ladybug.launch" ns="/sensors" /> -->
 
 </launch>

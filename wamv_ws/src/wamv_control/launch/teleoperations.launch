@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <launch>
 
-    <include file="$(find wamv_control)/launch/teleoperations_.launch">
-        <arg name='topic_to_port_motor'             value='LmotorSpeed' />
-        <arg name='topic_to_strbrd_motor'           value='RmotorSpeed' />
-        <arg name='topic_to_port_bow_thruster'      value='LmotorSpeed_lateral' />
-        <arg name='topic_to_strbrd_bow_thruster'    value='RmotorSpeed_lateral' />
-        <arg name='topic_to_remote_control_status'  value='RemoteControlStatus' />
-        <arg name='topic_from_autonomy_status'      value='AutonomyStatus' />
-        <arg name='topic_from_joystick'             value='joy' />
-    </include>
+<!-- sudo jstest /dev/input/js1
+sudo chmod a+rw /dev/input/js1 -->
+
+  <node pkg="joy" type="joy_node" name="joystick_node">
+    <param name='dev' value='/dev/input/js1' />
+  </node>
+
+  <node pkg="wamv_control" type="teleoperations_controller.py" name="teleoperations_controller_node">
+    <!-- <remap from='motor_command' to='motor_command' /> -->
+    <!-- <remap from='joy'           to='joy' /> -->
+  </node>
 
 </launch>

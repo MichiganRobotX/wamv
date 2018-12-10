@@ -13,8 +13,6 @@
   <depend>rospy</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
-  <depend>wamv_navigation</depend>
-  <depend>rqt_plot</depend>
-  <depend>rqt_reconfigure</depend>
+  <depend>wamv_msgs</depend>
 
 </package>

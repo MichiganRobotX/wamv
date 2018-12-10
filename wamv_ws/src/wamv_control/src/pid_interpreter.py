@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import rospy
-from std_msgs.msg import Int16
-from std_msgs.msg import Float64
+from std_msgs.msg import Int16, Float64
+from wamv_msgs.msg import MotorCommand
 
 def sign(x):
     """ Returns the sign of 'x'. Pretty cool, huh?
@@ -56,11 +56,8 @@ class PIDInterpreter:
         )
 
         # Set up publishers
-        self.port_motor_publisher = rospy.Publisher(
-            'topic_to_port_motor', Int16, queue_size=1000
-        )
-        self.strbrd_motor_publisher = rospy.Publisher(
-            'topic_to_strbrd_motor', Int16, queue_size=1000
+        self.publisher = rospy.Publisher(
+            'motor_command', MotorCommand, queue_size=100
         )
 
     ###########################################################################
@@ -150,29 +147,22 @@ class PIDInterpreter:
         strbrd_motor_speed = self.prepare_for_publishing(strbrd_motor_speed)
 
         # Publish
-        self.port_motor_publisher.publish(port_motor_speed)
-        self.strbrd_motor_publisher.publish(strbrd_motor_speed)
-        rospy.logdebug(
-            'Published motor speeds: {} (port) {} (starboard)'
-            .format(port_motor_speed, strbrd_motor_speed))
+        msg = MotorCommand()
+        msg.port_motor = port_motor_speed
+        msg.strbrd_motor = strbrd_motor_speed
+        self.publisher.publish(msg)
 
 
 ###############################################################################
 ###############################################################################
-def main():
-    pid_interpreter = PIDInterpreter()
-    # rospy.loginfo_once('Initialized the PID interpreter node')
-
-    rate = rospy.Rate(
-        rospy.get_param('~loop_rate', 10)
-    )
-    while not rospy.is_shutdown():
-        pid_interpreter.process()
-        rate.sleep()
-
-
 if __name__ == '__main__':
     try:
-        main()
+        interpreter = PIDInterpreter()
+        rate = rospy.Rate(
+            rospy.get_param('~loop_rate', 10)
+        )
+        while not rospy.is_shutdown():
+            interpreter.process()
+            rate.sleep()
     except rospy.ROSInterruptException:
         pass

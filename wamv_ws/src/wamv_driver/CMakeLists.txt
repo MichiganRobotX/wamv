@@ -12,6 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
 	velodyne_pointcloud
 )
 
+catkin_python_setup()
+
 catkin_package(CATKIN_DEPENDS
 	geometry_msgs
 	nav_msgs

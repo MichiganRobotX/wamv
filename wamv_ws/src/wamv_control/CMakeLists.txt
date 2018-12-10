@@ -6,9 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
 	rospy
 	sensor_msgs
 	std_msgs
-	wamv_navigation
-	rqt_plot
-	rqt_reconfigure
+	wamv_msgs
 )
 
 catkin_python_setup()
