@@ -5,31 +5,40 @@
      <!-- Launch PID interpreter -->
      <node pkg="wamv_control" type="pid_interpreter.py" name="interpreter">
          <rosparam command="load" file="$(find wamv_control)/params/interpreter.yaml" />
-         <remap from='heading_control_effort'  to='heading/control_effort' />
-         <remap from='speed_control_effort'    to='speed/control_effort' />
-         <remap from='lateral_control_effort'  to='lateral/control_effort' />
+         <remap from='heading_control_effort' to='heading/control_effort' />
+         <remap from='speed_control_effort'   to='speed/control_effort' />
+         <remap from='lateral_control_effort' to='lateral/control_effort' />
+         <remap from='heading_setpoint'       to='heading/setpoint' />
+         <remap from='speed_setpoint'         to='speed/setpoint' />
+         <remap from='lateral_setpoint'       to='lateral/setpoint' />
+         <remap from='heading_state'          to='heading/state' />
+         <remap from='speed_state'            to='speed/state' />
+         <remap from='lateral_state'          to='lateral/state' />
+         <!-- <remap from='system_mode' to='' /> -->
          <!-- <remap from='motor_command' to='' /> -->
+         <!-- <remap from='velocity_command' to='' /> -->
+         <remap from='odom' to='/odom/imu' />
     </node>
 
     <!-- Launch the heading PID controller  -->
     <include file="$(find wamv_control)/launch/pid.launch" ns="heading">
         <arg name='param_file'  value='heading_controller_params.yaml' />
         <arg name='setpoint'    value='setpoint' />
-        <arg name='state'       value='/current_angular_velocity' />
+        <arg name='state'       value='state' />
     </include>
 
     <!-- Launch the speed PID controller -->
     <include file="$(find wamv_control)/launch/pid.launch" ns="speed">
         <arg name='param_file'  value='speed_controller_params.yaml' />
         <arg name='setpoint'    value='setpoint' />
-        <arg name='state'       value='/current_linear_velocity' />
+        <arg name='state'       value='state' />
     </include>
 
     <!-- Launch the lateral PID controller  -->
     <include file="$(find wamv_control)/launch/pid.launch" ns="lateral">
         <arg name='param_file'  value='lateral_controller_params.yaml' />
         <arg name='setpoint'    value='setpoint' />
-        <arg name='state'       value='/current_lateral_velocity' />
+        <arg name='state'       value='state' />
     </include>
   </group> <!-- pid -->
 </launch>

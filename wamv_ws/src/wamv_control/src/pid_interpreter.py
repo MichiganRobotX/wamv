@@ -2,6 +2,8 @@
 
 import rospy
 from std_msgs.msg import Int16, Float64
+from geometry_msgs.msg import Twist
+from nav_msgs.msg import Odometry
 from wamv_msgs.msg import MotorCommand
 
 SYSTEM_MODE = {
@@ -64,8 +66,9 @@ class PIDInterpreter:
 
         # Set up subscribers
         self.system_mode = 0
-        rospy.Subscriber(
-            'system_mode', Int16, self.mode_callback)
+        rospy.Subscriber('system_mode', Int16, self.mode_callback)
+        rospy.Subscriber('odom', Odometry, self.odometry_callback)
+        rospy.Subscriber('velocity_command', Twist, self.decomposer_callback)
 
         self.heading_control_effort = 0.0
         rospy.Subscriber(
@@ -80,8 +83,32 @@ class PIDInterpreter:
         # Set up publishers
         self.publisher = rospy.Publisher(
             'motor_command', MotorCommand, queue_size=100)
+        self.speed_setpoint_pub = rospy.Publisher(
+            'speed_setpoint', Float64, queue_size=100)
+        self.heading_setpoint_pub = rospy.Publisher(
+            'heading_setpoint', Float64, queue_size=100)
+        self.lateral_setpoint_pub = rospy.Publisher(
+            'lateral_setpoint', Float64, queue_size=100)
+        self.speed_state_pub = rospy.Publisher(
+            'speed_state', Float64, queue_size=100)
+        self.heading_state_pub = rospy.Publisher(
+            'heading_state', Float64, queue_size=100)
+        self.lateral_state_pub = rospy.Publisher(
+            'lateral_state', Float64, queue_size=100)
 
         self.rate = rospy.Rate(rospy.get_param('~loop_rate', 10))
+
+    ###########################################################################
+    def odometry_callback(self, msg):
+        self.speed_state_pub.publish(msg.twist.twist.linear.x)
+        self.lateral_state_pub.publish(msg.twist.twist.linear.y)
+        self.angular_state_pub.publish(msg.twist.twist.angular.z)
+
+    ###########################################################################
+    def decomposer_callback(self, msg):
+        self.speed_setpoint_pub.publish(msg.linear.x)
+        self.lateral_setpoint_pub.publish(msg.linear.y)
+        self.heading_setpoint_pub.publish(msg.angular.z)
 
     ###########################################################################
     def mode_callback(self, msg):

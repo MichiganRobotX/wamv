@@ -1,12 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name='mapping' default='false'/>
 
-    <include file="$(find wamv_localization)/launch/transform.launch" />
-    <include file="$(find wamv_localization)/launch/ukf.launch" />
-    <include file="$(find wamv_localization)/launch/costmap.launch" />
+    <include file="$(find wamv_localization)/launch/imu_odometry.launch" />
 
-    <group if="$(arg mapping)">
-        <include file="$(find wamv_localization)/launch/mapping.launch" />
-    </group>
 </launch>

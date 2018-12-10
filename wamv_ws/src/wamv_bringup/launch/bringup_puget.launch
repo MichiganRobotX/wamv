@@ -7,10 +7,8 @@
 	<!-- Launch transforms -->
 	<include file="$(find wamv_transform)/launch/transforms.launch" />
 
-	<!-- Launch transforms -->
 	<include file="$(find wamv_fixer)/launch/fixer.launch" />
-
-
-	<!-- <include file="$(find wamv_control)/launch/controls.launch" /> -->
+	<include file="$(find wamv_control)/launch/controls.launch" />
+	<include file="$(find wamv_localization)/launch/localization.launch" />
 
 </launch>
