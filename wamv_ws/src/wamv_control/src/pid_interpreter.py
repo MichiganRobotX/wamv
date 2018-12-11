@@ -83,6 +83,7 @@ class PIDInterpreter:
         # Set up publishers
         self.publisher = rospy.Publisher(
             'motor_command', MotorCommand, queue_size=100)
+
         self.speed_setpoint_pub = rospy.Publisher(
             'speed_setpoint', Float64, queue_size=100)
         self.heading_setpoint_pub = rospy.Publisher(

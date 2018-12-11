@@ -8,6 +8,13 @@ from sensor_msgs.msg import Imu
 from nav_msgs.msg import Odometry
 import PyKDL
 
+import tf2_geometry_msgs
+from geometry_msgs.msg import \
+    Point, PointStamped, Transform, TransformStamped, \
+    Quaternion, QuaternionStamped, Vector3, Vector3Stamped, \
+    Pose, PoseStamped, PoseWithCovarianceStamped, \
+    Twist, TwistStamped, TwistWithCovarianceStamped
+
 def vector3(x, y, z):
     return Vector3(x, y, z)
 

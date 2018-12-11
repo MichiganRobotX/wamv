@@ -1,3 +1,28 @@
+## Competition Notes
+
+Namespaces that are good:
+  status_light
+  motor
+  input
+  fixer
+  transform
+
+... those that need work:
+  sensor
+
+
+Next steps:
+  PRIORITY 1:
+    drivers/velodyne
+    controls
+    localization
+
+  THEN:
+    mapping
+      building map, costmaps
+    actions
+
+
 ## Future
 
 - advanced_navigation_driver:
@@ -7,7 +32,7 @@
 ## Notes
 
 calibrate:
-- advanced navigation device 
+- advanced navigation device
 
 laser_pipeline:
     laser_filter:

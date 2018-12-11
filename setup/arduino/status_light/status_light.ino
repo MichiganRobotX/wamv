@@ -8,8 +8,8 @@
 #define RELAY_ON 0
 #define RELAY_OFF 1
 #define Relay_Red  5
-#define Relay_Yellow  3
-#define Relay_Green  4
+#define Relay_Yellow  4
+#define Relay_Green  3
 #define Relay_Blue  2
 
 // Setup Subscribers
@@ -52,53 +52,54 @@ ros::Subscriber<std_msgs::String> heartbeat_sub("heartbeat_string", &heartbeat_c
 
 // Setup Sequence
 void setup() {
-  digitalWrite(Relay_Red, RELAY_OFF);
-  digitalWrite(Relay_Yellow, RELAY_OFF);
-  digitalWrite(Relay_Green, RELAY_OFF);
-  digitalWrite(Relay_Blue, RELAY_OFF);
+    digitalWrite(Relay_Red, RELAY_OFF);
+    digitalWrite(Relay_Yellow, RELAY_OFF);
+    digitalWrite(Relay_Green, RELAY_OFF);
+    digitalWrite(Relay_Blue, RELAY_OFF);
 
-  pinMode(Relay_Red, OUTPUT);
-  pinMode(Relay_Yellow, OUTPUT);
-  pinMode(Relay_Green, OUTPUT);
-  pinMode(Relay_Blue, OUTPUT);
+    pinMode(Relay_Red, OUTPUT);
+    pinMode(Relay_Yellow, OUTPUT);
+    pinMode(Relay_Green, OUTPUT);
+    pinMode(Relay_Blue, OUTPUT);
 
-  delay(5000);
+    delay(5000);
 
-  nh.initNode();
-  nh.subscribe(yellow_sub);
-  nh.subscribe(blue_sub);
-  nh.subscribe(green_sub);
-  nh.subscribe(red_sub);
-  nh.subscribe(heartbeat_sub);
+    nh.initNode();
+    nh.subscribe(yellow_sub);
+    nh.subscribe(blue_sub);
+    nh.subscribe(green_sub);
+    nh.subscribe(red_sub);
+    nh.subscribe(heartbeat_sub);
 }
 
 // Run Loop
-int MAX_TIME = 2;
-void loop(){
-  nh.spinOnce();
 
-  if (time_since_heartbeat < MAX_TIME) {
-      ++time_since_heartbeat;
+int MAX_TIME = 3;
+void loop() {
+    nh.spinOnce();
 
-      if (activate_red == 1) { digitalWrite(Relay_Red, RELAY_ON); }
-      else { digitalWrite(Relay_Red, RELAY_OFF);}
+    if (time_since_heartbeat < MAX_TIME) {
+        ++time_since_heartbeat;
 
-      if (activate_yellow == 1) { digitalWrite(Relay_Yellow, RELAY_ON); }
-      else { digitalWrite(Relay_Yellow, RELAY_OFF); }
+        if (activate_red == 1) { digitalWrite(Relay_Red, RELAY_ON); }
+        else { digitalWrite(Relay_Red, RELAY_OFF);}
 
-      if (activate_green == 1) { digitalWrite(Relay_Green, RELAY_ON); }
-      else { digitalWrite(Relay_Green, RELAY_OFF); }
+        if (activate_yellow == 1) { digitalWrite(Relay_Yellow, RELAY_ON); }
+        else { digitalWrite(Relay_Yellow, RELAY_OFF); }
 
-      if (activate_blue == 1) { digitalWrite(Relay_Blue, RELAY_ON); }
-      else { digitalWrite(Relay_Blue, RELAY_OFF); }
-  }
-  else {
-      digitalWrite(Relay_Red, RELAY_ON);
+        if (activate_green == 1) { digitalWrite(Relay_Green, RELAY_ON); }
+        else { digitalWrite(Relay_Green, RELAY_OFF); }
 
-      digitalWrite(Relay_Yellow, RELAY_OFF);
-      digitalWrite(Relay_Green, RELAY_OFF);
-      digitalWrite(Relay_Blue, RELAY_OFF);
-  }
+        if (activate_blue == 1) { digitalWrite(Relay_Blue, RELAY_ON); }
+        else { digitalWrite(Relay_Blue, RELAY_OFF); }
+    }
+    else {
+        digitalWrite(Relay_Red, RELAY_ON);
 
-  delay(1000);
+        digitalWrite(Relay_Yellow, RELAY_OFF);
+        digitalWrite(Relay_Green, RELAY_OFF);
+        digitalWrite(Relay_Blue, RELAY_OFF);
+    }
+
+    delay(1000);
 }

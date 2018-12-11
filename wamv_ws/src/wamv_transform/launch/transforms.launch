@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
+    <group ns='transform' >
     <!-- from base_link to advanced navigation device -->
     <!-- <include file='$(find wamv_transform)/launch/__transform.launch' >
         <arg name='name'            value='base_link_to_an_device'/>
@@ -40,9 +41,9 @@
     </include> -->
 
     <!-- verified: from imu to twist_raw -->
-    <include file='$(find wamv_transform)/launch/__transform.launch' >
-        <arg name='name'            value='twist_to_twist_raw'/>
-        <arg name='frame_id'        value='twist'/>
+    <!-- <include file='$(find wamv_transform)/launch/__transform.launch' >
+        <arg name='name'            value='imu_to_twist_raw'/>
+        <arg name='frame_id'        value='imu'/>
         <arg name='child_frame_id'  value='twist_raw'/>
         <arg name='x'               value='0.0'/>
         <arg name='y'               value='0.0'/>
@@ -50,7 +51,7 @@
         <arg name='yaw'             value='-1.57079632679'/>
         <arg name='pitch'           value='3.14159265359'/>
         <arg name='roll'            value='0.0'/>
-    </include>
+    </include> -->
 
     <!-- verified: from imu to imu_raw -->
     <include file='$(find wamv_transform)/launch/__transform.launch' >
@@ -131,4 +132,6 @@
         <arg name='pitch'           value='-0.0105'/>
         <arg name='roll'            value='-0.0045'/>
     </include> -->
+
+  </group>
 </launch>

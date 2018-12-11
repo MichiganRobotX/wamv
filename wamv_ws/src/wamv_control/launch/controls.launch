@@ -6,18 +6,19 @@
      <node pkg="wamv_control" type="pid_interpreter.py" name="interpreter">
          <rosparam command="load" file="$(find wamv_control)/params/interpreter.yaml" />
          <remap from='heading_control_effort' to='heading/control_effort' />
-         <remap from='speed_control_effort'   to='speed/control_effort' />
-         <remap from='lateral_control_effort' to='lateral/control_effort' />
          <remap from='heading_setpoint'       to='heading/setpoint' />
-         <remap from='speed_setpoint'         to='speed/setpoint' />
-         <remap from='lateral_setpoint'       to='lateral/setpoint' />
          <remap from='heading_state'          to='heading/state' />
+         <remap from='speed_control_effort'   to='speed/control_effort' />
+         <remap from='speed_setpoint'         to='speed/setpoint' />
          <remap from='speed_state'            to='speed/state' />
+         <remap from='lateral_control_effort' to='lateral/control_effort' />
+         <remap from='lateral_setpoint'       to='lateral/setpoint' />
          <remap from='lateral_state'          to='lateral/state' />
-         <!-- <remap from='system_mode' to='' /> -->
-         <!-- <remap from='motor_command' to='' /> -->
-         <!-- <remap from='velocity_command' to='' /> -->
-         <remap from='odom' to='/odom/imu' />
+
+         <remap from='system_mode'            to='/status/system_mode' />
+         <remap from='motor_command'          to='/motor/input' />
+         <remap from='velocity_command'       to='/command/velocity' />
+         <remap from='odom'                   to='/odom/imu' />
     </node>
 
     <!-- Launch the heading PID controller  -->

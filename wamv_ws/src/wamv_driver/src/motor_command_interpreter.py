@@ -12,11 +12,11 @@ SYSTEM_MODE = {
 }
 
 ###############################################################################
-class MotorCommandInterpretter():
+class MotorCommandInterpreter():
 
     ###########################################################################
     def __init__(self):
-        rospy.init_node('motor_command_interpretter_node', log_level=rospy.INFO)
+        rospy.init_node('motor_command_interpreter_node', log_level=rospy.INFO)
 
         self.port_motor_pub = rospy.Publisher('port_motor_input', Int16, queue_size=100)
         self.strbrd_motor_pub = rospy.Publisher('strbrd_motor_input', Int16, queue_size=100)
@@ -39,7 +39,7 @@ class MotorCommandInterpretter():
     def mode_callback(self, msg):
         self.system_mode = SYSTEM_MODE[msg.data]
 
-    ###########################################################################
+    ######################################status_light_interpretter#####################################
     def command_callback(self, msg):
         if self.system_mode == 'killed':
             self.publish_zero_speed()
@@ -57,7 +57,7 @@ class MotorCommandInterpretter():
 ###############################################################################
 if __name__ == '__main__':
     try:
-        MotorCommandInterpretter()
+        MotorCommandInterpreter()
         rospy.spin()
     except rospy.ROSInterruptException:
         pass

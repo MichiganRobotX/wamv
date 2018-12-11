@@ -11,11 +11,11 @@ SYSTEM_MODE = {
 }
 
 ###############################################################################
-class StatusLightInterpretter():
+class StatusLightInterpreter():
 
     ###########################################################################
     def __init__(self):
-        rospy.init_node('status_light_interpretter_node', log_level=rospy.INFO)
+        rospy.init_node('status_light_interpreter_node', log_level=rospy.INFO)
 
         self.red_pub = rospy.Publisher('red_light', Bool, queue_size=100)
         self.green_pub = rospy.Publisher('green_light', Bool, queue_size=100)
@@ -56,7 +56,7 @@ class StatusLightInterpretter():
 ###############################################################################
 if __name__ == '__main__':
     try:
-        StatusLightInterpretter()
+        StatusLightInterpreter()
         rospy.spin()
     except rospy.ROSInterruptException:
         pass

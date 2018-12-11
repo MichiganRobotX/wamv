@@ -1,43 +1,34 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name='stamped' default='false'/>
-  <arg name='pose' default='true'/>
-  <arg name='fixed' default='true'/>
 
-  <node pkg="wamv_fixer" type="fixer.py" name="twist_fixer" >
-    <param name='in_type' value='Twist'/>
-    <param name='out_type' value='TwistStamped'/>
-    <param name='old_frame' value='twist_raw'/>
-    <param name='new_frame' value='twist'/>
-    <remap from='in'  to='/data/twist/raw' />
-    <remap from='out' to='/data/twist/fixed' />
-  </node>
+  <group ns='fixer' >
+    <node pkg="wamv_fixer" type="fixer.py" name="twist" >
+      <param name='in_type' value='Twist'/>
+      <param name='out_type' value='TwistStamped'/>
+      <param name='old_frame' value='imu_raw'/>
+      <param name='new_frame' value='imu'/>
+      <remap from='in'  to='/input/twist/raw' />
+      <remap from='out' to='/input/twist/fixed' />
+    </node>
 
-  <node pkg="wamv_fixer" type="fixer.py" name="imu_fixer" >
-    <param name='in_type' value='Imu'/>
-    <param name='out_type' value='Imu'/>
-    <param name='old_frame' value='imu_raw'/>
-    <param name='new_frame' value='imu'/>
-    <remap from='in'  to='/data/imu/raw' />
-    <remap from='out' to='/data/imu/fixed' />
-  </node>
+    <node pkg="wamv_fixer" type="fixer.py" name="imu" >
+      <param name='in_type' value='Imu'/>
+      <param name='out_type' value='Imu'/>
+      <param name='old_frame' value='imu_raw'/>
+      <param name='new_frame' value='imu'/>
+      <remap from='in'  to='/input/imu/raw' />
+      <remap from='out' to='/input/imu/fixed' />
+    </node>
 
-  <node pkg="wamv_fixer" type="fixer.py" name="gps_fixer" >
-    <param name='in_type' value='NavSatFix'/>
-    <param name='out_type' value='NavSatFix'/>
-    <param name='old_frame' value='gps_raw'/>
-    <param name='new_frame' value='gps'/>
-    <remap from='in'  to='/data/gps/raw' />
-    <remap from='out' to='/data/gps/fixed' />
-  </node>
+    <node pkg="wamv_fixer" type="fixer.py" name="gps" >
+      <param name='in_type' value='NavSatFix'/>
+      <param name='out_type' value='NavSatFix'/>
+      <param name='old_frame' value='gps_raw'/>
+      <param name='new_frame' value='gps'/>
+      <remap from='in'  to='/input/gps/raw' />
+      <remap from='out' to='/input/gps/fixed' />
+    </node>
 
-  <node pkg="wamv_fixer" type="fixer.py" name="orientation_publisher" >
-    <param name='in_type' value='Imu'/>
-    <param name='out_type' value='PoseStamped'/>
-    <param name='old_frame' value='imu_raw'/>
-    <param name='new_frame' value='imu'/>
-    <remap from='in'  to='/data/imu/raw' />
-    <remap from='out' to='/data/pose/fixed' />
-  </node>
+  </group>
 
 </launch>

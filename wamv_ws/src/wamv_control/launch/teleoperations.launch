@@ -8,9 +8,11 @@
     <param name='dev' value='/dev/input/js1' />
   </node>
 
-  <node pkg="wamv_control" type="teleoperations_controller.py" name="teleoperations_controller_node">
-    <!-- <remap from='motor_command' to='motor_command' /> -->
-    <!-- <remap from='joy'           to='joy' /> -->
-  </node>
+  <group ns='teleoperations'>
+    <node pkg="wamv_control" type="teleoperations_controller.py" name="controller">
+      <remap from='motor_command' to='/motor/input' />
+      <!-- <remap from='joy'           to='joy' /> -->
+    </node>
+  </group>
 
 </launch>

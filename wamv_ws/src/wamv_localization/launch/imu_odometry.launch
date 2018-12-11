@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <launch>
 
-  <node pkg="wamv_driver" type="imu_odometry.py" name="imu_odometry_node" output="screen" >
+  <node pkg="wamv_localization" type="imu_odometry.py" name="imu_odometry_node" output="screen" >
     <param name='footprint_to_stabilized' value='1.25' />
     <param name='broadcast_transform' value='true' />
-    <remap from='imu'   to='/data/imu/fixed' />
-    <remap from='twist' to='/data/twist/fixed' />
+    <remap from='imu'   to='/input/imu/fixed' />
+    <remap from='twist' to='/input/twist/fixed' />
     <remap from='odom'  to='/odom/imu' />
   </node>
 
