@@ -4,15 +4,18 @@
   <!-- sudo jstest /dev/input/js1 -->
   <!-- sudo chmod a+rw /dev/input/js1 -->
 
-  <node pkg="joy" type="joy_node" name="joystick_node">
-    <param name='dev' value='/dev/input/js1' />
-  </node>
+  <group ns='teleoperations' >
 
-  <group ns='teleoperations'>
-    <node pkg="wamv_control" type="teleoperations_controller.py" name="controller">
-      <remap from='motor_command' to='/motor/input' />
-      <!-- <remap from='joy'           to='joy' /> -->
+    <node pkg="joy" type="joy_node" name="joystick">
+      <param name='dev' value='/dev/input/js1' />
     </node>
+
+    <node pkg="wamv_control" type="teleoperations_controller.py" name="controller">
+      <remap from='motor_command' to='/command/motor' />
+      <remap from='system_mode'   to='/status/system_mode' />
+      <remap from='joystick'      to='joy' />
+    </node>
+
   </group>
 
 </launch>

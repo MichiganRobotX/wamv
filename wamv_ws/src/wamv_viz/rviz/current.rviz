@@ -6,7 +6,9 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /Odometry1
+        - /LaserScan1
+        - /Map1
+        - /TF1
         - /TF1/Frames1
       Splitter Ratio: 0.675000012
     Tree Height: 635
@@ -28,7 +30,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: PointCloud2 - lidar_bow
 Visualization Manager:
   Class: ""
   Displays:
@@ -144,8 +146,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 14.1914158
-        Min Value: -2.31189823
+        Max Value: 8.81224823
+        Min Value: -6.94044876
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -153,7 +155,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: AxisColor
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 172
@@ -166,16 +168,16 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.0500000007
       Style: Points
-      Topic: /sensors/lidar_stern/velodyne_points
+      Topic: /input/pcl/stern/raw
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 10.9554405
-        Min Value: -5.40768719
+        Max Value: 7.96967077
+        Min Value: -5.38293266
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -183,7 +185,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: AxisColor
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 124
@@ -196,11 +198,11 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.0500000007
       Style: Points
-      Topic: /data/pcl/bow/raw
+      Topic: /input/pcl/bow/raw
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -213,12 +215,12 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 113
-      Min Color: 0; 0; 0
-      Min Intensity: 1
+      Max Intensity: 70
+      Min Color: 255; 255; 255
+      Min Intensity: 0
       Name: LaserScan
       Position Transformer: XYZ
       Queue Size: 10
@@ -226,21 +228,21 @@ Visualization Manager:
       Size (Pixels): 5
       Size (m): 0.00999999978
       Style: Points
-      Topic: /data/scan/bow
+      Topic: /input/scan/bow/raw
       Unreliable: false
       Use Fixed Frame: true
-      Use rainbow: true
-      Value: false
+      Use rainbow: false
+      Value: true
     - Alpha: 0.699999988
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: false
+      Enabled: true
       Name: Map
       Topic: /map
       Unreliable: false
       Use Timestamp: true
-      Value: false
+      Value: true
     - Angle Tolerance: 0.100000001
       Class: rviz/Odometry
       Covariance:
@@ -280,56 +282,64 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        base_footprint:
+          Value: true
         base_link:
+          Value: true
+        base_stabilized:
           Value: false
         imu:
           Value: false
         imu_raw:
           Value: false
+        laser_scan_matcher:
+          Value: true
         lidar_bow:
-          Value: false
+          Value: true
         lidar_joint:
           Value: false
         lidar_stern:
           Value: false
+        map:
+          Value: true
+        odom:
+          Value: true
       Marker Scale: 2
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        base_link:
-          lidar_joint:
-            lidar_bow:
-              {}
-            lidar_stern:
-              {}
+        map:
+          laser_scan_matcher:
+            {}
+          odom:
+            base_footprint:
+              base_stabilized:
+                base_link:
+                  lidar_joint:
+                    lidar_bow:
+                      {}
+                    lidar_stern:
+                      {}
       Update Interval: 0
       Value: true
     - Class: jsk_rviz_plugin/TwistStamped
       Enabled: false
       Name: Twist - fixed
-    - Alpha: 1
-      Axes Length: 1
-      Axes Radius: 0.100000001
-      Class: rviz/Pose
-      Color: 255; 25; 0
-      Enabled: false
-      Head Length: 0.300000012
-      Head Radius: 0.100000001
-      Name: Heading
-      Shaft Length: 1
-      Shaft Radius: 0.0500000007
-      Shape: Arrow
-      Topic: /data/pose/fixed
+      Topic: ""
       Unreliable: false
       Value: false
+      angular color: 255; 0; 0
+      angular scale: 1
+      linear color: 0; 255; 0
+      linear scale: 1
     - Alpha: 1
       Axes Length: 1
       Axes Radius: 0.100000001
       Class: rviz/Pose
       Color: 255; 25; 0
-      Enabled: false
+      Enabled: true
       Head Length: 0.300000012
       Head Radius: 0.25
       Name: Pose - slam
@@ -338,12 +348,12 @@ Visualization Manager:
       Shape: Arrow
       Topic: /pose/slam
       Unreliable: false
-      Value: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_link
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -364,25 +374,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 17.5517864
+      Distance: 37.0224838
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.960859954
-        Y: -0.651439428
-        Z: 1.51823628
+        X: -7.11380434
+        Y: 1.66705751
+        Z: 1.73184109
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.5547961
+      Pitch: 1.56979632
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.42182159
+      Yaw: 0.581836641
     Saved: ~
 Window Geometry:
   Displays:

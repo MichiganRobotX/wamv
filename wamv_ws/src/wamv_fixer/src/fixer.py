@@ -102,19 +102,9 @@ class Fixer():
         self.out_type = {
             'Twist': Twist,
             'TwistStamped': TwistStamped,
-            'TwistWithCovarianceStamped': TwistWithCovarianceStamped,
-            'PoseStamped': PoseStamped,
-            'PoseWithCovarianceStamped': PoseWithCovarianceStamped,
             'Imu': Imu,
             'NavSatFix': NavSatFix
         }[rospy.get_param('~out_type')]
-
-        if self.out_type == PoseStamped:
-            callback = self.pose_callback
-        elif self.out_type == PoseWithCovarianceStamped:
-            callback = self.pose_w_cov_callback
-        elif self.out_type == TwistWithCovarianceStamped:
-            callback = self.twist_w_cov_callback
 
         self.old_frame = rospy.get_param('~old_frame', None)
         self.new_frame = rospy.get_param('~new_frame', None)
@@ -142,25 +132,6 @@ class Fixer():
 
         self.publisher.publish(tf_msg)
 
-    def twist_w_cov_callback(self, msg):
-        temp = TwistStamped()
-        temp.header.frame_id = self.old_frame
-        temp.header.stamp = rospy.Time.now()
-        temp.twist = msg
-
-        try:
-            tf_msg = self.buffer.transform(temp, self.new_frame)
-        except:
-            rospy.loginfo('Unable to receive transform. Waiting...')
-            rospy.sleep(1)
-            return
-
-        temp = TwistWithCovarianceStamped()
-        temp.header = tf_msg.header
-        temp.twist.twist = tf_msg.twist
-
-        self.publisher.publish(temp)
-
     def imu_callback(self, msg):
         temp = msg
         temp.header.frame_id = self.old_frame
@@ -174,56 +145,6 @@ class Fixer():
             return
 
         self.publisher.publish(tf_msg)
-
-    def pose_callback(self, msg):
-        pose = PoseStamped()
-        temp = msg
-        temp.header.frame_id = self.old_frame
-        temp.header.stamp = rospy.Time.now()
-
-        try:
-            tf_msg = self.buffer.transform(temp, self.new_frame)
-        except:
-            rospy.loginfo('Unable to receive transform. Waiting...')
-            rospy.sleep(1)
-            return
-
-        pose.header = tf_msg.header
-        pose.pose.orientation = tf_msg.orientation
-
-        # _, _, yaw = quat_to_rpy(
-        #     tf_msg.orientation.x,
-        #     tf_msg.orientation.y,
-        #     tf_msg.orientation.z,
-        #     tf_msg.orientation.w
-        # )
-        # quat = rpy_to_quat(0.0, 0.0, yaw)
-        # header = pose.header
-        # self.broadcaster.sendTransform(TransformStamped(
-        #     header,
-        #     'imu_compass',
-        #     Transform(pose.pose.position, quat)
-        # ))
-
-        self.publisher.publish(pose)
-
-    def pose_w_cov_callback(self, msg):
-        temp = msg
-        temp.header.frame_id = self.old_frame
-        temp.header.stamp = rospy.Time.now()
-
-        try:
-            tf_msg = self.buffer.transform(temp, self.new_frame)
-        except:
-            rospy.loginfo('Unable to receive transform. Waiting...')
-            rospy.sleep(1)
-            return
-
-        pose = PoseWithCovarianceStamped()
-        pose.header = tf_msg.header
-        pose.pose.pose.orientation = tf_msg.orientation
-
-        self.publisher.publish(pose)
 
     def nav_sat_fix_callback(self, msg):
         temp = msg

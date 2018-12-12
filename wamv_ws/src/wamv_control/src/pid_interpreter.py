@@ -67,8 +67,8 @@ class PIDInterpreter:
         # Set up subscribers
         self.system_mode = 0
         rospy.Subscriber('system_mode', Int16, self.mode_callback)
-        rospy.Subscriber('odom', Odometry, self.odometry_callback)
         rospy.Subscriber('velocity_command', Twist, self.decomposer_callback)
+        rospy.Subscriber('odom', Odometry, self.odometry_callback)
 
         self.heading_control_effort = 0.0
         rospy.Subscriber(
@@ -103,7 +103,7 @@ class PIDInterpreter:
     def odometry_callback(self, msg):
         self.speed_state_pub.publish(msg.twist.twist.linear.x)
         self.lateral_state_pub.publish(msg.twist.twist.linear.y)
-        self.angular_state_pub.publish(msg.twist.twist.angular.z)
+        self.heading_state_pub.publish(msg.twist.twist.angular.z)
 
     ###########################################################################
     def decomposer_callback(self, msg):

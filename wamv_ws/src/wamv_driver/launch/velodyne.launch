@@ -1,20 +1,27 @@
 <?xml version="1.0"?>
 <launch>
 
-    <group ns="lidar_bow">
-        <include file="$(find wamv_driver)/launch/__velodyne.launch">
-            <arg name="device_ip"   value="192.168.1.202" />
-            <arg name="frame_id"    value="lidar_bow" />
-            <arg name="port"        value="2360" />
-        </include>
-    </group>
+  <group ns="/sensor/lidar_bow">
+    <remap from='velodyne_points' to='/input/pcl/bow/raw' />
+    <remap from='scan'            to='/input/scan/bow/raw' />
 
-    <group ns="lidar_stern">
-        <include file="$(find wamv_driver)/launch/__velodyne.launch">
-            <arg name="device_ip"   value="192.168.1.201" />
-            <arg name="frame_id"    value="lidar_stern" />
-            <arg name="port"        value="2368" />
-        </include>
-    </group>
+    <include file="$(find wamv_driver)/launch/__velodyne.launch">
+      <arg name="device_ip"   value="192.168.1.202" />
+      <arg name="frame_id"    value="lidar_bow" />
+      <arg name="port"        value="2360" />
+      <arg name="ring"        value="20" />
+    </include>
+  </group>
+
+  <group ns="/sensor/lidar_stern">
+    <remap from='velodyne_points' to='/input/pcl/stern/raw' />
+    <remap from='scan'            to='/input/scan/stern/raw' />
+
+    <include file="$(find wamv_driver)/launch/__velodyne.launch">
+      <arg name="device_ip"   value="192.168.1.201" />
+      <arg name="frame_id"    value="lidar_stern" />
+      <arg name="port"        value="2368" />
+    </include>
+  </group>
 
 </launch>

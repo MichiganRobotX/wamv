@@ -12,8 +12,8 @@
     </node>
 
     <node pkg="wamv_fixer" type="fixer.py" name="imu" >
-      <param name='in_type' value='Imu'/>
-      <param name='out_type' value='Imu'/>
+      <param name='in_type'   value='Imu'/>
+      <param name='out_type'  value='Imu'/>
       <param name='old_frame' value='imu_raw'/>
       <param name='new_frame' value='imu'/>
       <remap from='in'  to='/input/imu/raw' />

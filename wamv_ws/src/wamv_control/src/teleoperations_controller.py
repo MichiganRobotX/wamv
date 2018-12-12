@@ -47,7 +47,8 @@ class TeleoperationsController:
         self.zero_speed_msg.port_bow_thruster = 1500
         self.zero_speed_msg.strbrd_bow_thruster = 1500
 
-        rospy.Subscriber('joy', Joy, self.joy_callback)
+        rospy.Subscriber('joystick', Joy, self.joy_callback)
+        # rospy.Subscriber('system_mode', Int16, self.mode_callback)
 
     ###########################################################################
     def joy_callback(self, data):
@@ -60,6 +61,7 @@ class TeleoperationsController:
             platform is not currently running autonomously, as indicated by the
             `autonomy_status` topic.
         """
+        green_button_pressed = data.buttons[0]
         red_button_pressed = data.buttons[1]
         back_button_pressed = data.buttons[6]
         start_button_pressed = data.buttons[7]
@@ -67,6 +69,10 @@ class TeleoperationsController:
         if red_button_pressed:
             self.system_mode_pub.publish(3)
             rospy.loginfo("Killswitch engaged")
+
+        elif green_button_pressed:
+            self.system_mode_pub.publish(2)
+            rospy.loginfo("Autonomous control activated")
 
         elif back_button_pressed:
             self.system_mode_pub.publish(0)

@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 
 import rospy
-from std_msgs.msg import Int16, Bool
+from std_msgs.msg import Int16, Bool, String
+from wamv_msgs.msg import Heartbeat
 
 SYSTEM_MODE = {
     0: 'limbo',
@@ -21,8 +22,14 @@ class StatusLightInterpreter():
         self.green_pub = rospy.Publisher('green_light', Bool, queue_size=100)
         self.blue_pub = rospy.Publisher('blue_light', Bool, queue_size=100)
         self.yellow_pub = rospy.Publisher('yellow_light', Bool, queue_size=100)
+        self.life_line_pub = rospy.Publisher('life_line', String, queue_size=100)
 
+        rospy.Subscriber('heartbeat', Heartbeat, self.heartbeat_callback)
         rospy.Subscriber('system_mode', Int16, self.mode_callback)
+
+    ###########################################################################
+    def heartbeat_callback(self, msg):
+        self.life_line_pub.publish('Live Connection')
 
     ###########################################################################
     def mode_callback(self, msg):

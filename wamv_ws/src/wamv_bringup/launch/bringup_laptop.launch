@@ -3,6 +3,6 @@
 
 	<include file="$(find wamv_control)/launch/teleoperations.launch" />
 
-	<node pkg='rviz' type='rviz' name='rviz_node' args="-d $(find wamv_viz)/rviz/current.rviz" />
+	<!-- <node pkg='rviz' type='rviz' name='rviz_node' args="-d $(find wamv_viz)/rviz/current.rviz" /> -->
 
 </launch>

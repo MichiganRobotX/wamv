@@ -16,7 +16,7 @@
          <remap from='lateral_state'          to='lateral/state' />
 
          <remap from='system_mode'            to='/status/system_mode' />
-         <remap from='motor_command'          to='/motor/input' />
+         <remap from='motor_command'          to='/command/motor' />
          <remap from='velocity_command'       to='/command/velocity' />
          <remap from='odom'                   to='/odom/imu' />
     </node>

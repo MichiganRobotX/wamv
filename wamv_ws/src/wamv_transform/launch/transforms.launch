@@ -67,7 +67,7 @@
     </include>
 
     <!-- from base_link to ladybug -->
-    <!-- 26.5 inches toward bow and 20 inches up from an_device -->
+    <!-- 26.5 inches toward bow and 2current0 inches up from an_device -->
     <!-- <include file='$(find wamv_transform)/launch/__transform.launch' >
         <arg name='name'            value='base_link_to_ladybug'/>
         <arg name='frame_id'        value='base_link'/>
