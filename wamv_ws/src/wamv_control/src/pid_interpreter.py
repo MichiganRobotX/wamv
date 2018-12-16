@@ -4,7 +4,7 @@ import rospy
 from std_msgs.msg import Int16, Float64
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
-from wamv_msgs.msg import MotorCommand
+from wamv_msgs.msg import MotorCommand, VelocityCommand
 
 SYSTEM_MODE = {
     0: 'limbo',
@@ -67,7 +67,7 @@ class PIDInterpreter:
         # Set up subscribers
         self.system_mode = 0
         rospy.Subscriber('system_mode', Int16, self.mode_callback)
-        rospy.Subscriber('velocity_command', Twist, self.decomposer_callback)
+        rospy.Subscriber('velocity_command', VelocityCommand, self.decomposer_callback)
         rospy.Subscriber('odom', Odometry, self.odometry_callback)
 
         self.heading_control_effort = 0.0
@@ -97,7 +97,18 @@ class PIDInterpreter:
         self.lateral_state_pub = rospy.Publisher(
             'lateral_state', Float64, queue_size=100)
 
-        self.rate = rospy.Rate(rospy.get_param('~loop_rate', 10))
+        self.rate = rospy.Rate(rospy.get_param('~loop_rate', 20))
+
+        self.msg = MotorCommand('pid_interpreter', 127, 127, 1500, 1500)
+
+        use_lateral_thrusters = rospy.get_param('~use_lateral_thrusters', False)
+        if use_lateral_thrusters:
+            self.process = self._process_motors_and_thrusters
+        else:
+            self.process = self._process_motors
+
+        # rospy.on_shutdown(myhook)
+        # rospy.signal_shutdown(reason)
 
     ###########################################################################
     def odometry_callback(self, msg):
@@ -107,9 +118,9 @@ class PIDInterpreter:
 
     ###########################################################################
     def decomposer_callback(self, msg):
-        self.speed_setpoint_pub.publish(msg.linear.x)
-        self.lateral_setpoint_pub.publish(msg.linear.y)
-        self.heading_setpoint_pub.publish(msg.angular.z)
+        self.speed_setpoint_pub.publish(msg.x)
+        self.lateral_setpoint_pub.publish(msg.y)
+        self.heading_setpoint_pub.publish(msg.yaw)
 
     ###########################################################################
     def mode_callback(self, msg):
@@ -186,7 +197,7 @@ class PIDInterpreter:
         return int(val)
 
     ###########################################################################
-    def process(self):
+    def _process_motors(self):
         """ Calculates and publishes the main motor input values.
 
             The motor works with values between [0,254] with 0 being full
@@ -203,7 +214,6 @@ class PIDInterpreter:
         # Get the control efforts
         heading_control_effort = self.heading_control_effort
         speed_control_effort = self.speed_control_effort
-        lateral_control_effort = self.lateral_control_effort
 
         # Allocate power based on angular velocity requirement first, and cap
         # at maximum if over.
@@ -222,11 +232,17 @@ class PIDInterpreter:
         # Apply shift
         port_motor_speed *= self.port_motor_output_percentage
         port_motor_speed += shift
-        port_motor_speed = self.prepare_for_publishing(port_motor_speed)
+        self.msg.port_motor = self.prepare_for_publishing(port_motor_speed)
 
         strbrd_motor_speed *= self.strbrd_motor_output_percentage
         strbrd_motor_speed += shift
-        strbrd_motor_speed = self.prepare_for_publishing(strbrd_motor_speed)
+        self.msg.strbrd_motor = self.prepare_for_publishing(strbrd_motor_speed)
+
+    ###########################################################################
+    def _process_thrusters(self):
+        """ Calculates and publishes the main motor input values.
+        """
+        lateral_control_effort = self.lateral_control_effort
 
         port_thruster_speed = lateral_control_effort
         strbrd_thruster_speed = -lateral_control_effort
@@ -235,24 +251,24 @@ class PIDInterpreter:
 
         port_thruster_speed *= self.port_thruster_output_percentage
         port_thruster_speed += lateral_shift
-        port_thruster_speed = self.prepare_for_publishing_lateral(port_thruster_speed)
+        self.msg.port_thruster = self.prepare_for_publishing_lateral(port_thruster_speed)
 
         strbrd_thruster_speed *= self.strbrd_thruster_output_percentage
         strbrd_thruster_speed += lateral_shift
-        strbrd_thruster_speed = self.prepare_for_publishing_lateral(strbrd_thruster_speed)
+        self.msg.strbrd_thruster = self.prepare_for_publishing_lateral(strbrd_thruster_speed)
 
-        # Publish
-        msg = MotorCommand()
-        msg.port_motor = port_motor_speed
-        msg.strbrd_motor = strbrd_motor_speed
-        msg.port_bow_thruster = port_thruster_speed
-        msg.strbrd_bow_thruster = strbrd_thruster_speed
-        self.publisher.publish(msg)
+    ###########################################################################
+    def _process_motors_and_thrusters(self):
+        self._process_motors()
+        self._process_thrusters()
+
+    def publish(self):
+        self.publisher.publish(self.msg)
 
     def loop(self):
         while not rospy.is_shutdown():
-            if self.system_mode == 'autonomous':
-                self.process()
+            self.process()
+            self.publish()
             self.rate.sleep()
 
 ###############################################################################

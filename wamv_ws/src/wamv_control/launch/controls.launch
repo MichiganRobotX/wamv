@@ -5,6 +5,7 @@
      <!-- Launch PID interpreter -->
      <node pkg="wamv_control" type="pid_interpreter.py" name="interpreter">
          <rosparam command="load" file="$(find wamv_control)/params/interpreter.yaml" />
+         <param name='use_lateral_thrusters'  value='false' />
          <remap from='heading_control_effort' to='heading/control_effort' />
          <remap from='heading_setpoint'       to='heading/setpoint' />
          <remap from='heading_state'          to='heading/state' />

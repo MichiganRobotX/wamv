@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <launch>
-
+]
+  <!-- Bow lidar driver and laser scan filtering -->
   <group ns="/sensor/lidar_bow">
     <remap from='velodyne_points' to='/input/pcl/bow/raw' />
     <remap from='scan'            to='/input/scan/bow/raw' />
-
     <include file="$(find wamv_driver)/launch/__velodyne.launch">
       <arg name="device_ip"   value="192.168.1.202" />
       <arg name="frame_id"    value="lidar_bow" />
@@ -13,15 +13,31 @@
     </include>
   </group>
 
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain"
+        name="laser_filter" ns="/filters/scan/bow" >
+    <rosparam command="load" file="$(find wamv_driver)/params/laser_filter.yaml" />
+    <param name='tf_message_filter_target_frame' value='base_link' />
+    <remap from="scan" to="/input/scan/bow/raw" />
+    <remap from="scan_filtered" to="/input/scan/bow/filtered" />
+  </node>
+
+  <!-- Stern lidar driver and laser scan filtering -->
   <group ns="/sensor/lidar_stern">
     <remap from='velodyne_points' to='/input/pcl/stern/raw' />
     <remap from='scan'            to='/input/scan/stern/raw' />
-
     <include file="$(find wamv_driver)/launch/__velodyne.launch">
       <arg name="device_ip"   value="192.168.1.201" />
       <arg name="frame_id"    value="lidar_stern" />
       <arg name="port"        value="2368" />
     </include>
   </group>
+
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain"
+        name="laser_filter" ns="/filters/scan/stern" >
+    <rosparam command="load" file="$(find wamv_driver)/params/laser_filter.yaml" />
+    <param name='tf_message_filter_target_frame' value='base_link' />
+    <remap from="scan" to="/input/scan/stern/raw" />
+    <remap from="scan_filtered" to="/input/scan/stern/filtered" />
+  </node>
 
 </launch>

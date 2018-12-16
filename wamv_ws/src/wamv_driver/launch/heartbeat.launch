@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
 <launch>
 
-	<group ns='status' >
-		<node pkg="wamv_driver" type="heartbeat.py" name="heartbeat_node" respawn="true" >
-			<remap from='gps' 							to='/input/gps/fixed' />
-			<remap from='system_mode' 			to='/status/system_mode' />
-			<!-- <remap from='heartbeat' 				to='heartbeat' /> -->
-		</node>
-	</group>
+	<node pkg="wamv_driver" type="heartbeat.py" name="heartbeat_node" respawn="true" ns='status' >
+		<remap from='gps' 							to='/input/gps/fixed' />
+		<!-- <remap from='system_mode' 			to='system_mode' /> -->
+		<!-- <remap from='heartbeat' 				to='heartbeat' /> -->
+	</node>
 
 </launch>

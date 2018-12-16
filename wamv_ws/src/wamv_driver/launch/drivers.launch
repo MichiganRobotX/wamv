@@ -7,8 +7,9 @@
 	<include file="$(find wamv_driver)/launch/status_light_controller.launch" />
 
 	<!-- Launch sensors drivers -->
-	<include file="$(find wamv_driver)/launch/advanced_navigation_device.launch" />
+	<include file="$(find wamv_driver)/launch/advanced_navigation.launch" />
 	<include file="$(find wamv_driver)/launch/velodyne.launch" />
+	<!-- <include file="$(find wamv_driver)/launch/crio.launch" /> -->
 	<!-- <include file="$(find wamv_driver)/launch/ladybug.launch" /> -->
 
 </launch>

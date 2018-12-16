@@ -1,4 +1,24 @@
+
+## Future
+
+- reformat puget and dell
+
+- ladybug3 driver: compressed vs uncompressed images
+- lay out network communications: what needs to happen on the puget vs laptop vs transfer. rviz stuff.
+- launch file for bagging
+- rc solution not utilizing tcp or 2.4/5 GHz bands
+- writeup network details
+- make additional msgs
+
+- advanced_navigation_driver:
+  - change to output TwistStamped msgs
+  - change from NED to ENU coordinate frame
+
+
+
 ## Competition Notes
+
+
 
 Namespaces that are good:
   status_light
@@ -22,12 +42,6 @@ Next steps:
       building map, costmaps
     actions
 
-
-## Future
-
-- advanced_navigation_driver:
-  - change to output TwistStamped msgs
-  - change from NED to ENU coordinate frame
 
 ## Notes
 

@@ -22,7 +22,7 @@ class HeartbeatManager():
         rospy.init_node('heartbeat_manager_node', log_level=rospy.INFO)
 
         self.publisher = rospy.Publisher('heartbeat', Heartbeat, queue_size=100)
-        self.string_publisher = rospy.Publisher('heartbeat_string', String, queue_size=100)
+        # self.string_publisher = rospy.Publisher('heartbeat_string', String, queue_size=100)
 
         rospy.Subscriber('gps', NavSatFix, self.gps_callback)
         rospy.Subscriber('system_mode', Int16, self.mode_callback)
@@ -69,7 +69,7 @@ class HeartbeatManager():
         # msg += '<CR><LF>'def mode_callback(self, msg):
 
         self.publisher.publish(self.msg)
-        self.string_publisher.publish(msg)
+        # self.string_publisher.publish(msg)
 
     ###########################################################################
     def loop(self):

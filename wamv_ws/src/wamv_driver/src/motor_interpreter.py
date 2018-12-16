@@ -12,11 +12,11 @@ SYSTEM_MODE = {
 }
 
 ###############################################################################
-class MotorCommandInterpreter():
+class MotorInterpreter():
 
     ###########################################################################
     def __init__(self):
-        rospy.init_node('motor_command_interpreter_node', log_level=rospy.INFO)
+        rospy.init_node('motor_interpreter_node', log_level=rospy.INFO)
 
         self.port_motor_pub = rospy.Publisher('port_motor_input', Int16, queue_size=100)
         self.strbrd_motor_pub = rospy.Publisher('strbrd_motor_input', Int16, queue_size=100)
@@ -39,7 +39,7 @@ class MotorCommandInterpreter():
     def mode_callback(self, msg):
         self.system_mode = SYSTEM_MODE[msg.data]
 
-    ######################################status_light_interpretter#####################################
+    ###########################################################################
     def command_callback(self, msg):
         if self.system_mode == 'killed':
             self.publish_zero_speed()
@@ -50,14 +50,14 @@ class MotorCommandInterpreter():
         else:
             self.port_motor_pub.publish(msg.port_motor)
             self.strbrd_motor_pub.publish(msg.strbrd_motor)
-            self.port_bow_thruster_pub.publish(msg.port_bow_thruster)
-            self.strbrd_bow_thruster_pub.publish(msg.strbrd_bow_thruster)
+            self.port_bow_thruster_pub.publish(msg.port_thruster)
+            self.strbrd_bow_thruster_pub.publish(msg.strbrd_thruster)
 
 ###############################################################################
 ###############################################################################
 if __name__ == '__main__':
     try:
-        MotorCommandInterpreter()
+        MotorInterpreter()
         rospy.spin()
     except rospy.ROSInterruptException:
         pass

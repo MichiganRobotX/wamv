@@ -3,7 +3,7 @@
 
   <group ns='motor'>
 
-    <node pkg="wamv_driver" type="motor_command_interpreter.py" name="interpreter" >
+    <node pkg="wamv_driver" type="motor_interpreter.py" name="interpreter" >
       <remap from='port_motor_input'          to='port_motor_input' />
       <remap from='strbrd_motor_input'        to='strbrd_motor_input' />
       <remap from='port_bow_thruster_input'   to='port_thruster_input' />
