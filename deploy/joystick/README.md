@@ -1,6 +1,11 @@
-## Deploying the Joystick
+## Deploying the Xbox controller
 
-First, ensure that the **mode light is off**.
+These instructions apply to the Logitech Xbox-style controller. First, ensure
+that the **mode light is off**. The mode light affects the mapping of the
+controller's inputs (buttons and joysticks), and the code has been configured
+to work with the mode light disabled.
+
+
 
 ### Automatic Deployment
 
@@ -20,7 +25,6 @@ Open a terminal in this directory and run `./wireless_joystick_setup.sh`
 
 Open a terminal and run the following:
 
-    sudo jstest /dev/input/js1
     sudo chmod a+rw /dev/input/js1
     rosparam set joy_node/dev "/dev/input/js1"
     rosrun joy joy_node
@@ -30,19 +34,20 @@ Open a terminal and run the following:
 
 Open a terminal and run the following:
 
-    sudo jstest /dev/input/js2
     sudo chmod a+rw /dev/input/js2
     rosparam set joy_node/dev "/dev/input/js2"
     rosrun joy joy_node
 
 
-
 ### Verifying the Joystick Output
 
-To check the joystick output, open a terminal and run:
+To check the controller input to the base computer, open a terminal and run:
+
+    sudo jstest /dev/input/jsX
+
+To check the controller output in ROS, open a terminal and run:
 
     rostopic echo /joy
-
 
 
 ### Joystick Configuration

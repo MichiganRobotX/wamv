@@ -67,7 +67,7 @@ class PIDInterpreter:
         # Set up subscribers
         self.system_mode = 0
         rospy.Subscriber('system_mode', Int16, self.mode_callback)
-        rospy.Subscriber('velocity_command', VelocityCommand, self.decomposer_callback)
+        rospy.Subscriber('velocity_command', VelocityCommand, self.command_callback)
         rospy.Subscriber('odom', Odometry, self.odometry_callback)
 
         self.heading_control_effort = 0.0
@@ -107,9 +107,6 @@ class PIDInterpreter:
         else:
             self.process = self._process_motors
 
-        # rospy.on_shutdown(myhook)
-        # rospy.signal_shutdown(reason)
-
     ###########################################################################
     def odometry_callback(self, msg):
         self.speed_state_pub.publish(msg.twist.twist.linear.x)
@@ -117,7 +114,7 @@ class PIDInterpreter:
         self.heading_state_pub.publish(msg.twist.twist.angular.z)
 
     ###########################################################################
-    def decomposer_callback(self, msg):
+    def command_callback(self, msg):
         self.speed_setpoint_pub.publish(msg.x)
         self.lateral_setpoint_pub.publish(msg.y)
         self.heading_setpoint_pub.publish(msg.yaw)
@@ -262,13 +259,11 @@ class PIDInterpreter:
         self._process_motors()
         self._process_thrusters()
 
-    def publish(self):
-        self.publisher.publish(self.msg)
-
+    ###########################################################################
     def loop(self):
         while not rospy.is_shutdown():
             self.process()
-            self.publish()
+            self.publisher.publish(self.msg)
             self.rate.sleep()
 
 ###############################################################################

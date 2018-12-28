@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <launch>
+	<arg name='bag_file' value='/home/mjsyp/.ros/bags/all_sensors_0.bag' />
+	
 
 	<param name='use_sim_time' value='true' />
 

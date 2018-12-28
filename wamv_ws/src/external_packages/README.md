@@ -1,9 +1,9 @@
-## External Packages
+# External Packages
 
 These packages are not indexed in ROS and therefore it is easiest to include
 them here.
 
-Notes:
+## Notes
 - `advanced_navigation_driver` compiles with the following warning:
 
         Warnings << advanced_navigation_driver:make /home/mjsyp/Documents/wamv/wamv_ws/logs/advanced_navigation_driver/build.make.000.log

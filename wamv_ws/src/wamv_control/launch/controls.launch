@@ -4,8 +4,6 @@
   <group ns='pid'>
      <!-- Launch PID interpreter -->
      <node pkg="wamv_control" type="pid_interpreter.py" name="interpreter">
-         <rosparam command="load" file="$(find wamv_control)/params/interpreter.yaml" />
-         <param name='use_lateral_thrusters'  value='false' />
          <remap from='heading_control_effort' to='heading/control_effort' />
          <remap from='heading_setpoint'       to='heading/setpoint' />
          <remap from='heading_state'          to='heading/state' />
@@ -20,27 +18,72 @@
          <remap from='motor_command'          to='/command/motor' />
          <remap from='velocity_command'       to='/command/velocity' />
          <remap from='odom'                   to='/odom/imu' />
+
+         <!-- <rosparam command="load" file="$(find wamv_control)/params/interpreter.yaml" /> -->
+         <!-- <param name='use_lateral_thrusters'  value='false' /> -->
+        <rosparam>
+            output_maximum: 127
+            output_lower_bound: 0
+            output_upper_bound: 255
+            loop_rate: 20
+            port_motor_output_percentage: 1.0
+            strbrd_motor_output_percentage: 1.0
+        </rosparam>
     </node>
 
     <!-- Launch the heading PID controller  -->
-    <include file="$(find wamv_control)/launch/pid.launch" ns="heading">
+
+    <!-- <include file="$(find wamv_control)/launch/pid.launch" ns="heading">
         <arg name='param_file'  value='heading_controller_params.yaml' />
         <arg name='setpoint'    value='setpoint' />
         <arg name='state'       value='state' />
-    </include>
+    </include> -->
+
+    <node pkg="pid" type="controller" name="controller" ns='heading'>
+        <rosparam>
+            Kp: 450.0
+            Ki: 200.0
+            Kd: 10.0
+            upper_limit: 127
+            lower_limit: -127
+        </rosparam>
+    </node>
 
     <!-- Launch the speed PID controller -->
-    <include file="$(find wamv_control)/launch/pid.launch" ns="speed">
+
+    <!-- <include file="$(find wamv_control)/launch/pid.launch" ns="speed">
         <arg name='param_file'  value='speed_controller_params.yaml' />
         <arg name='setpoint'    value='setpoint' />
         <arg name='state'       value='state' />
-    </include>
+    </include> -->
+
+    <node pkg="pid" type="controller" name="controller" ns='speed'>
+        <rosparam>
+            Kp: 450.0
+            Ki: 30.0
+            Kd: 15.0
+            upper_limit: 127
+            lower_limit: -127
+        </rosparam>
+    </node>
 
     <!-- Launch the lateral PID controller  -->
-    <include file="$(find wamv_control)/launch/pid.launch" ns="lateral">
+
+    <!-- <include file="$(find wamv_control)/launch/pid.launch" ns="lateral">
         <arg name='param_file'  value='lateral_controller_params.yaml' />
         <arg name='setpoint'    value='setpoint' />
         <arg name='state'       value='state' />
-    </include>
+    </include> -->
+
+    <node pkg="pid" type="controller" name="controller" ns='lateral'>
+        <rosparam>
+            Kp: 1.0
+            Ki: 0.0
+            Kd: 0.0
+            upper_limit: 127
+            lower_limit: -127
+        </rosparam>
+    </node>
+
   </group> <!-- pid -->
 </launch>
