@@ -1,23 +1,26 @@
 # WolvMarine ROS packages and catkin workspace
 
 - `external_packages` : Packages that are not indexed by ROS.
-- `wamv_bringup` : Launch files and scripts for bringing up the remote and
+- `wolvmarine_bringup` : Launch files and scripts for bringing up the remote and
   base-station computers.
-- `wamv_control` : Control configuration including teleoperation controls, PID
-  controllers, and PID interpreter.
-- `wamv_drivers` : Launch files for the Velodyne LiDARs and Ladybug cameras.
-- `wamv_fixer` : Fixes sensory inputs to ROS standard coordinate frames.
-- `wamv_localization` : Mapping and GPS.
-- `wamv_msgs` : Messages.
-- `wamv_navigation` : Path planning and waypoint following.
-- `wamv_tasks` : RobotX task definitions and implementations, including the heartbeat signal.
-- `wamv_tests` :
-- `wamv_transform` : Broadcasts the wamv transforms.
-- `wamv_viz` : Visualization configuration for rviz.
+- `wolvmarine_control` : Control configuration including teleoperation controls,
+  PID controllers, and PID interpreter.
+- `wolvmarine_drivers` : Launch files for the Velodyne LiDARs and Ladybug
+  cameras.
+- `wolvmarine_fixer` : Fixes sensory inputs to ROS standard coordinate frames.
+- `wolvmarine_localization` : Mapping and GPS.
+- `wolvmarine_msgs` : Messages.
+- `wolvmarine_navigation` : Path planning and waypoint following.
+- `wolvmarine_tasks` : RobotX task definitions and implementations, including
+  the heartbeat signal.
+- `wolvmarine_tests` :
+- `wolvmarine_transform` : Broadcasts the wolvmarine transforms.
+- `wolvmarine_viz` : Visualization configuration for rviz.
 
 ## Installing dependencies
 
-To install all the dependencies for the wamv package, run the following in the base directory of the wamv workspace:
+To install all the dependencies for the wolvmarine package, run the following
+in the base directory of the wolvmarine workspace:
 
     rosdep install --from-paths src --ignore-src -r -y
 
@@ -61,17 +64,17 @@ Following are action items corresponding to each of the individual packages.
 
     - The `advanced_navigation_driver` package was developed externally, but it
       would be beneficial to modify this package directly instead of having to
-      use wamv_fixer to alter its outputs. Currently, outputs do not comply to
-      the ROS standard, specifically NED coordinate frames need to be converted
-      to ENU coordinate frames. In addition, all outputs need to be timestamped,
-      specifically TwistStamped messages.
+      use wolvmarine_fixer to alter its outputs. Currently, outputs do not
+      comply to the ROS standard, specifically NED coordinate frames need to be
+      converted to ENU coordinate frames. In addition, all outputs need to be
+      timestamped, specifically TwistStamped messages.
 
-- `wamv_bringup`
+- `wolvmarine_bringup`
 
     - The bringup launch files should be changed to utilize the `machine` tag,
       as well as adhere to the `remote` and `base` taxonomy.
 
-- `wamv_control`
+- `wolvmarine_control`
 
     - Ensure that the *use_lateral_thrusters* in `pid_interpreter.py` is
       working and an appropriate way to handle switching between PID controller
@@ -85,7 +88,7 @@ Following are action items corresponding to each of the individual packages.
 
     - Cleanup `controls.launch`
 
-- `wamv_drivers`
+- `wolvmarine_drivers`
 
     - Finish cRIO files and functions.
 
@@ -116,12 +119,12 @@ Following are action items corresponding to each of the individual packages.
     - Develop (if necessary) the socket communication for the heartbeat to be
       broadcast.
 
-- `wamv_fixer`
+- `wolvmarine_fixer`
 
     - This package has been a bandaid for quick fixes. The actual fixes should
       be implemented were appropriate.
 
-- `wamv_localization`
+- `wolvmarine_localization`
 
     - Finish and verify sensor fusion. Current main sources of odometry are
       the IMU, GPS, and pointcloud-based pose estimation.
@@ -136,19 +139,19 @@ Following are action items corresponding to each of the individual packages.
     - Get the map server and saver working. Possibly move mapping stuff to a
       different package.
 
-- `wamv_navigation`
+- `wolvmarine_navigation`
 
     - Verify costmap.
 
     - Finish action framework.
 
-- `wamv_transform`
+- `wolvmarine_transform`
 
     - Verify and cleanup transforms after modifying `external_packages`.
 
     - Consider adopting `robot_state_publisher`.
 
-- `wamv_rviz`
+- `wolvmarine_rviz`
 
     - Settle on a default configuration.
 
