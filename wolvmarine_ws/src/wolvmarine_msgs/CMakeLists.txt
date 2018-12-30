@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(wamv_msgs)
+project(wolvmarine_msgs)
 
 find_package(catkin REQUIRED COMPONENTS
 	std_msgs
@@ -8,11 +8,12 @@ find_package(catkin REQUIRED COMPONENTS
 
 add_message_files(
 	FILES
-	Heartbeat.msg
 	Gate.msg
+	Heartbeat.msg
+	MotorCommand.msg
 	ScanCode.msg
 	SymbolDock.msg
-	MotorCommand.msg
+	VelocityCommand.msg
 )
 
 generate_messages(

@@ -1,21 +1,25 @@
 <?xml version="1.0"?>
 <package format="2">
 
-  <name>wamv_fixer</name>
-  <version>1.0.0</version>
-  <description>wamv platform</description>
-  <maintainer email="mjsyp@umich.edu">Michael Sypniewski</maintainer>
-  <license>BSD</license>
+    <name>wolvmarine_fixer</name>
+    <version>0.0.1</version>
+    <description>
+        The package contains utilities for converting/fixing the sensor outputs
+        of the WolvMarine robot. There are inconsistencies between the sensor
+        outputs and ROS standards. This package is a temporary fix as these
+        issues should be resolved at their source, perhaps using a nodelet
+        wrapper.
+    </description>
+    <maintainer email="mjsyp@umich.edu">Michael Sypniewski</maintainer>
+    <license>BSD</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>rospy</depend>
-  <depend>sensor_msgs</depend>
-  <depend>std_msgs</depend>
-  <depend>tf2_ros</depend>
-
-
-
-
+    <depend>geometry_msgs</depend>
+    <depend>message_filters</depend>
+    <depend>orocos_kdl</depend>
+    <depend>rospy</depend>
+    <depend>sensor_msgs</depend>
+    <depend>tf2_ros</depend>
 
 </package>

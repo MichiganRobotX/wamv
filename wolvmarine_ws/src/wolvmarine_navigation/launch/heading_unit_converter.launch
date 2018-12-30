@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <launch>
-    <node pkg="wamv_navigation" type="heading_unit_converter.py" name="heading_unit_converter_node" />
-    <node pkg="wamv_navigation" type="speed_converter.py" name="speed_converter_node" />
+    <node pkg="wolvmarine_navigation" type="heading_unit_converter.py" name="heading_unit_converter_node" />
+    <node pkg="wolvmarine_navigation" type="speed_converter.py" name="speed_converter_node" />
 </launch>

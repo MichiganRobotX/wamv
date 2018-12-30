@@ -3,7 +3,7 @@
 - `external_packages` : Packages that are not indexed by ROS.
 - `wolvmarine_bringup` : Launch files and scripts for bringing up the remote and
   base-station computers.
-- `wolvmarine_control` : Control configuration including teleoperation controls,
+- `wolvmarine_controls` : Control configuration including teleoperation controls,
   PID controllers, and PID interpreter.
 - `wolvmarine_drivers` : Launch files for the Velodyne LiDARs and Ladybug
   cameras.
@@ -14,7 +14,7 @@
 - `wolvmarine_tasks` : RobotX task definitions and implementations, including
   the heartbeat signal.
 - `wolvmarine_tests` :
-- `wolvmarine_transform` : Broadcasts the wolvmarine transforms.
+- `wolvmarine_transforms` : Broadcasts the WolvMarine transforms.
 - `wolvmarine_viz` : Visualization configuration for rviz.
 
 ## Installing dependencies
@@ -64,7 +64,7 @@ Following are action items corresponding to each of the individual packages.
 
     - The `advanced_navigation_driver` package was developed externally, but it
       would be beneficial to modify this package directly instead of having to
-      use wolvmarine_fixer to alter its outputs. Currently, outputs do not
+      use `wolvmarine_fixer` to alter its outputs. Currently, outputs do not
       comply to the ROS standard, specifically NED coordinate frames need to be
       converted to ENU coordinate frames. In addition, all outputs need to be
       timestamped, specifically TwistStamped messages.
@@ -74,7 +74,7 @@ Following are action items corresponding to each of the individual packages.
     - The bringup launch files should be changed to utilize the `machine` tag,
       as well as adhere to the `remote` and `base` taxonomy.
 
-- `wolvmarine_control`
+- `wolvmarine_controls`
 
     - Ensure that the *use_lateral_thrusters* in `pid_interpreter.py` is
       working and an appropriate way to handle switching between PID controller
@@ -145,7 +145,7 @@ Following are action items corresponding to each of the individual packages.
 
     - Finish action framework.
 
-- `wolvmarine_transform`
+- `wolvmarine_transforms`
 
     - Verify and cleanup transforms after modifying `external_packages`.
 

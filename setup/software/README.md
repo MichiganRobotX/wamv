@@ -6,16 +6,9 @@ This directory contains scripts to install the requisite software.
 
 If the operating system needs to be installed, see below for the operating system and preferred boot device.
 
-#### Laptop
-Ubuntu Desktop 16.04.5 LTS 64-bit via bootable USB drive.
-
-#### Puget
-Ubuntu Desktop 16.04.5 LTS 64-bit via bootable USB drive.
-
-#### Raspberry Pi
-Raspbian Stretch Desktop 4.14 via bootable microSD card.
-
-
+- Base-station computer: Ubuntu Desktop 16.04.5 LTS 64-bit via bootable USB drive.
+- Remote computer : Ubuntu Desktop 16.04.5 LTS 64-bit via bootable USB drive.
+- Raspberry Pi : Raspbian Stretch Desktop 4.14 via bootable microSD card.
 
 ## Software
 

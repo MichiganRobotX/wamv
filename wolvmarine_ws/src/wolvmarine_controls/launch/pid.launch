@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Specify arguments -->
+    <arg name="setpoint"    default="setpoint" />
+    <arg name="state"       default="state" />
+    <arg name="param_file"  default="controller_params.yaml" />
+
+    <!-- Launch PID controller -->
+    <node pkg="pid" type="controller" name="controller">
+        <rosparam command="load" file="$(find wolvmarine_controls)/params/$(arg param_file)" />
+        <remap from='setpoint'  to='$(arg setpoint)'/>
+        <remap from='state'     to='$(arg state)'/>
+   </node>
+
+</launch>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package format="2">
+
+    <name>wolvmarine_drivers</name>
+    <version>0.0.1</version>
+    <description>
+        This package contains drivers for the WolvMarine robot. This includes
+        running the LiDARs, cameras, hydrophoned, motors, thrusters, and the
+        status light, as well as publishing the robot's heartbeat.
+    </description>
+    <maintainer email="mjsyp@umich.edu">Michael Sypniewski</maintainer>
+    <license>BSD</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <depend>advanced_navigation_driver</depend>
+    <depend>laser_filters</depend>
+    <depend>rospy</depend>
+    <depend>rosserial_python</depend>
+    <depend>rostest</depend>
+    <depend>sensor_msgs</depend>
+    <depend>std_msgs</depend>
+    <depend>velodyne_driver</depend>
+    <depend>velodyne_pointcloud</depend>
+
+    <!-- orocos_kdl contains PyKDL for dynamics and transformations  -->
+    <!-- <depend>orocos_kdl</depend> -->
+
+    <test_depend>rostest</test_depend>
+
+</package>

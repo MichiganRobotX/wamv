@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <node pkg="wamv_localization" type="imu_odometry.py" name="imu_odometry_node" output='screen' >
+  <node pkg="wolvmarine_localization" type="imu_odometry.py" name="imu_odometry_node" output='screen' >
     <param name='footprint_to_stabilized' value='1.25' />
     <param name='broadcast_transform'     value='true' />
 

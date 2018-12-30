@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(wamv_navigation)
+project(wolvmarine_navigation)
 
 find_package(catkin REQUIRED COMPONENTS
 	rospy

@@ -1,22 +1,35 @@
 <?xml version="1.0"?>
 <package format="2">
 
-  <name>wamv_localization</name>
-  <version>0.0.0</version>
-  <description>Navigation packages</description>
-  <maintainer email="mjsyp@umich.edu">Michael Sypniewski</maintainer>
-  <license>BSD</license>
+    <name>wolvmarine_localization</name>
+    <version>0.0.1</version>
+    <description>
+        This package contains localization nodes and launch files for the
+        WolvMarine robot. Currently, the only original node in this package
+        produces an imu-estimated odometry. The other files are for launching
+        nodes from robot_localization, hector_slam, and other packages. The
+        package currently contains mapping functionality, but this may be
+        ported to a different package.
+    </description>
+    <maintainer email="mjsyp@umich.edu">Michael Sypniewski</maintainer>
+    <license>BSD</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>gmapping</depend>
-  <depend>gps_common</depend>
-  <depend>move_base</depend>
-  <depend>nav_msgs</depend>
-  <depend>robot_localization</depend>
-  <depend>robot_state_publisher</depend>
-  <depend>rospy</depend>
-  <depend>sensor_msgs</depend>
-  <depend>tf</depend>
+    <depend>geometry_msgs</depend>
+    <depend>hector_compressed_map_transport</depend>
+    <depend>hector_geotiff</depend>
+    <depend>hector_mapping</depend>
+    <depend>hector_trajectory_server</depend>
+    <depend>laser_scan_matcher</depend>
+    <depend>message_filters</depend>
+    <depend>nav_msgs</depend>
+    <depend>orokos_kdl</depend>
+    <depend>robot_localization</depend>
+    <depend>rospy</depend>
+    <depend>sensor_msgs</depend>
+    <depend>std_msgs</depend>
+    <depend>tf2_geometry_msgs</depend>
+    <depend>tf2_ros</depend>
 
 </package>

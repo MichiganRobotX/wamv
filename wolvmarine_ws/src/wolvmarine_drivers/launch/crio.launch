@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node pkg="wolvmarine_drivers" type="crio.py" name="driver" respawn="true"
+          ns="/sensor/crio" >
+        <rosparam>
+            port: 50000
+            #baud_rate:
+            #frame_id:
+        </rosparam>
+    </node>
+
+</launch>

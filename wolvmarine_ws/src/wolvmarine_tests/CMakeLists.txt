@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(wamv_tests)
+project(wolvmarine_tests)
 
 find_package(catkin REQUIRED COMPONENTS)
 

@@ -1,18 +1,20 @@
 <?xml version="1.0"?>
 <package format="2">
 
-  <name>wamv_navigation</name>
-  <version>1.0.0</version>
-  <description>Navigation package for the wamv platform</description>
-  <maintainer email="mjsyp@umich.edu">Michael Sypniewski</maintainer>
-  <license>BSD</license>
+    <name>wolvmarine_navigation</name>
+    <version>1.0.0</version>
+    <description>
+        This package contains navigation utilities for the WolvMarine robot.
+    </description>
+    <maintainer email="mjsyp@umich.edu">Michael Sypniewski</maintainer>
+    <license>BSD</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>rospy</depend>
-  <depend>std_msgs</depend>
-  <depend>actionlib</depend>
-  <depend>move_base_msgs</depend>
+    <depend>rospy</depend>
+    <depend>std_msgs</depend>
+    <depend>actionlib</depend>
+    <depend>move_base_msgs</depend>
 
 
 </package>

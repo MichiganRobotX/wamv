@@ -1,16 +1,22 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(wamv_localization)
+project(wolvmarine_localization)
 
 find_package(catkin REQUIRED
-	gmapping
-	gps_common
-	move_base
+	geometry_msgs
+	hector_compressed_map_transport
+	hector_geotiff
+	hector_mapping
+	hector_trajectory_server
+	laser_scan_matcher
+	message_filters
 	nav_msgs
+	orokos_kdl
 	robot_localization
-	robot_state_publisher
-	roscpp
+	rospy
 	sensor_msgs
-	tf
+	std_msgs
+	tf2_geometry_msgs
+	tf2_ros
 )
 
 catkin_python_setup()

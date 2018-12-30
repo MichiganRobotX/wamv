@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <launch>
-  
+
   <!-- Launch sensors and odometry -->
-  <include file="$(find wamv_driver)/launch/drivers.launch" />
+  <include file="$(find wolvmarine_drivers)/launch/drivers.launch" />
 
   <!-- Launch transforms -->
-  <include file="$(find wamv_transform)/launch/transforms.launch" />
+  <include file="$(find wolvmarine_transforms)/launch/transforms.launch" />
 
 </launch>

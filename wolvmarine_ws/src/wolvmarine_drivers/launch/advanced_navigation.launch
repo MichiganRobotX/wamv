@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node pkg="advanced_navigation_driver" type="advanced_navigation_driver"
+          name="driver" respawn="true" ns='/sensor/ins'>
+        <!-- <param name='port' value='' /> -->
+        <!-- <param name='baud_rate' value='' /> -->
+        <remap from='/sensor/ins/Twist'        to='/input/twist/raw' />
+        <remap from='/sensor/ins/Imu'          to='/input/imu/raw' />
+        <remap from='/sensor/ins/NavSatFix'    to='/input/gps/raw' />
+        <remap from='/sensor/ins/SystemStatus' to='/sensor/ins/system_status' />
+        <remap from='/sensor/ins/FilterStatus' to='/sensor/ins/filter_status' />
+
+        <rosparam>
+            imu_frame_id: imu_raw
+            nav_sat_frame_id: gps_raw
+            topic_prefix: /sensor/ins
+        </rosparam>
+    </node>
+
+</launch>

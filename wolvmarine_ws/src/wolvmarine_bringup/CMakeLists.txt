@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(wamv_bringup)
+project(wolvmarine_bringup)
 
 find_package(catkin REQUIRED COMPONENTS
-    rviz
-    wamv_driver
-    wamv_transform
+    wolvmarine_controls
+    wolvmarine_drivers
+    wolvmarine_fixer
+    wolvmarine_localization
+    wolvmarine_transforms
+    wolvmarine_viz
 )
 
 catkin_package()

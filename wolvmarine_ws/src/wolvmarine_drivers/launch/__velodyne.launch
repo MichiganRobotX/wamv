@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- start nodelet manager and driver nodelets -->
+    <arg name="calibration"     default="$(find wolvmarine_drivers)/params/velodyne_calibration.yaml" />
+    <arg name="device_ip"       default="" />
+    <arg name="frame_id"        default="" />
+    <arg name="manager"         default="manager" />
+    <arg name="pcap"            default="" />
+    <arg name="port"            default="" />
+    <arg name="read_fast"       default="false" />
+    <arg name="read_once"       default="false" />
+    <arg name="repeat_delay"    default="0.0" />
+    <arg name="rpm"             default="600.0" />
+    <arg name="cut_angle"       default="-0.01" />
+
+    <include file="$(find velodyne_driver)/launch/nodelet_manager.launch">
+        <arg name="device_ip"       value="$(arg device_ip)"/>
+        <arg name="frame_id"        value="$(arg frame_id)"/>
+        <arg name="manager"         value="$(arg manager)" />
+        <arg name="model"           value="32E"/>
+        <arg name="pcap"            value="$(arg pcap)"/>
+        <arg name="port"            value="$(arg port)"/>
+        <arg name="read_fast"       value="$(arg read_fast)"/>
+        <arg name="read_once"       value="$(arg read_once)"/>
+        <arg name="repeat_delay"    value="$(arg repeat_delay)"/>
+        <arg name="rpm"             value="$(arg rpm)"/>
+        <arg name="cut_angle"       value="$(arg cut_angle)"/>
+    </include>
+
+
+    <!-- start cloud nodelet -->
+    <arg name="max_range"   default="130.0" />
+    <arg name="min_range"   default="0.4" />
+
+    <include file="$(find velodyne_pointcloud)/launch/cloud_nodelet.launch">
+        <arg name="calibration" value="$(arg calibration)" />
+        <arg name="manager"     value="$(arg manager)"  />
+        <arg name="max_range"   value="$(arg max_range)" />
+        <arg name="min_range"   value="$(arg min_range)" />
+    </include>
+
+
+    <!-- start laserscan nodelet -->
+    <arg name="ring"        default="-1" />
+    <arg name="resolution"  default="0.001" />
+
+    <include file="$(find velodyne_pointcloud)/launch/laserscan_nodelet.launch">
+        <arg name="manager"     value="$(arg manager)" />
+        <arg name="ring"        value="$(arg ring)" />
+        <arg name="resolution"  value="$(arg resolution)" />
+    </include>
+
+</launch>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- Launch rosserial to communicate to arduinos -->
+	<include file="$(find wolvmarine_drivers)/launch/heartbeat.launch" />
+	<include file="$(find wolvmarine_drivers)/launch/motor_controller.launch" />
+	<include file="$(find wolvmarine_drivers)/launch/status_light_controller.launch" />
+
+	<!-- Launch sensors drivers -->
+	<include file="$(find wolvmarine_drivers)/launch/advanced_navigation.launch" />
+	<include file="$(find wolvmarine_drivers)/launch/velodyne.launch" />
+	<!-- <include file="$(find wolvmarine_drivers)/launch/crio.launch" /> -->
+	<!-- <include file="$(find wolvmarine_drivers)/launch/ladybug.launch" /> -->
+
+</launch>

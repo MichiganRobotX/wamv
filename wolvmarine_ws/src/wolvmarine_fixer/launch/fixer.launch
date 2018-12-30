@@ -2,7 +2,7 @@
 <launch>
 
   <group ns='fixer' >
-    <node pkg="wamv_fixer" type="fixer.py" name="twist" >
+    <node pkg="wolvmarine_fixer" type="fixer.py" name="twist" >
       <param name='in_type' value='Twist'/>
       <param name='out_type' value='TwistStamped'/>
       <param name='old_frame' value='imu_raw'/>
@@ -11,7 +11,7 @@
       <remap from='out' to='/input/twist/fixed' />
     </node>
 
-    <node pkg="wamv_fixer" type="fixer.py" name="imu" >
+    <node pkg="wolvmarine_fixer" type="fixer.py" name="imu" >
       <param name='in_type'   value='Imu'/>
       <param name='out_type'  value='Imu'/>
       <param name='old_frame' value='imu_raw'/>
@@ -20,7 +20,7 @@
       <remap from='out' to='/input/imu/fixed' />
     </node>
 
-    <node pkg="wamv_fixer" type="fixer.py" name="gps" >
+    <node pkg="wolvmarine_fixer" type="fixer.py" name="gps" >
       <param name='in_type' value='NavSatFix'/>
       <param name='out_type' value='NavSatFix'/>
       <param name='old_frame' value='gps_raw'/>

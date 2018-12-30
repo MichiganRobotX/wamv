@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <launch>
 	<!-- Launch heartbeat -->
-	<node pkg="wamv_tasks" type="straight_line.py" name="straight_line_node" respawn="false" output="screen" />
+	<node pkg="wolvmarine_tasks" type="straight_line.py" name="straight_line_node" respawn="false" output="screen" />
 </launch>

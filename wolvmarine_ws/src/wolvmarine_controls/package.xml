@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+
+    <name>wolvmarine_controls</name>
+    <version>0.0.1</version>
+    <description>
+        This package conatins nodes and launch files for implementing controls
+        for the WolvMarine. This includes PID controllers, a PID interpreter,
+        and a teleoperations controller.
+    </description>
+    <maintainer email="mjsyp@umich.edu">Michael Sypniewski</maintainer>
+    <license>BSD</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <depend>geometry_msgs</depend>
+    <depend>joy</depend>
+    <depend>nav_msgs</depend>
+    <depend>pid</depend>
+    <depend>rospy</depend>
+    <depend>sensor_msgs</depend>
+    <depend>std_msgs</depend>
+    <depend>wolvmarine_msgs</depend>
+
+</package>

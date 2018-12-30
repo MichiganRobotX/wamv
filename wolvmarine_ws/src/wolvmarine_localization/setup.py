@@ -7,7 +7,11 @@ from catkin_pkg.python_setup import generate_distutils_setup
 setup_args = generate_distutils_setup(
     packages=['wamv_localization'],
     package_dir={'': 'src'},
-    requires={'rospy','geometry_msgs','tf2_ros'}
+    requires={'geometry_msgs', 'hector_compressed_map_transport',
+              'hector_geotiff', 'hector_mapping', 'hector_trajectory_server',
+              'laser_scan_matcher', 'message_filters', 'nav_msgs', 'orocos_kdl',
+              'robot_localization', 'rospy', 'sensor_msgs', 'std_msgs',
+              'tf2_geometry_msgs', 'tf2_ros'}
 )
-# ,'orocos_kdl'
+
 setup(**setup_args)

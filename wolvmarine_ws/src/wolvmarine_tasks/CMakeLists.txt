@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(wamv_tasks)
+project(wolvmarine_tasks)
 
 find_package(catkin REQUIRED COMPONENTS
 	rospy
 	sensor_msgs
 	std_msgs
-	wamv_msgs
+	wolvmarine_msgs
 )
 
 catkin_python_setup()

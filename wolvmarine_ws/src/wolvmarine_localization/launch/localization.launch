@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <launch>
 
-    <!-- <include file="$(find wamv_localization)/launch/imu_odometry.launch" /> -->
+    <!-- <include file="$(find wolvmarine_localization)/launch/imu_odometry.launch" /> -->
 
-    <node pkg="wamv_localization" type="imu_odometry.py" name="imu_odometry_node" >
+    <node pkg="wolvmarine_localization" type="imu_odometry.py" name="imu_odometry_node" >
       <param name='footprint_to_stabilized' value='1.25' />
       <param name='broadcast_transform'     value='true' />
       <param name='two_d_mode'     value='true' />
@@ -14,13 +14,13 @@
     </node>
 
     <!-- <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" >
-  			<rosparam command="load" file="$(find wamv_localization)/params/ekf_se_odom.yaml" />
+  			<rosparam command="load" file="$(find wolvmarine_localization)/params/ekf_se_odom.yaml" />
 
   			<remap from="odometry/filtered" to="odom/local" />
   	</node>
 
   	<node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" >
-  			<rosparam command="load" file="$(find wamv_localization)/params/navsat_transform.yaml" />
+  			<rosparam command="load" file="$(find wolvmarine_localization)/params/navsat_transform.yaml" />
   			<remap from="odometry/filtered" to="odom/local"/>
   			<remap from="imu/data" to="data/imu/fixed"/>
         <remap from="gps/fix" to="data/gps/fixed"/>
@@ -29,7 +29,7 @@
   	</node>
 
   	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_map" >
-  		<rosparam command="load" file="$(find wamv_localization)/params/ekf_se_map.yaml" />
+  		<rosparam command="load" file="$(find wolvmarine_localization)/params/ekf_se_map.yaml" />
   		<remap from="odometry/filtered" to="odom/fused"/>
   	</node> -->
 

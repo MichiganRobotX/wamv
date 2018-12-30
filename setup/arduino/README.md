@@ -13,4 +13,4 @@ e-stop, in which case, it is not used.
   terms of conciseness and proper ROS usage) to import and use custom message
   types in the Arduinos.
 
-- Determine if the `emergency_stop` code is needed, and remove it if not.
+- Determine if the `emergency_stop` code is needed, and remove if it is not.

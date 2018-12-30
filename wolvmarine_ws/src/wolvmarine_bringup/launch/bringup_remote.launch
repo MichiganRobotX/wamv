@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+	<include file="$(find wolvmarine_transforms)/launch/transforms.launch" />
+	<include file="$(find wolvmarine_drivers)/launch/drivers.launch" />
+	<include file="$(find wolvmarine_fixer)/launch/fixer.launch" />
+	<include file="$(find wolvmarine_localization)/launch/localization.launch" />
+	<include file="$(find wolvmarine_controls)/launch/controls.launch" />
+
+</launch>

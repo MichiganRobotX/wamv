@@ -5,7 +5,6 @@
 import socket
 import scipy
 from scipy.fftpack import fft
-#import rospy
 import math as m
 import numpy as np
 
@@ -72,10 +71,6 @@ class CRIOManager:
         m1 = abs(y1)   #get magnitude
         p1 = np.angle(y1) #get phase in radians
 
-        #plot
-        #import matplotlib.pyplot as plt
-        #plt.plot(f, m1, 'ro')
-
         #hydrophone 2
         y2 = fft(CH2)
         m2 = abs(y2)
@@ -124,46 +119,5 @@ class CRIOManager:
 
 
 
-#Input: Pinger frequency in kHZ
-
-#Create lower and upper bounds
-
 man = CRIOManager()
 man.callback()
-
-#
-# # import threading
-# import socketserver
-#
-# class TCPHandler(socketserver.BaseRequestHandler):
-#
-#    def handle(self):
-#       self.msg = self.request.recv(1024).strip()
-#       print(self.msg)
-#       # if self.msg == "on<EOF>":
-#       #    print "Turning On..."
-#       #    #ECHO "SUCCESS<EOF>"        <----- I need the server to echo back "success"
-#       # if self.msg == "off<EOF>":
-#       #    print "Turning Off..."
-#       #    #ECHO "SUCCESS<EOF>"        <----- I need the server to echo back "success"
-#
-# # Create server, bind to local host and port
-# server = socketserver.TCPServer(('', 50000),TCPHandler)
-#
-# # start server
-# server.serve_forever()
-
-#convert string to float
-#float('number')
-
-# import socket               # Import socket module
-#
-# s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# s.bind(('', 50000))        # Bind to the port
-#
-# s.listen(5)                 # Now wait for client connection.
-# while True:
-#    c, addr = s.accept()     # Establish connection with client.
-#    print('Got connection from', addr)
-#    c.send(b'Thank you for connecting')   # Send bytes
-#    c.close()                # Close the connection

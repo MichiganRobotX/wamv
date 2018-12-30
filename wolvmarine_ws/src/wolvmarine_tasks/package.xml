@@ -1,17 +1,20 @@
 <?xml version="1.0"?>
 <package format="2">
 
-  <name>wamv_tasks</name>
-  <version>1.0.0</version>
-  <description>Tasks package for the wamv platform</description>
-  <maintainer email="mjsyp@umich.edu">Michael Sypniewski</maintainer>
-  <license>BSD</license>
+    <name>wolvmarine_tasks</name>
+    <version>0.0.1</version>
+    <description>
+        This package contains nodes and launch files for completing competition
+        tasks using the WolvMarine robot.
+    </description>
+    <maintainer email="mjsyp@umich.edu">Michael Sypniewski</maintainer>
+    <license>BSD</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>rospy</depend>
-  <depend>sensor_msgs</depend>
-  <depend>std_msgs</depend>
-  <depend>wamv_msgs</depend>
+    <depend>rospy</depend>
+    <depend>sensor_msgs</depend>
+    <depend>std_msgs</depend>
+    <depend>wolvmarine_msgs</depend>
 
 </package>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+
+<!--
+sudo chmod a+rw /dev/input/js1
+-->
+
+  <group ns='teleoperations'>
+
+    <node pkg="joy" type="joy_node" name="joystick">
+      <param name='dev' value='/dev/input/js0' />
+    </node>
+
+    <node pkg="wolvmarine_controls" type="teleoperations_controller.py"
+          name="controller" output='screen'>
+      <remap from='motor_command' to='/command/motor' />
+      <remap from='velocity_command' to='/command/velocity' />
+      <remap from='system_mode'   to='/status/system_mode' />
+      <remap from='joystick'      to='joy' />
+
+      <rosparam>
+        max_x_velocity: 1.0
+        max_y_velocity: 0.25
+        max_yaw_velocity: 0.25
+      </rosparam>
+    </node>
+
+  </group>
+
+</launch>

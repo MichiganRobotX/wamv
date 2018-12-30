@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+
+  <test pkg="wolvmarine_drivers" type="tests.py" test-name="tests" />
+
+</launch>
